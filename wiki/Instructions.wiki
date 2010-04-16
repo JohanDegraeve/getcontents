@@ -1,5 +1,7 @@
 #summary Explain XML instruction file.
 
+<font color="red">THIS PAGE IS UNDER CONSTRUCTION</font>
+
 <wiki:toc max_depth="5" />
 
 = Introduction =
@@ -27,5 +29,22 @@ For example the goal could be to get the list of news titles. The requesting app
 Another example could be to fetch a TV guide. Typically a TV guide will consist of several columns, like "Program", "Channel", "Time", .. In such a case there would be three getContentItem's, each with another "id". To avoid having to get the same source (which is typicall an HTML or XML page downloaded over the internet), in such case there would be one first getContentItem whose goal is simply to download the complete page and to store in a String object. Then the next three getContentItem's would use that String as input and get a list of Programs, Channels and Time's.
 
 *Attributes*
-* id
-A free format text used by the application to define the getContentItem to use.
+ * id
+ A free format text used by the application to define the getContentItem to use.
+
+*Occurrence*
+ A getContentItemList must have at least one getContentItem
+
+*Example*
+{{{
+<?xml version="1.0" encoding="UTF-8" ?>
+<getContentItemList>
+   <getContentItem id="1"> 
+...
+   </getContentItem>
+   <getContentItem id="another free format text"> 
+...
+   </getContentItem>
+...
+</getContentItemList>
+}}}
