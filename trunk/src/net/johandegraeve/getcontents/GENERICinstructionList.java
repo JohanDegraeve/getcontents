@@ -21,30 +21,34 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
-import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
-import org.htmlparser.Node;
-import org.htmlparser.Parser;
-import org.htmlparser.util.NodeList;
-import org.htmlparser.util.ParserException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
-/*
- *
- * @version 1.0
+/**
+ * class for list of instructions
  * @author Johan Degraeve
  *
  */
 public class GENERICinstructionList implements XMLElement {
     private ArrayList<Instruction> instructionSet;
     
+    /**
+     * constructor
+     */
     public GENERICinstructionList() {
 	instructionSet = new ArrayList<Instruction>();
     }
 
+    /**
+     * Executes the list of instructions.<br>
+     * 
+     * @param input a url or the source, anything starting with &lt; is considered to be a url
+     * @return the result A string array of size 0 if input = null, the result of executing all instructions one by one
+     * on the input, if input != null
+     * @throws Exception
+     */
     String[] execute(String input) throws Exception {
 	String[] returnvalue;
 
@@ -63,11 +67,19 @@ public class GENERICinstructionList implements XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes arg0) throws SAXException {
 
     }
 
+    /**
+     * if arg0 is an instructions it will be added to the list, else throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement arg0) throws SAXException {
 	if (arg0 instanceof Instruction)
@@ -78,10 +90,18 @@ public class GENERICinstructionList implements XMLElement {
 
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String arg0) throws SAXException {
     }
 
+    /**
+     * throws an exception if the instructionlist is empty.
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (instructionSet.size() == 0)
@@ -89,32 +109,54 @@ public class GENERICinstructionList implements XMLElement {
 		    " must have at least one instruction child element");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return the list of instructions
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return new ArrayList<XMLElement>(instructionSet);
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERICinstructionListTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return flase
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	// XXX Auto-generated method stub

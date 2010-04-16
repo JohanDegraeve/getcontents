@@ -29,8 +29,9 @@ import org.xml.sax.helpers.AttributesImpl;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
-/*
- * a getcontentitem can take as starting point for the first instruction either a URL, which as been supplied in the XML getcontentitemlist, as optional child of 
+/**
+ * a getcontentitem can take as starting point for the first instruction either a URL, which
+ * has been supplied in the XML, as optional child of 
  * getcontentitem, or a string as supplied in executeInstructionSet
  * if theUrl is null (ie no url child supplied in the XML), then executeInstructionSet must be called with a non-null input parameter.
  * if theUrl is not null (ie a child supplied in the XML), then if executeInstructionSet is called with a null input parameter, the url will be used (ie content will be
@@ -49,7 +50,6 @@ public class GENERICgetContentItem implements XMLElement {
     /**
      * copied those silly exception strings from org.htmlparser.http
      */
-    @SuppressWarnings("unused")
     private static final String[] FOUR_OH_FOUR =
     {
         "The web site you seek cannot be located,"
@@ -76,20 +76,42 @@ public class GENERICgetContentItem implements XMLElement {
     
 
     
+    /**
+     * constructor
+     */
     public GENERICgetContentItem() {
 	theDescription = null;
 	instructionSet = null;
 	theUrl = null;
     }
     
+    /**
+     * @return the description
+     */
     String getDescription() {
 	return theDescription.getDescription();
     }
     
+    /**
+     * @return the id
+     */
     String getId() {
 	return id;
     }
     
+    /**
+     * Executes the list of instructions.<br>
+     * input can be null or non null. <br>
+     * If input is null and there's no url child then an exception will be thrown<br>
+     * If input is null and there's a url, the url will first be downloaded and this is where the first instruction will start<br>
+     * If input is not null, then the input will be used by the first instruction, which may still be a url
+     * (anything starting with &lt; is considered to be a url), or the actual source text (anything else). If input is
+     * a url, it will first be downloaded.
+     * 
+     * @param input
+     * @return the result
+     * @throws Exception
+     */
     String[] executeInstructionSet(String input) throws Exception {
 	if (input == null)
 	    try {
@@ -113,11 +135,19 @@ public class GENERICgetContentItem implements XMLElement {
 	}
     }
     
+    /**
+     * considers id as a mandatory attribute and stores it.
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes arg0) throws SAXException {
 	id = Utilities.getMandatoryAttributeValues(this, arg0, new String[]{TagAndAttributeNames.idAttribute})[0];
     }
 
+    /**
+     * Allowed children are instructionList, description and url, stores the child.
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement arg0) throws SAXException {
 	if (Utilities.getClassname(arg0.getClass()).equals(
@@ -142,9 +172,18 @@ public class GENERICgetContentItem implements XMLElement {
 		    TagAndAttributeNames.GENERICurlTag + 
 		    " as child.");
     }
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String arg0) throws SAXException {
     }
+    
+    /**
+     * the getContentItem must contain a description, instructionSet and id attribute, if not an exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (theDescription == null)
@@ -153,8 +192,16 @@ public class GENERICgetContentItem implements XMLElement {
 	if (instructionSet == null)
 	    throw new SAXException("Element " + TagAndAttributeNames.GENERICgetcontentitemTag +
 		    " must have a " + TagAndAttributeNames.GENERICinstructionListTag + "  child element");
+	if (id == null || id.equals("")) {
+	    throw new SAXException("Element " + TagAndAttributeNames.GENERICgetcontentitemTag +
+	    " must have a " + TagAndAttributeNames.idAttribute + " as attribute");
+	}
     }
 
+    /**
+     * @return the id in an AttributesImpl
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -162,6 +209,10 @@ public class GENERICgetContentItem implements XMLElement {
 	return attr;
     }
 
+    /**
+     * the url (if not null), description and instructionSet
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement>  returnvalue = new ArrayList<XMLElement> ();
@@ -171,22 +222,38 @@ public class GENERICgetContentItem implements XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERICgetcontentitemTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
 	// XXX Auto-generated method stub
 	
     }
 
+    /**
+     * @return flase
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	// XXX Auto-generated method stub
