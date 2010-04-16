@@ -141,6 +141,7 @@ or a url. There are different instructions, each of them are further explained b
 *Allowed Children*
  at least one off :
  * addXMLDeclaration
+ * getUnFilteredContent
  * htmlFilter
  * htmlGetter
  * processString
