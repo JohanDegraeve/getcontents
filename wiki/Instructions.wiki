@@ -13,6 +13,18 @@ This page explains the contents of the XML instruction file.
 
 This is the root element in the instruction file.
 
+*Attributes*
+ * none
+
+*Occurrence*
+ since it is the root element, one and only one
+
+*Allowed Children*
+ * mandatory Children
+   * getContentItem (1, 2, ...)
+  
+
+*Example*
 {{{
 <?xml version="1.0" encoding="UTF-8" ?>
 <getContentItemList>
@@ -26,14 +38,22 @@ A getContentItem defines how and where to get the contents for one specific goal
 The XML element has one attribute called "id".
 For example the goal could be to get the list of news titles. The requesting application needs to know the "id" to use to find the corresponding instructions.
 
-Another example could be to fetch a TV guide. Typically a TV guide will consist of several columns, like "Program", "Channel", "Time", .. In such a case there would be three getContentItem's, each with another "id". To avoid having to get the same source (which is typicall an HTML or XML page downloaded over the internet), in such case there would be one first getContentItem whose goal is simply to download the complete page and to store in a String object. Then the next three getContentItem's would use that String as input and get a list of Programs, Channels and Time's.
+Another example could be to fetch a TV guide. Typically a TV guide will consist of several columns, like "Program", "Channel", "Time", .. In such a case there would be three getContentItem's, each with another "id". To avoid having to get the same source (which is typicall an HTML or XML page downloaded over the internet), in such case there would be one first getContentItem whose goal is simply to download the complete page and to store in a String object. Then the next three getContentItem's would use that String as input and get a list of Programs, Channels and Time's; that means also that the source can also be a string supplied by the application.
 
 *Attributes*
- * id
- A free format text used by the application to define the getContentItem to use.
+ * mandatory attributes
+   * id
+     A free format text used by the application to define the getContentItem to use.
 
 *Occurrence*
  A getContentItemList must have at least one getContentItem
+
+*Allowed Children*
+ * mandatory Children
+   * description (1)
+   * instructionList (1)
+ * optional Children
+   * url (0 or 1)
 
 *Example*
 {{{
@@ -43,6 +63,90 @@ Another example could be to fetch a TV guide. Typically a TV guide will consist 
 ...
    </getContentItem>
    <getContentItem id="another free format text"> 
+...
+   </getContentItem>
+...
+</getContentItemList>
+}}}
+
+=== description ===
+
+This is free format description. Not really used yet.
+
+*Attributes*
+ * none
+
+*Occurrence*
+ none or one
+
+*Allowed Children*
+ none
+  
+
+*Example*
+{{{
+<?xml version="1.0" encoding="UTF-8" ?>
+<getContentItemList>
+   <getContentItem id="1"> 
+      <description>
+          Android World forum
+      </description>
+...
+   </getContentItem>
+...
+</getContentItemList>
+}}}
+
+=== url ===
+
+The url where the source needs to be downloaded.
+Is optional, in case not present, then application must start the instructionList with source parameter which can again be a url (anything starting with '<') or the actual source content (anything not starting with '<').
+
+*Attributes*
+ * none
+
+*Occurrence*
+ none or one
+
+*Allowed Children*
+ none
+
+*Example*
+{{{
+<?xml version="1.0" encoding="UTF-8" ?>
+<getContentItemList>
+   <getContentItem id="1"> 
+      <url>
+          http://www.androidworld.nl/forum/external.php
+      </url>
+...
+   </getContentItem>
+...
+</getContentItemList>
+}}}
+
+
+=== instructionList ===
+
+List of instructions to be executed on the source.
+
+*Attributes*
+ * none
+
+*Occurrence*
+ none or one
+
+*Allowed Children*
+ none
+
+*Example*
+{{{
+<?xml version="1.0" encoding="UTF-8" ?>
+<getContentItemList>
+   <getContentItem id="1"> 
+      <url>
+          http://www.androidworld.nl/forum/external.php
+      </url>
 ...
    </getContentItem>
 ...
