@@ -129,6 +129,8 @@ Is optional, in case not present, then application must start the instructionLis
 === instructionList ===
 
 List of instructions to be executed on the source.
+Instructions take as input an array of strings. The first instruction can take a string
+or a url. There are different instructions, each of them are further explained by giving examples.
 
 *Attributes*
  * none
@@ -138,7 +140,6 @@ List of instructions to be executed on the source.
 
 *Allowed Children*
  at least one off :
- * addRootElement
  * addXMLDeclaration
  * htmlFilter
  * htmlGetter
@@ -159,4 +160,59 @@ List of instructions to be executed on the source.
    </getContentItem>
 ...
 </getContentItemList>
+}}}
+
+==== addXMLDeclaration ====
+
+Instruction to add an XML declaration on top of the input.
+This is useful between an XMLFilter and an XMLGetter. Both XMLFilter and XMLGetter require valid XML as input, but the output of an XMLFilter is typically an array of Strings, with in each String an XML representation of one single XML Element. 
+The concatenation of these Strings (ie of the output of the XMLFilter) is not valid XML because it misses an XML Declaration and a root element. There's no need to add a root element because this will be detected when applying the XMLGetter and added by the XMLGetter. 
+However, the XML declaration must be added by applying an addXMLdeclaration.
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * Mandatory Children
+   * version
+   * encoding
+
+*Example*
+We want to get the content from following XML source :
+
+{{{
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<rss version="2.0"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+  xmlns:admin="http://webns.net/mvcb/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<channel>
+ <image>
+  <title>optv.nu wat is er nu op tv</title> 
+  <url>http://rss.optv.nu/logo.gif</url> 
+  <link>http://www.optv.nu/</link> 
+  <width>144</width> 
+  <height>34</height> 
+  <description>OpTv.nu nu / straks op tv</description> 
+ </image>
+ <title>Nu en Straks Op Tv zaterdag 17/04/2010 00:17</title>
+ <item>
+<title><![CDATA[NU op tv]]></title>
+<pubDate>Sat, 17 Apr 2010 00:17:26 +0200</pubDate>
+<category>nu</category>
+<description><![CDATA[<table border='1' width='100%' cellpadding='2' cellspacing='0'><tr><td colspan='3'>Nu op tv</td></tr><tr><td valign='top' nowrap>Nederland 1</td><td valign='top' nowrap>00:10-01:05</td><td valign='top' width='100%'>Pauw & Witteman<br />Talkshow met Jeroen Pauw en Paul Witteman.</td></tr><tr><td valign='top' nowrap>Nederland 2</td><td valign='top' nowrap>23:50-01:35</td><td valign='top' width='100%'>Cinema 2: Help!     1/2<br />Ringo komt toevallig in het bezit van een ring waarvan de drager volgens de leden van een obscure Oosterse sekte moet worden geofferd. De arme drummer wordt dan ook langs exotische plaatsen over heel de wereld opgejaagd door de boosaardige sekte, door een stel geschifte wetenschappers, door een afgescheurde subsekte die niet langer in mensenoffers gelooft en door de Londense politie die hem wil helpen...</td></tr><tr><td valign='top' nowrap>Nederland 3</td><td valign='top' nowrap>23:45-00:40</td><td valign='top' width='100%'>De wereld draait door</td></tr><tr><td valign='top' nowrap>RTL 4</td><td valign='top' nowrap>23:45-00:55</td><td valign='top' width='100%'>Nieuws</td></tr><tr><td valign='top' nowrap>RTL 5</td><td valign='top' nowrap>23:50-00:40</td><td valign='top' width='100%'>Heroes <tt>(Dramaserie)</tt></td></tr><tr><td valign='top' nowrap>SBS 6</td><td valign='top' nowrap>00:10-02:10</td><td valign='top' width='100%'>A Low Down Dirty Shame     1/2 <tt>(film)</tt></td></tr><tr><td valign='top' nowrap>RTL 7</td><td valign='top' nowrap>01:00-00:00</td><td valign='top' width='100%'>Teleshop</td></tr><tr><td valign='top' nowrap>NET 5</td><td valign='top' nowrap>00:10-01:10</td><td valign='top' width='100%'>Dirt <tt>(Dramaserie)</tt></td></tr><tr><td valign='top' nowrap>Veronica</td><td valign='top' nowrap>05:59-00:00</td><td valign='top' width='100%'>Jetix</td></tr><tr><td valign='top' nowrap><a href="http://streams.mtvnetworks.nl/cgi-bin/reflector.cgi?stream=nick_high"><b>Nickelodeon</b></a></td><td valign='top' nowrap>19:35-05:00</td><td valign='top' width='100%'>Drake & Josh</td></tr><tr><td valign='top' nowrap>Een (1)</td><td valign='top' nowrap>23:15-01:10</td><td valign='top' width='100%'>Boiler Room     1/2 <tt>(drama)</tt><br />Seth Davis, zoon van een rechter, stopt met studeren omdat hij de prestatiedruk die zijn vader hem oplegt niet langer aankan. Hij start een illegaal casino, maar moet dat winstgevende zaakje opdoeken. Om zijn vader te plezieren neemt hij een baantje als televerkoper in een makelaarskantoor JT Marlin. Seth blijkt een geboren verkoper. Maar wanneer hij verliefd wordt op bedrijfssecretaresse Abbie, komt hij in aanvaring met zijn nieuwe baas...</td></tr><tr><td valign='top' nowrap>Ketnet/Canvas</td><td valign='top' nowrap>19:25-07:00</td><td valign='top' width='100%'>Deadly 60<br />Steve Backshall reist langs zes continenten, op zoek naar de zestig dodelijkste dieren. In Borneo zijn dat de schorpioenvis, de krokodilvis, de reuzenhengelaarsvis, de leeuwvis, de bidsprinkhaankreeft, de hondstonijn en de barracuda.</td></tr><tr><td valign='top' nowrap>ARD 1</td><td valign='top' nowrap>23:30-05:15</td><td valign='top' width='100%'>60 Jahre ARD - Vier lange N‰chte<br />gepresenteerd door Dieter Moor.  Een weerzien van o.a. filmklassiekers, cultseries, de eerste Duitse sf-serie 'Raumpatrouille Orion', 'Unverbesserlichen' met Inge Meysel, 'Kir Royal', 'Lieblich Kruezberg', het 'Millionenspiel' uit 1970.</td></tr><tr><td valign='top' nowrap><a href="http://wwitv.com/t1/6428.asx"><b>ZDF 2</b></a></td><td valign='top' nowrap>23:30-00:35</td><td valign='top' width='100%'>Lanz kocht</td></tr><tr><td valign='top' nowrap>WDR 3</td><td valign='top' nowrap>23:15-01:00</td><td valign='top' width='100%'>Nineteen Eighty-Four <tt>(film)</tt></td></tr><tr><td valign='top' nowrap>Canvas</td><td valign='top' nowrap>23:30-00:20</td><td valign='top' width='100%'>Deadwood <tt>(Westernserie)</tt><br />Swearengen en Bullock vergaderen met een aantal andere veteranen van Deadwood over een manier om af te rekenen met Hearst. Ze nemen een voor Deadwood ongewone beslissing. Hearst raakt Deadwood stilaan kotsbeu en gooit het op een akkoordje met Odell, de zoon van Aunt Lou. Swearengen verneemt dat Doc Cochran ziek is...</td></tr></table>]]></description>
+</item><item>
+<title><![CDATA[STRAKS op tv]]></title>
+<pubDate>Sat, 17 Apr 2010 00:17:26 +0200</pubDate>
+<category>straks</category>
+<description><![CDATA[<table border='1' width='100%' cellpadding='2' cellspacing='0'><tr><td colspan='3'>Straks op tv</td></tr><tr><td valign='top' nowrap>Nederland 1</td><td valign='top' nowrap>01:05-02:10</td><td valign='top' width='100%'>Journaal</td></tr><tr><td valign='top' nowrap>Nederland 2</td><td valign='top' nowrap>01:35-02:00</td><td valign='top' width='100%'>NOVA</td></tr><tr><td valign='top' nowrap>Nederland 3</td><td valign='top' nowrap>00:40-01:00</td><td valign='top' width='100%'>Journaal</td></tr><tr><td valign='top' nowrap>RTL 4</td><td valign='top' nowrap>00:55-06:40</td><td valign='top' width='100%'>Teleshop 4</td></tr><tr><td valign='top' nowrap>RTL 5</td><td valign='top' nowrap>00:40-00:50</td><td valign='top' width='100%'>Take 5 Movie Update <tt>(Film)</tt><br />Aangevuld met ins & outs in de studio's, setbeelden en interviews vanuit Hollywood.</td></tr><tr><td valign='top' nowrap>SBS 6</td><td valign='top' nowrap>02:10-07:00</td><td valign='top' width='100%'>Nacht-tv</td></tr><tr><td valign='top' nowrap>RTL 7</td><td valign='top' nowrap>00:00-00:00</td><td valign='top' width='100%'></td></tr><tr><td valign='top' nowrap>NET 5</td><td valign='top' nowrap>01:10-06:55</td><td valign='top' width='100%'>Nacht-tv</td></tr><tr><td valign='top' nowrap>Veronica</td><td valign='top' nowrap>00:00-00:00</td><td valign='top' width='100%'></td></tr><tr><td valign='top' nowrap><a href="http://streams.mtvnetworks.nl/cgi-bin/reflector.cgi?stream=nick_high"><b>Nickelodeon</b></a></td><td valign='top' nowrap>05:00-05:20</td><td valign='top' width='100%'>Dora</td></tr><tr><td valign='top' nowrap>Een (1)</td><td valign='top' nowrap>01:10-01:35</td><td valign='top' width='100%'>Man bijt hond</td></tr><tr><td valign='top' nowrap>Ketnet/Canvas</td><td valign='top' nowrap>07:00-07:05</td><td valign='top' width='100%'>Uki</td></tr><tr><td valign='top' nowrap>ARD 1</td><td valign='top' nowrap>05:15-05:20</td><td valign='top' width='100%'>Nieuws</td></tr><tr><td valign='top' nowrap><a href="http://wwitv.com/t1/6428.asx"><b>ZDF 2</b></a></td><td valign='top' nowrap>00:35-00:50</td><td valign='top' width='100%'>Nieuws</td></tr><tr><td valign='top' nowrap>WDR 3</td><td valign='top' nowrap>01:00-02:00</td><td valign='top' width='100%'>Domian (<a href="http://rss.optv.nu/info.php?id=2758139&o=252">info</a>)</td></tr><tr><td valign='top' nowrap>Canvas</td><td valign='top' nowrap>00:20-00:45</td><td valign='top' width='100%'>Mag ik u kussen?<br />Verleidingsshow.</td></tr></table>]]></description>
+</item><item><title>www.optv.nu</title><description>Deze gegevens zijn u aangeboden door http://www.optv.nu</description>
+<pubDate>Sat, 17 Apr 2010 00:45:00 +0200</pubDate>
+</item>
+</channel>
+</rss>
 }}}
