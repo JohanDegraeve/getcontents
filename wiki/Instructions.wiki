@@ -1,0 +1,8 @@
+#summary Explain XML instruction file by giving examples
+
+= Introduction =
+
+This page explains the contents of the XML instruction file.
+
+
+= getContentItemList =
