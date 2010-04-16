@@ -1,4 +1,6 @@
-#summary Explain XML instruction file by giving examples
+#summary Explain XML instruction file.
+
+<wiki:toc max_depth="5" />
 
 = Introduction =
 
@@ -6,3 +8,24 @@ This page explains the contents of the XML instruction file.
 
 
 = getContentItemList =
+
+This is the root element in the instruction file.
+
+{{{
+<?xml version="1.0" encoding="UTF-8" ?>
+<getContentItemList>
+...
+</getContentItemList>
+}}}
+
+== getContentItem ==
+
+A getContentItem defines how and where to get the contents for one specific goal.
+The XML element has one attribute called "id".
+For example the goal could be to get the list of news titles. The requesting application needs to know the "id" to use to find the corresponding instructions.
+
+Another example could be to fetch a TV guide. Typically a TV guide will consist of several columns, like "Program", "Channel", "Time", .. In such a case there would be three getContentItem's, each with another "id". To avoid having to get the same source (which is typicall an HTML or XML page downloaded over the internet), in such case there would be one first getContentItem whose goal is simply to download the complete page and to store in a String object. Then the next three getContentItem's would use that String as input and get a list of Programs, Channels and Time's.
+
+*Attributes*
+* id
+A free format text used by the application to define the getContentItem to use.
