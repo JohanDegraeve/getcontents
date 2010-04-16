@@ -181,6 +181,7 @@ However, the XML declaration must be added by applying an addXMLdeclaration.
    * encoding
 
 *Example*
+
 We want to get the content from following XML source :
 
 {{{
