@@ -19,12 +19,11 @@
  */
 package net.johandegraeve.getcontents;
 
-import org.htmlparser.util.NodeList;
-
 import net.johandegraeve.easyxmldata.XMLElement;
 
 /**
- * abstract class for all instructions
+ * abstract class for all instructions<br>
+ * 
  *
  * @author Johan Degraeve
  *
@@ -33,9 +32,9 @@ abstract class Instruction implements XMLElement {
     
     /**
      * Executes an instruction<br>
-     * @param source the source to process, can be a text, html page or url
-     * @return  one String per matching result
+     * @param source the source to process
+     * @return  the result of executing the instruction on the source
      */
-    /*pcakge private */  abstract String[] execute(String[] source) throws Exception;
+     abstract String[] execute(String[] source) throws Exception;
 
 }
