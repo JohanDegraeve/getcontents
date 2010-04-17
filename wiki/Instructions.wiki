@@ -350,4 +350,4 @@ If the input is not a URL, it returns the input.
  none
 
 *example*
-See example in addXMLDeclaration Instructions#addXMLDeclaration
+See example in addXMLDeclaration
