@@ -201,20 +201,99 @@ We want to get the content from following XML source :
   <height>34</height> 
   <description>OpTv.nu nu / straks op tv</description> 
  </image>
- <title>Nu en Straks Op Tv zaterdag 17/04/2010 00:17</title>
+ <title>Nu en Straks Op Tv zaterdag 17/04/2010 11:29</title>
  <item>
 <title><![CDATA[NU op tv]]></title>
-<pubDate>Sat, 17 Apr 2010 00:17:26 +0200</pubDate>
+<pubDate>Sat, 17 Apr 2010 11:29:04 +0200</pubDate>
 <category>nu</category>
-<description><![CDATA[<table border='1' width='100%' cellpadding='2' cellspacing='0'><tr><td colspan='3'>Nu op tv</td></tr><tr><td valign='top' nowrap>Nederland 1</td><td valign='top' nowrap>00:10-01:05</td><td valign='top' width='100%'>Pauw & Witteman<br />Talkshow met Jeroen Pauw en Paul Witteman.</td></tr><tr><td valign='top' nowrap>Nederland 2</td><td valign='top' nowrap>23:50-01:35</td><td valign='top' width='100%'>Cinema 2: Help!     1/2<br />Ringo komt toevallig in het bezit van een ring waarvan de drager volgens de leden van een obscure Oosterse sekte moet worden geofferd. De arme drummer wordt dan ook langs exotische plaatsen over heel de wereld opgejaagd door de boosaardige sekte, door een stel geschifte wetenschappers, door een afgescheurde subsekte die niet langer in mensenoffers gelooft en door de Londense politie die hem wil helpen...</td></tr><tr><td valign='top' nowrap>Nederland 3</td><td valign='top' nowrap>23:45-00:40</td><td valign='top' width='100%'>De wereld draait door</td></tr><tr><td valign='top' nowrap>RTL 4</td><td valign='top' nowrap>23:45-00:55</td><td valign='top' width='100%'>Nieuws</td></tr><tr><td valign='top' nowrap>RTL 5</td><td valign='top' nowrap>23:50-00:40</td><td valign='top' width='100%'>Heroes <tt>(Dramaserie)</tt></td></tr><tr><td valign='top' nowrap>SBS 6</td><td valign='top' nowrap>00:10-02:10</td><td valign='top' width='100%'>A Low Down Dirty Shame     1/2 <tt>(film)</tt></td></tr><tr><td valign='top' nowrap>RTL 7</td><td valign='top' nowrap>01:00-00:00</td><td valign='top' width='100%'>Teleshop</td></tr><tr><td valign='top' nowrap>NET 5</td><td valign='top' nowrap>00:10-01:10</td><td valign='top' width='100%'>Dirt <tt>(Dramaserie)</tt></td></tr><tr><td valign='top' nowrap>Veronica</td><td valign='top' nowrap>05:59-00:00</td><td valign='top' width='100%'>Jetix</td></tr><tr><td valign='top' nowrap><a href="http://streams.mtvnetworks.nl/cgi-bin/reflector.cgi?stream=nick_high"><b>Nickelodeon</b></a></td><td valign='top' nowrap>19:35-05:00</td><td valign='top' width='100%'>Drake & Josh</td></tr><tr><td valign='top' nowrap>Een (1)</td><td valign='top' nowrap>23:15-01:10</td><td valign='top' width='100%'>Boiler Room     1/2 <tt>(drama)</tt><br />Seth Davis, zoon van een rechter, stopt met studeren omdat hij de prestatiedruk die zijn vader hem oplegt niet langer aankan. Hij start een illegaal casino, maar moet dat winstgevende zaakje opdoeken. Om zijn vader te plezieren neemt hij een baantje als televerkoper in een makelaarskantoor JT Marlin. Seth blijkt een geboren verkoper. Maar wanneer hij verliefd wordt op bedrijfssecretaresse Abbie, komt hij in aanvaring met zijn nieuwe baas...</td></tr><tr><td valign='top' nowrap>Ketnet/Canvas</td><td valign='top' nowrap>19:25-07:00</td><td valign='top' width='100%'>Deadly 60<br />Steve Backshall reist langs zes continenten, op zoek naar de zestig dodelijkste dieren. In Borneo zijn dat de schorpioenvis, de krokodilvis, de reuzenhengelaarsvis, de leeuwvis, de bidsprinkhaankreeft, de hondstonijn en de barracuda.</td></tr><tr><td valign='top' nowrap>ARD 1</td><td valign='top' nowrap>23:30-05:15</td><td valign='top' width='100%'>60 Jahre ARD - Vier lange N‰chte<br />gepresenteerd door Dieter Moor.  Een weerzien van o.a. filmklassiekers, cultseries, de eerste Duitse sf-serie 'Raumpatrouille Orion', 'Unverbesserlichen' met Inge Meysel, 'Kir Royal', 'Lieblich Kruezberg', het 'Millionenspiel' uit 1970.</td></tr><tr><td valign='top' nowrap><a href="http://wwitv.com/t1/6428.asx"><b>ZDF 2</b></a></td><td valign='top' nowrap>23:30-00:35</td><td valign='top' width='100%'>Lanz kocht</td></tr><tr><td valign='top' nowrap>WDR 3</td><td valign='top' nowrap>23:15-01:00</td><td valign='top' width='100%'>Nineteen Eighty-Four <tt>(film)</tt></td></tr><tr><td valign='top' nowrap>Canvas</td><td valign='top' nowrap>23:30-00:20</td><td valign='top' width='100%'>Deadwood <tt>(Westernserie)</tt><br />Swearengen en Bullock vergaderen met een aantal andere veteranen van Deadwood over een manier om af te rekenen met Hearst. Ze nemen een voor Deadwood ongewone beslissing. Hearst raakt Deadwood stilaan kotsbeu en gooit het op een akkoordje met Odell, de zoon van Aunt Lou. Swearengen verneemt dat Doc Cochran ziek is...</td></tr></table>]]></description>
+<description><![CDATA[<table border='1' width='100%' cellpadding='2' cellspacing='0'><tr><td colspan='3'>Nu op tv</td></tr><tr><td valign='top' nowrap>Nederland 1</td><td valign='top' nowrap>11:20-12:20</td><td valign='top' width='100%'>AVRO Kunstuur</td></tr><tr><td valign='top' nowrap>Nederland 2</td><td valign='top' nowrap>11:25-11:55</td><td valign='top' width='100%'>Veda's in deze tijd</td></tr><tr><td valign='top' nowrap>Nederland 3</td><td valign='top' nowrap>11:25-12:10</td><td valign='top' width='100%'>H2O: Just Add Water</td></tr><tr><td valign='top' nowrap>RTL 4</td><td valign='top' nowrap>06:40-11:35</td><td valign='top' width='100%'>Ochtend-tv</td></tr><tr><td valign='top' nowrap>RTL 5</td><td valign='top' nowrap>06:00-15:30</td><td valign='top' width='100%'>Teleshop 5</td></tr><tr><td valign='top' nowrap>SBS 6</td><td valign='top' nowrap>10:00-14:15</td><td valign='top' width='100%'>Tommy Teleshopping</td></tr><tr><td valign='top' nowrap>RTL 7</td><td valign='top' nowrap>01:00-00:00</td><td valign='top' width='100%'>Teleshop</td></tr><tr><td valign='top' nowrap>NET 5</td><td valign='top' nowrap>06:55-13:00</td><td valign='top' width='100%'>Dag-tv</td></tr><tr><td valign='top' nowrap>Veronica</td><td valign='top' nowrap>05:59-00:00</td><td valign='top' width='100%'>Jetix</td></tr><tr><td valign='top' nowrap><a href="http://streams.mtvnetworks.nl/cgi-bin/reflector.cgi?stream=nick_high"><b>Nickelodeon</b></a></td><td valign='top' nowrap>10:50-16:05</td><td valign='top' width='100%'>Pinguins van Madagascar</td></tr><tr><td valign='top' nowrap>Een (1)</td><td valign='top' nowrap>09:00-12:00</td><td valign='top' width='100%'>Lentebeelden</td></tr><tr><td valign='top' nowrap>Ketnet/Canvas</td><td valign='top' nowrap>11:20-11:55</td><td valign='top' width='100%'>Go IV (<a href="http://rss.optv.nu/info.php?id=2758757&o=103">info</a>)<br />Avonturenspel met Sofie Van Moll.</td></tr><tr><td valign='top' nowrap>ARD 1</td><td valign='top' nowrap>11:10-12:00</td><td valign='top' width='100%'>Weiches Fell und scharfe Krallen<br />Dierentuinverhalen.</td></tr><tr><td valign='top' nowrap><a href="http://wwitv.com/t1/6428.asx"><b>ZDF 2</b></a></td><td valign='top' nowrap>11:05-13:00</td><td valign='top' width='100%'>Die K¸chenschlacht - Der Wochenr¸ckblick   =<br />Kookshow.</td></tr><tr><td valign='top' nowrap>WDR 3</td><td valign='top' nowrap>11:10-11:40</td><td valign='top' width='100%'>Die Sendung mit der Maus</td></tr><tr><td valign='top' nowrap>Canvas</td><td valign='top' nowrap>00:45-13:30</td><td valign='top' width='100%'>TerZake<br />Doorlopende herhalingen.</td></tr></table>]]></description>
 </item><item>
 <title><![CDATA[STRAKS op tv]]></title>
-<pubDate>Sat, 17 Apr 2010 00:17:26 +0200</pubDate>
+<pubDate>Sat, 17 Apr 2010 11:29:04 +0200</pubDate>
 <category>straks</category>
-<description><![CDATA[<table border='1' width='100%' cellpadding='2' cellspacing='0'><tr><td colspan='3'>Straks op tv</td></tr><tr><td valign='top' nowrap>Nederland 1</td><td valign='top' nowrap>01:05-02:10</td><td valign='top' width='100%'>Journaal</td></tr><tr><td valign='top' nowrap>Nederland 2</td><td valign='top' nowrap>01:35-02:00</td><td valign='top' width='100%'>NOVA</td></tr><tr><td valign='top' nowrap>Nederland 3</td><td valign='top' nowrap>00:40-01:00</td><td valign='top' width='100%'>Journaal</td></tr><tr><td valign='top' nowrap>RTL 4</td><td valign='top' nowrap>00:55-06:40</td><td valign='top' width='100%'>Teleshop 4</td></tr><tr><td valign='top' nowrap>RTL 5</td><td valign='top' nowrap>00:40-00:50</td><td valign='top' width='100%'>Take 5 Movie Update <tt>(Film)</tt><br />Aangevuld met ins & outs in de studio's, setbeelden en interviews vanuit Hollywood.</td></tr><tr><td valign='top' nowrap>SBS 6</td><td valign='top' nowrap>02:10-07:00</td><td valign='top' width='100%'>Nacht-tv</td></tr><tr><td valign='top' nowrap>RTL 7</td><td valign='top' nowrap>00:00-00:00</td><td valign='top' width='100%'></td></tr><tr><td valign='top' nowrap>NET 5</td><td valign='top' nowrap>01:10-06:55</td><td valign='top' width='100%'>Nacht-tv</td></tr><tr><td valign='top' nowrap>Veronica</td><td valign='top' nowrap>00:00-00:00</td><td valign='top' width='100%'></td></tr><tr><td valign='top' nowrap><a href="http://streams.mtvnetworks.nl/cgi-bin/reflector.cgi?stream=nick_high"><b>Nickelodeon</b></a></td><td valign='top' nowrap>05:00-05:20</td><td valign='top' width='100%'>Dora</td></tr><tr><td valign='top' nowrap>Een (1)</td><td valign='top' nowrap>01:10-01:35</td><td valign='top' width='100%'>Man bijt hond</td></tr><tr><td valign='top' nowrap>Ketnet/Canvas</td><td valign='top' nowrap>07:00-07:05</td><td valign='top' width='100%'>Uki</td></tr><tr><td valign='top' nowrap>ARD 1</td><td valign='top' nowrap>05:15-05:20</td><td valign='top' width='100%'>Nieuws</td></tr><tr><td valign='top' nowrap><a href="http://wwitv.com/t1/6428.asx"><b>ZDF 2</b></a></td><td valign='top' nowrap>00:35-00:50</td><td valign='top' width='100%'>Nieuws</td></tr><tr><td valign='top' nowrap>WDR 3</td><td valign='top' nowrap>01:00-02:00</td><td valign='top' width='100%'>Domian (<a href="http://rss.optv.nu/info.php?id=2758139&o=252">info</a>)</td></tr><tr><td valign='top' nowrap>Canvas</td><td valign='top' nowrap>00:20-00:45</td><td valign='top' width='100%'>Mag ik u kussen?<br />Verleidingsshow.</td></tr></table>]]></description>
+<description><![CDATA[<table border='1' width='100%' cellpadding='2' cellspacing='0'><tr><td colspan='3'>Straks op tv</td></tr><tr><td valign='top' nowrap>Nederland 1</td><td valign='top' nowrap>12:20-13:00</td><td valign='top' width='100%'>Sterren.nl top 20</td></tr><tr><td valign='top' nowrap>Nederland 2</td><td valign='top' nowrap>11:55-12:25</td><td valign='top' width='100%'>Het vermoeden</td></tr><tr><td valign='top' nowrap>Nederland 3</td><td valign='top' nowrap>12:10-13:00</td><td valign='top' width='100%'>Villa Achterwerk - The Popgroep</td></tr><tr><td valign='top' nowrap>RTL 4</td><td valign='top' nowrap>11:35-12:05</td><td valign='top' width='100%'>RTL Autowereld</td></tr><tr><td valign='top' nowrap>RTL 5</td><td valign='top' nowrap>15:30-16:00</td><td valign='top' width='100%'>RTL jobexperience</td></tr><tr><td valign='top' nowrap>SBS 6</td><td valign='top' nowrap>14:15-16:00</td><td valign='top' width='100%'>Diagnosis Murder <tt>(Misdaadserie)</tt></td></tr><tr><td valign='top' nowrap>RTL 7</td><td valign='top' nowrap>00:00-00:00</td><td valign='top' width='100%'></td></tr><tr><td valign='top' nowrap>NET 5</td><td valign='top' nowrap>13:00-14:00</td><td valign='top' width='100%'>Tommy teleshopping<br />Homeshoppingprogramma.</td></tr><tr><td valign='top' nowrap>Veronica</td><td valign='top' nowrap>00:00-00:00</td><td valign='top' width='100%'></td></tr><tr><td valign='top' nowrap><a href="http://streams.mtvnetworks.nl/cgi-bin/reflector.cgi?stream=nick_high"><b>Nickelodeon</b></a></td><td valign='top' nowrap>16:05-17:35</td><td valign='top' width='100%'>Madeline</td></tr><tr><td valign='top' nowrap>Een (1)</td><td valign='top' nowrap>12:00-12:30</td><td valign='top' width='100%'>Televox<br />Magazine van het Belgisch leger.</td></tr><tr><td valign='top' nowrap>Ketnet/Canvas</td><td valign='top' nowrap>11:55-12:20</td><td valign='top' width='100%'>Animalia <tt>(3D-animatieserie)</tt><br />Graeme Base.</td></tr><tr><td valign='top' nowrap>ARD 1</td><td valign='top' nowrap>12:00-12:03</td><td valign='top' width='100%'>Nieuws</td></tr><tr><td valign='top' nowrap><a href="http://wwitv.com/t1/6428.asx"><b>ZDF 2</b></a></td><td valign='top' nowrap>13:00-13:05</td><td valign='top' width='100%'>Nieuws</td></tr><tr><td valign='top' nowrap>WDR 3</td><td valign='top' nowrap>11:40-12:05</td><td valign='top' width='100%'>Die Sendung mit dem Elefanten - mit<br />Elternticker</td></tr><tr><td valign='top' nowrap>Canvas</td><td valign='top' nowrap>13:30-20:00</td><td valign='top' width='100%'>De Canvascollectie<br />La collection RTBF.be/De Canvascollectie in Bozar, in samenwerking met RTBF.  Na de opeenvolgende selectiefasen zullen de 300 geselecteerde werken uit de provincies vanaf 6 mei op de tentoonstelling in Bozar te zien zijn. Reporters Kirsten Lemaire en Elke Jacobs praten met deelnemende kunstenaars. Komen o.a. aan bod in deze aflevering: Sarah van Marcke, Ullysses ost, Sergei Andreev, Els Vermang van Collectief Lab(au) en Hou Chien Cheng. Luc Janssen brengt in een column verslag uit over de preselecties van Luik. Flor Bex, Sophie van Loo, Stef van Bellingen, Johan Pas en Francey Baronian vertegenwoordigen de nationale jury.</td></tr></table>]]></description>
 </item><item><title>www.optv.nu</title><description>Deze gegevens zijn u aangeboden door http://www.optv.nu</description>
-<pubDate>Sat, 17 Apr 2010 00:45:00 +0200</pubDate>
+<pubDate>Sat, 17 Apr 2010 20:00:00 +0200</pubDate>
 </item>
 </channel>
 </rss>
 }}}
+
+From this XML we want to get all titles, ie the text within elements with tag "title".
+
+Here's the XML instruction file to start with : 
+
+{{{
+<?xml version="1.0" encoding="UTF-8" ?>
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[http://rss.optv.nu/tvnustraks2.php]]>
+      </url>
+      <description>
+         <![CDATA[blablabla]]>
+      </description>
+      <instructionList>
+     	<XMLFilter recursive="true">
+      		<tagName>
+      			title
+      		</tagName>
+      	</XMLFilter>
+       </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+and the result would be :
+
+{{{
+<title><![CDATA[optv.nu wat is er nu op tv]]></title>
+<title><![CDATA[Nu en Straks Op Tv zaterdag 17/04/2010 11:30]]></title>
+<title><![CDATA[NU op tv]]></title>
+<title><![CDATA[STRAKS op tv]]></title>
+<title><![CDATA[www.optv.nu]]></title>
+}}}
+
+Now we only want to text in those elements, for which we need to use an XMLGetter instruction. But an XMLGetter requires valid XML as input. So we need to add an XML declaration, then we can apply the XMLGetter. The root element will be added by the XMLGetter.
+
+So here's the extended instruction file that will get us all the titles :
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[http://rss.optv.nu/tvnustraks2.php]]>
+      </url>
+      <description>
+         <![CDATA[blablabla]]>
+      </description>
+      <instructionList>
+         <XMLFilter recursive="true" charsetname="ISO-8859-1">
+            <tagName>
+               <![CDATA[title]]>
+            </tagName>
+         </XMLFilter>
+         <addXMLDeclaration>
+            <version>
+               <![CDATA[1.0]]>
+            </version>
+            <encoding>
+               <![CDATA[iso-8859-1]]>
+            </encoding>
+         </addXMLDeclaration>
+         <XMLGetter charsetname="ISO-8859-1">
+            <text>
+            </text>
+         </XMLGetter>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+and now the result is 
+
+optv.nu wat is er nu op tv
+Nu en Straks Op Tv zaterdag 17/04/2010 11:35
+NU op tv
+STRAKS op tv
+www.optv.nu
+
