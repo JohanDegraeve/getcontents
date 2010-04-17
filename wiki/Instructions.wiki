@@ -183,7 +183,7 @@ However, the XML declaration must be added by applying an addXMLdeclaration.
 
 *Example*
 
-We want to get the content from following XML source :
+We want to get content from following XML source :
 
 {{{
 <?xml version="1.0" encoding="iso-8859-1" ?>
@@ -296,4 +296,3 @@ Nu en Straks Op Tv zaterdag 17/04/2010 11:35
 NU op tv
 STRAKS op tv
 www.optv.nu
-
