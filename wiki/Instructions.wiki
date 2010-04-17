@@ -291,8 +291,8 @@ So here's the extended instruction file that will get us all the titles :
 
 and now the result is 
 
-optv.nu wat is er nu op tv
-Nu en Straks Op Tv zaterdag 17/04/2010 11:35
-NU op tv
-STRAKS op tv
-www.optv.nu
+optv.nu wat is er nu op tv<br>
+Nu en Straks Op Tv zaterdag 17/04/2010 11:35<br>
+NU op tv<br>
+STRAKS op tv<br>
+www.optv.nu<br>
