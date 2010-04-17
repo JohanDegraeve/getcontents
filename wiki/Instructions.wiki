@@ -296,3 +296,58 @@ Nu en Straks Op Tv zaterdag 17/04/2010 11:35<br>
 NU op tv<br>
 STRAKS op tv<br>
 www.optv.nu<br>
+
+===== version =====
+
+version
+
+*Attributes*
+ none
+
+*Occurrence*
+ 1
+
+*Allowed Children*
+ none
+
+===== encoding =====
+
+encoding
+
+*Attributes*
+ none
+
+*Occurrence*
+ 1
+
+*Allowed Children*
+ none
+
+*example*
+{{{
+         <addXMLDeclaration>
+            <version>
+               <![CDATA[1.0]]>
+            </version>
+            <encoding>
+               <![CDATA[iso-8859-1]]>
+            </encoding>
+         </addXMLDeclaration>
+}}}
+
+==== getUnFilteredContent ====
+
+If the input is a URL (not starting with '<'), it will fetch the content.
+If the input is not a URL, it returns the input.
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*example*
+See example in addXMLDeclaration Instructions#addXMLDeclaration
