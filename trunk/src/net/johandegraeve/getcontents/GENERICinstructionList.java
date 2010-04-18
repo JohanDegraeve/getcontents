@@ -44,7 +44,7 @@ public class GENERICinstructionList implements XMLElement {
     /**
      * Executes the list of instructions.<br>
      * 
-     * @param input a url or the source, anything starting with &lt; is considered to be a url
+     * @param input a url or the source, anything starting with &lt; is considered to be not a url
      * @return the result A string array of size 0 if input = null, the result of executing all instructions one by one
      * on the input, if input != null
      * @throws Exception

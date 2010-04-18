@@ -20,31 +20,33 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-import org.htmlparser.Node;
-import org.htmlparser.NodeFilter;
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.htmlparser.Parser;
-import org.htmlparser.beans.StringBean;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
-/*
- * A filterinstruction can have many filters.
- * recursive attribute will apply  to all filters
+/**
+ * html filter instruction<br>
+ * 
  *
  * @author Johan Degraeve
  *
  */
 public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
     
+    /**
+     * list of filters
+     */
     private ArrayList<HTMLFilter> filterList;
+    /**
+     * recursive attribute
+     */
     private boolean recursive;
     
     /**
@@ -82,6 +84,12 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	return returnvalue;
     }
     
+    /**
+     * private method
+     * @param nodeList
+     * @param filter
+     * @return a nodelist
+     */
     private NodeList applyOneFilterToNodeList(NodeList nodeList, HTMLFilter filter) {
 	NodeList newNodeList = new NodeList();
 	int size;
@@ -99,11 +107,18 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	return newNodeList;
     }
 
+    /**
+     * constructor, sets recursive attribute to false
+     */
     public INSTRUCTIONhtmlFilter() {
 	recursive = false;
 	filterList = new ArrayList<HTMLFilter>();
     }
 
+    /**
+     * adds the recursive attribute, default value = false
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	try {
@@ -132,6 +147,11 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * if child is an HTMLFilter, child is added to the list of filters.<br>
+     * if child is not an HTML fitler, an exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	if (child instanceof HTMLFilter)
@@ -148,10 +168,18 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception of the list of filters is empty
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (filterList.size() == 0) {
@@ -160,6 +188,10 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * @return the recursive attribute
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -171,6 +203,10 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	return attr;
     }
 
+    /**
+     * @return the HTML filters
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement>();
@@ -179,25 +215,38 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.INSTRUCTIONhtmlFilterTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 
