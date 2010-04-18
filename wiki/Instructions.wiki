@@ -348,6 +348,3 @@ If the input is not a URL, it returns the input.
 
 *Allowed Children*
  none
-
-*example*
-See example in addXMLDeclaration
