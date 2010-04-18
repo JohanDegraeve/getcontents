@@ -377,4 +377,29 @@ The input to the htmlFilter instruction doesn't need to be a full HTML page. So 
  * or
  * regexFilter
  * stringFilter
- * tagname
+
+===== and =====
+
+An and Filter has at least two other html filters as child.<br>
+Nodes that match every filer match the and filter.
+
+
+*Attributes*
+none
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ At least two other html filters :
+ * and
+ * cssSelectorNode
+ * hasAttribute
+ * hasChild
+ * hasParent
+ * hasSibling
+ * linkRegexFilter
+ * linkStringFilter
+ * not
+ * or
+ * regexFilter
+ * stringFilter
