@@ -348,3 +348,32 @@ If the input is not a URL, it returns the input.
 
 *Allowed Children*
  none
+
+==== htmlFilter ====
+
+An htmlFilter instruction can have an unlimited number of html filters. For filtering, the package <a href="http://htmlparser.sourceforge.net/">HTML Parser</a> is used.
+
+*Attributes*
+ * recursive
+   Values : true or false.<br>
+   If a first level node does not match a filter, and if recursive is true, then the filter will continue searching in the second level node and so on.
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ At least one child of the following list :
+ * and
+ * cssSelectorNode
+ * hasAttribute
+ * hasChild
+ * hasParent
+ * hasSibling
+ * linkRegexFilter
+ * linkStringFilter
+ * not
+ * or
+ * regexFilter
+ * stringFilter
+ * tagname
+
