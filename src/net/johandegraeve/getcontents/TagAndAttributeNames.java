@@ -72,6 +72,7 @@ package net.johandegraeve.getcontents;
     static final String INSTRUCTIONtoPlainTextStringTag = "toPlainTextString";
     static final String STRING_PROCESSORtrimTag = "trim";
     static final String STRING_PROCESSORunescapeHtmlTag = "unescapeHTML";
+    static final String INSTRUCTIONgetUnfilteredContent = "getUnfilteredContent";
     static final String INSTRUCTIONXMLFilterTag = "XMLFilter";
     static final String INSTRUCTIONXMLGetterTag = "XMLGetter";
     static final String INSTRUCTIONprocessStringTag = "processString";

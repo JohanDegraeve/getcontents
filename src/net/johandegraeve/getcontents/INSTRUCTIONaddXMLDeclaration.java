@@ -27,10 +27,22 @@ import org.xml.sax.SAXException;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * instruction to add an XML Declaration
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class INSTRUCTIONaddXMLDeclaration  extends Instruction implements XMLElement {
     private GENERICversion version;
     private GENERICencoding encoding;
     
+    /**
+     * adds an XML declaration with version and encoding
+     * @return null if source = null, a new String array with one additional String as first string containing the
+     * XML declaration
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     */
     @Override
     String[] execute(String[] source) {
 	String[]  returnvalue = new String[(source != null ? source.length:0) + 1];
@@ -40,18 +52,35 @@ public class INSTRUCTIONaddXMLDeclaration  extends Instruction implements XMLEle
 	return returnvalue;
     }
 
+    /**
+     * get the version
+     * @return the version
+     */
     String getVersion() {
 	return version.getVersion();
     }
     
+    /**
+     * get the encoding
+     * @return return the encoding
+     */
     String getEncoding() {
 	return encoding.getEncoding();
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * accepts version and encoding as child and assigns them<br>
+     * throws an exception if any other child received
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, 
@@ -82,10 +111,18 @@ public class INSTRUCTIONaddXMLDeclaration  extends Instruction implements XMLEle
 	}
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception of encoding or version = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (encoding == null ) throw new SAXException("Element of type " + TagAndAttributeNames.INSTRUCTIONaddXMLDeclarationTag +
@@ -94,11 +131,19 @@ public class INSTRUCTIONaddXMLDeclaration  extends Instruction implements XMLEle
 		" must have a child of type " + TagAndAttributeNames.GENERICversionTag);
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return an XMLELement list with version and encoding
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement> ();
@@ -107,22 +152,34 @@ public class INSTRUCTIONaddXMLDeclaration  extends Instruction implements XMLEle
 	return returnvalue;
     }
 
+    /**
+     * the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.INSTRUCTIONaddXMLDeclarationTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	// XXX Auto-generated method stub

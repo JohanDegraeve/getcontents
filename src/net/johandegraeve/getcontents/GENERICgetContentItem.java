@@ -37,13 +37,12 @@ import net.johandegraeve.easyxmldata.XMLElement;
  * if theUrl is not null (ie a child supplied in the XML), then if executeInstructionSet is called with a null input parameter, the url will be used (ie content will be
  * fetched first). If executeInstructionSet is called with a non-null input parameter, then the input parameter is used as input.
  *
- * @version 1.0
  * @author Johan Degraeve
  *
  */
 public class GENERICgetContentItem implements XMLElement {
     private GENERICdescription theDescription;
-    private GENERICinstructionList instructionSet;
+    private GENERICinstructionList instructionList;
     private String id;
     private GENERICurl theUrl;
     
@@ -81,7 +80,7 @@ public class GENERICgetContentItem implements XMLElement {
      */
     public GENERICgetContentItem() {
 	theDescription = null;
-	instructionSet = null;
+	instructionList = null;
 	theUrl = null;
     }
     
@@ -105,7 +104,7 @@ public class GENERICgetContentItem implements XMLElement {
      * If input is null and there's no url child then an exception will be thrown<br>
      * If input is null and there's a url, the url will first be downloaded and this is where the first instruction will start<br>
      * If input is not null, then the input will be used by the first instruction, which may still be a url
-     * (anything starting with &lt; is considered to be a url), or the actual source text (anything else). If input is
+     * (anything not starting with &lt; is considered to be a url), or the actual source text (if starting with &lt;). If input is
      * a url, it will first be downloaded.
      * 
      * @param input
@@ -122,7 +121,7 @@ public class GENERICgetContentItem implements XMLElement {
 	    }
 	
 	try {
-	    return instructionSet.execute(input);
+	    return instructionList.execute(input);
 	} catch (Exception e) {
 	        String newExceptionString = e.toString();
 	        for (int i = 0; i < FOUR_OH_FOUR.length; i++) {
@@ -153,7 +152,7 @@ public class GENERICgetContentItem implements XMLElement {
 	if (Utilities.getClassname(arg0.getClass()).equals(
 		TagAndAttributeNames.genericPrefix +
 		TagAndAttributeNames.GENERICinstructionListTag)) {
-	    instructionSet = (GENERICinstructionList) arg0;
+	    instructionList = (GENERICinstructionList) arg0;
 	} else if (Utilities.getClassname(arg0.getClass()).equals(
 		TagAndAttributeNames.genericPrefix +
 		TagAndAttributeNames.GENERICdescriptionTag)) {
@@ -189,7 +188,7 @@ public class GENERICgetContentItem implements XMLElement {
 	if (theDescription == null)
 	    throw new SAXException("Element " + TagAndAttributeNames.GENERICgetcontentitemTag +
 		    " must have a " + TagAndAttributeNames.GENERICdescriptionTag + " child element");
-	if (instructionSet == null)
+	if (instructionList == null)
 	    throw new SAXException("Element " + TagAndAttributeNames.GENERICgetcontentitemTag +
 		    " must have a " + TagAndAttributeNames.GENERICinstructionListTag + "  child element");
 	if (id == null || id.equals("")) {
@@ -218,7 +217,7 @@ public class GENERICgetContentItem implements XMLElement {
 	ArrayList<XMLElement>  returnvalue = new ArrayList<XMLElement> ();
 	if (theUrl != null) returnvalue.add(theUrl);
 	if (theDescription != null) returnvalue.add(theDescription);
-	if (instructionSet != null) returnvalue.add(instructionSet);
+	if (instructionList != null) returnvalue.add(instructionList);
 	return returnvalue;
     }
 
