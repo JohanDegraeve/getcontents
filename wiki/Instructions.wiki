@@ -403,3 +403,27 @@ none
  * or
  * regexFilter
  * stringFilter
+
+*Example*<br>
+In this example we filter on nodes that have a tagname "DIV" and an attribute border="0"
+{{{
+<getContentItemList>
+...
+         <htmlFilter recursive="true">
+            <and>
+               <tagName>
+                  DIV
+               </tagName>
+               <hasAttribute>
+                   <attributename>
+                        <![CDATA[border]]>
+                   </attributename>
+                   <attributevalue>
+                        <![CDATA[0]]>
+                   </attributevalue>
+               </hasAttribute>
+             </and> 
+         </htmlFilter>
+...
+</getContentItemList>
+}}}
