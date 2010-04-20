@@ -422,8 +422,27 @@ In this example we filter on nodes that have a tagname "DIV" and an attribute bo
                         <![CDATA[0]]>
                    </attributevalue>
                </hasAttribute>
-             </and> 
+            </and> 
          </htmlFilter>
 ...
 </getContentItemList>
 }}}
+
+===== cssSelectorNode =====
+
+a cssSelectorNode filter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+
+*Attributes*
+none
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the Selector
+
+*Example*<br>
