@@ -446,3 +446,24 @@ none
  the Selector
 
 *Example*<br>
+
+
+===== hasAttribute =====
+
+a cssSelectorNode filter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+
+*Attributes*
+
+*Occurrence*
+ none
+
+*Allowed Children*
+ * attributename
+ * attributevalue
+
+*text field*
+ none
+
+*Example*<br>
