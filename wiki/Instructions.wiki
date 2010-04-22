@@ -467,3 +467,169 @@ a cssSelectorNode filter as defined in the HTML parser package :
  none
 
 *Example*<br>
+In this example we filter on nodes that have an attribute border="0"
+{{{
+<getContentItemList>
+...
+         <htmlFilter recursive="true">
+...
+               <hasAttribute>
+                   <attributename>
+                        <![CDATA[border]]>
+                   </attributename>
+                   <attributevalue>
+                        <![CDATA[0]]>
+                   </attributevalue>
+               </hasAttribute>
+....
+         </htmlFilter>
+...
+</getContentItemList>
+}}}
+
+
+===== hasChild =====
+
+a hasChild filter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+Filters on nodes that have a child that matches another included filter
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * mandatory child
+   any other HTML filter
+
+*text field*
+ none
+
+*Example*<br>
+In this example we filter on nodes that have a child node that has an attribute border="0"
+{{{
+<getContentItemList>
+...
+         <htmlFilter recursive="true">
+...
+           <hasChild>
+               <hasAttribute>
+                   <attributename>
+                        <![CDATA[border]]>
+                   </attributename>
+                   <attributevalue>
+                        <![CDATA[0]]>
+                   </attributevalue>
+               </hasAttribute>
+           </hasChild>
+....
+         </htmlFilter>
+...
+</getContentItemList>
+}}}
+
+
+===== hasParent =====
+
+a hasParent filter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+Filters on nodes that have a parent node that matches another included filter
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * mandatory child
+   any other HTML filter
+
+*text field*
+ none
+
+*Example*<br>
+In this example we filter on nodes that have a parent node that has an attribute border="0"
+{{{
+<getContentItemList>
+...
+         <htmlFilter recursive="true">
+...
+           <hasParent>
+               <hasAttribute>
+                   <attributename>
+                        <![CDATA[border]]>
+                   </attributename>
+                   <attributevalue>
+                        <![CDATA[0]]>
+                   </attributevalue>
+               </hasAttribute>
+           </hasParent>
+....
+         </htmlFilter>
+...
+</getContentItemList>
+}}}
+
+
+===== hasSibling =====
+
+a hasSibling filter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * mandatory child
+   any other HTML filter
+
+*text field*
+ none
+
+
+===== linkRegexFilter =====
+
+a linkRegexFilter filter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * mandatory child
+   pattern
+
+*text field*
+ none
+
+
+===== linkStringFilter =====
+
+a linkStringFilter filter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+
+*Attributes*
+ case_sensitive, value "true" or "false"
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the pattern is defined by the textfield. The text field is stored untrimmed, that means for example inclusive carriage returns, ...
