@@ -128,35 +128,33 @@ package net.johandegraeve.getcontents;
      * list of html filters 
      */
     static final String[] htmlfilterTags = new String[] {
-	TagAndAttributeNames.GETorFILTERandTag,
-	TagAndAttributeNames.GETorFILTERcssSelectorNodeTag,
-	TagAndAttributeNames.GETorFILTERhasAttributeTag,
-	TagAndAttributeNames.GETorFILTERhasChildTag,
-	TagAndAttributeNames.GETorFILTERhasParentTag,
-	TagAndAttributeNames.GETorFilterhasSiblingTag,
-  	TagAndAttributeNames.GETorFILTERlinkRegexFilterTag,
-	TagAndAttributeNames.GETorFILTERlinkStringFilterTag,
-	TagAndAttributeNames.GETorFILTERnotTag,
-	TagAndAttributeNames.GETorFILTERorTag,
-	TagAndAttributeNames.GETorFILTERregexFilterTag,
-	TagAndAttributeNames.GETorFILTERstringFilterTag,
-	TagAndAttributeNames.GETorFILTERtagNameTag,
-	STRING_PROCESSORidSelectorTag
+	GETorFILTERandTag,
+	GETorFILTERcssSelectorNodeTag,
+	GETorFILTERhasAttributeTag,
+	GETorFILTERhasChildTag,
+	GETorFILTERhasParentTag,
+	GETorFilterhasSiblingTag,
+  	GETorFILTERlinkRegexFilterTag,
+	GETorFILTERlinkStringFilterTag,
+	GETorFILTERnotTag,
+	GETorFILTERorTag,
+	GETorFILTERregexFilterTag,
+	GETorFILTERstringFilterTag,
+	GETorFILTERtagNameTag
     };
     static String[] htmlgetterTags = new String[] {
-	TagAndAttributeNames.GETorFILTERchildrenTag,
-	TagAndAttributeNames.GETorFILTERtextTag,
+	GETorFILTERchildrenTag,
+	GETorFILTERtextTag,
 	STRING_PROCESSORidSelectorTag
     };
 
     static final String[] XMLfilterTags = new String[] {
-	TagAndAttributeNames.GETorFILTERtagNameTag,
-	STRING_PROCESSORidSelectorTag
+	GETorFILTERtagNameTag
     };
 
     static final String[] XMLgetterTags = new String[] {
-	TagAndAttributeNames.GETorFILTERchildrenTag,
-	TagAndAttributeNames.GETorFILTERtextTag,
+	GETorFILTERchildrenTag,
+	GETorFILTERtextTag,
 	GETorFILTERcontainsAnyTag,
 	GETorFILTERequalsAny,
 	GETorFILTERendsWithAnyTag,

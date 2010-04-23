@@ -20,24 +20,39 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.OrFilter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
+/**
+ * NotFilter from HTML Parser package.<br>
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GETorFILTERor implements XMLElement, HTMLFilter {
     
+    /**
+     * the list of HTML filters to or
+     */
     private ArrayList<HTMLFilter> filters;
 
+    /**
+     * constructor
+     */
     public GETorFILTERor() {
 	filters = new  ArrayList<HTMLFilter>();
     }
     
+    /**
+     * @return the OrFilter
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
 	NodeFilter[] predicates = new NodeFilter[filters.size()];
@@ -46,30 +61,54 @@ public class GETorFILTERor implements XMLElement, HTMLFilter {
 	return new OrFilter(predicates);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * if child is an HTML filter, then child is added to filters, otherwise an exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, TagAndAttributeNames.GETorFILTERPrefix, TagAndAttributeNames.htmlfilterTags, TagAndAttributeNames.GETorFILTERorTag);
 	filters.add((HTMLFilter)child);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if there are less than 2 elements in filters list
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (filters.size() < 2) throw new SAXException("An " + TagAndAttributeNames.GETorFILTERorTag + " should have at least two child filters");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return the filters list in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement>();
@@ -78,25 +117,38 @@ public class GETorFILTERor implements XMLElement, HTMLFilter {
 	return 	returnvalue;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERorTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }

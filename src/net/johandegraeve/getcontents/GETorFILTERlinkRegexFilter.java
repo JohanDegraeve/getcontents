@@ -19,88 +19,131 @@
  */
 package net.johandegraeve.getcontents;
 
-import org.htmlparser.NodeFilter;
-import org.htmlparser.filters.LinkRegexFilter;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
-/*
- * a pattern needs to be added which can be case sensitive or not
- * @version 1.0
+import org.htmlparser.NodeFilter;
+import org.htmlparser.filters.LinkRegexFilter;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
+/**
+ * LinkRegexFilter from HTML Parser package.<br>
+ *
  * @author Johan Degraeve
  *
  */
 public class GETorFILTERlinkRegexFilter implements HTMLFilter, XMLElement {
 
+    /**
+     * the regular expression to use on the link, as defined in HTML Parser package
+     */
     private GENERICpattern mRegex;
     
+    /**
+     * constructor
+     */
     public GETorFILTERlinkRegexFilter () {
 	mRegex = null;
     }
     
+    /**
+     * @return the LinkRegexFilter
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
 	return new LinkRegexFilter(mRegex.getPattern(),mRegex.caseSensitive());
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * if child is a pattern, pattern is assigned to mRegex, otherwise an exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, TagAndAttributeNames.genericPrefix, new String[] {TagAndAttributeNames.GENERICpatternTag}, TagAndAttributeNames.GETorFILTERlinkRegexFilterTag);
 	mRegex = (GENERICpattern)child;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an Exception is mRegex = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (mRegex == null)
 	    throw new SAXException("Element " + TagAndAttributeNames.GETorFILTERlinkRegexFilterTag + " must have a text representing the regular expression.");
     }
     
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return mRegex in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return Utilities.createXMLElementList((XMLElement)mRegex);
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERlinkRegexFilterTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }
