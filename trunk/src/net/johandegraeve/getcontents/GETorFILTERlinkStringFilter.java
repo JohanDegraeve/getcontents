@@ -20,11 +20,9 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
-import javax.naming.directory.AttributeInUseException;
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.LinkStringFilter;
@@ -32,24 +30,37 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
-/*
- * mpattern untrimmed
+/**
+ * LinkRegexFilter from HTML Parser package.<br>
+ *
  * @author Johan Degraeve
  *
  */
 public class GETorFILTERlinkStringFilter implements HTMLFilter, XMLElement {
     
+    /**
+     * defines case sensitivity, as used by the LinkRegexFilter in the HTML Parser package
+     */
     private boolean mCaseSensitive;
+    /**
+    * defines the pattern, as used by the LinkRegexFilter in the HTML Parser package
+     */
     private String mPattern;
 
+    /**
+     * @return the LinkStringFilter
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
 	return new LinkStringFilter(mPattern,mCaseSensitive);
     }
 
+    /**
+     * if case_sensitive is present as attribute, then value is assigned to mCaseSensitive, 
+     * otherwise false is assigned to mCaseSensitive
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	mCaseSensitive = Boolean.parseBoolean(Utilities.getOptionalAttributeValues(
@@ -62,21 +73,37 @@ public class GETorFILTERlinkStringFilter implements HTMLFilter, XMLElement {
 		})[0]); 
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, "", new String[] {""}, TagAndAttributeNames.GETorFILTERlinkStringFilterTag);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an Exception if mPattern = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (mPattern == null)
 	    throw new SAXException("Element " + TagAndAttributeNames.GETorFILTERlinkStringFilterTag + " must have a text to search.");
     }
 
+    /**
+     * @return mCaseSensitve in an AttributesImpl
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -84,26 +111,46 @@ public class GETorFILTERlinkStringFilter implements HTMLFilter, XMLElement {
 	return attr;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERlinkStringFilterTag;
     }
 
+    /**
+     * @return mPattern
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return mPattern;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
 	mPattern = text;
     }
 
+    /**
+     * @return true
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return true;

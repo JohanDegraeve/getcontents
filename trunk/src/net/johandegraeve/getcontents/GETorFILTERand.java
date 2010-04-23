@@ -29,14 +29,30 @@ import org.htmlparser.filters.AndFilter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * ands at least two other html filters
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GETorFILTERand implements XMLElement, HTMLFilter {
     
+    /**
+     * the list of filters
+     */
     private ArrayList<HTMLFilter> filters;
 
+    /**
+     * constructor
+     */
     public GETorFILTERand() {
 	filters = new  ArrayList<HTMLFilter>();
     }
     
+    /**
+     * returns an and filter with the list of filters
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
 	NodeFilter[] predicates = new NodeFilter[filters.size()];
@@ -45,30 +61,55 @@ public class GETorFILTERand implements XMLElement, HTMLFilter {
 	return new AndFilter(predicates);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * if child is an HTML filter, adds the child to the list<br>
+     * throws an exception if child is not an HTML filter
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, TagAndAttributeNames.GETorFILTERPrefix, TagAndAttributeNames.htmlfilterTags, TagAndAttributeNames.GETorFILTERandTag);
 	filters.add((HTMLFilter)child);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if there are less than two HTML filters in the list
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (filters.size() < 2) throw new SAXException("An " + TagAndAttributeNames.GETorFILTERandTag + " should have at least two child filters");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return the list of filters in the list
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement>();
@@ -77,25 +118,38 @@ public class GETorFILTERand implements XMLElement, HTMLFilter {
 	return 	returnvalue;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERandTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 

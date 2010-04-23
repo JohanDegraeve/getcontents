@@ -20,35 +20,56 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
-import java.util.Collection;
-
-import org.htmlparser.NodeFilter;
-import org.htmlparser.filters.HasSiblingFilter;
-import org.htmlparser.filters.NotFilter;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
+import org.htmlparser.NodeFilter;
+import org.htmlparser.filters.NotFilter;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
+/**
+ * NotFilter from HTML Parser package.<br>
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GETorFILTERnot implements HTMLFilter, XMLElement {
 
+    /**
+     * an HTML filter, as defined in HTML Parser package
+     */
     private HTMLFilter mPredicate;
     
+    /**
+     * constructor
+     */
     public GETorFILTERnot() {
 	mPredicate = null;
     }
     
+    /**
+     * @return a NotFilter
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
 	return new NotFilter(mPredicate.getHTMLFilter());
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * if child is an HTML filter, assigned child to mPredicate, otherwise an exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	if (mPredicate != null)
@@ -63,45 +84,74 @@ public class GETorFILTERnot implements HTMLFilter, XMLElement {
 	mPredicate = (HTMLFilter) child;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exceptino if mPredicate = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (mPredicate == null) 
 	    throw new SAXException("Element " + TagAndAttributeNames.GETorFILTERnotTag + " must have a filter as child");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return mPredicate in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return Utilities.createXMLElementList((XMLElement) mPredicate);
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERnotTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }

@@ -30,30 +30,40 @@ import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 /**
- * Class for creating hasattributefilter as defined in {@link org.htmlparser.filters.HasAttributeFilter}.<br>
- * {@link org.htmlparser.filters.HasAttributeFilter#mAttribute}  is case-<b>in<b>sensitive, and 
- * {@link org.htmlparser.filters.HasAttributeFilter#mValue} is case-sensitive.<br>
- * {@link org.htmlparser.filters.HasAttributeFilter#mAttribute} is a mandatory child of type 
- * {@link TagAndAttributeNames#GENERICattributenameTag},
- * {@link org.htmlparser.filters.HasAttributeFilter#mValue} is an optional child of type 
- * {@link TagAndAttributeNames#GENERICattributevalueTag}.
+ * Class for creating hasattributefilter as defined in org.htmlparser.filters.HasAttributeFilter.<br>
+ * org.htmlparser.filters.HasAttributeFilter#mAttribute  is case <b>in<b>sensitive, and 
+ * org.htmlparser.filters.HasAttributeFilter#mValue is case-sensitive.<br>
+ * org.htmlparser.filters.HasAttributeFilter#mAttribute is a mandatory child of type 
+ * TagAndAttributeNames#GENERICattributenameTag,<br>
+ * org.htmlparser.filters.HasAttributeFilter#mValue is an optional child of type 
+ * TagAndAttributeNames#GENERICattributevalueTag.
  *
- * @version 1.0
  * @author Johan Degraeve
  *
  */
 public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
 
+    /**
+     * the attribute name
+     */
     private GENERICattributename attrName;
+    /**
+     * the attribute value
+     */
     private GENERICattributevalue attrValue;
     
-    private String test;
-    
+    /**
+     * constructor
+     */
     public GETorFILTERhasAttribute() {
 	attrName = null;
 	attrValue = null;
     }
 
+    /**
+     * @return the HasAttributeFilter
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
 	return new HasAttributeFilter(
@@ -61,10 +71,18 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
 		(attrValue != null ? attrValue.getAttributeValue() : null));
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes arg0) throws SAXException {
     }
 
+    /**
+     * if child is attributename or attributevalue, then it will be added, otherwise exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement arg0) throws SAXException {
 	Utilities.verifyChildType(arg0, 
@@ -95,11 +113,18 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
 	}
     } 
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String arg0) throws SAXException {
-	test = arg0;
     }
 
+    /**
+     * throws an exception if attrName = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (attrName == null)
@@ -107,11 +132,19 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
 		    " must have a " + TagAndAttributeNames.GENERICattributenameTag + "  child element");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return arraylist with attrName and attrValue
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement> ();
@@ -120,25 +153,37 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
 	return returnvalue;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERhasAttributeTag;
     }
 
+    /** return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
-	return test;
+	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 

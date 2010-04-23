@@ -20,18 +20,15 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.RegexFilter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
-
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
 
 /**
  * a case_sensitive pattern here will not play any difference, it will be case sensitive, that seems
