@@ -672,7 +672,7 @@ Filters nodes that do not have text matching the regular expression
 }}}
 
 
-===== orFilter =====
+===== or =====
 
 an OrFilter  as defined in the HTML parser package :  
 <a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
