@@ -21,14 +21,12 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.TagNameFilter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import net.johandegraeve.easyxmldata.DefaultXMLElement;
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
 
 public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter  {
 

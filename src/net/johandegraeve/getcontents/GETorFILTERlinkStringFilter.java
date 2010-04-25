@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**
- * LinkRegexFilter from HTML Parser package.<br>
+ * LinkStringFilter from HTML Parser package.<br>
  *
  * @author Johan Degraeve
  *

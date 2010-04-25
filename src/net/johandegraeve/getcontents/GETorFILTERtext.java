@@ -21,15 +21,13 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.htmlparser.Node;
 import org.htmlparser.nodes.TextNode;
 import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-
-import net.johandegraeve.easyxmldata.DefaultXMLElement;
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
 
 public class GETorFILTERtext implements XMLElement, HTMLGetter, XMLGetter {
 
@@ -58,12 +56,11 @@ public class GETorFILTERtext implements XMLElement, HTMLGetter, XMLGetter {
     @Override
     public GenericXMLGetterResultList getList(GenericXMLGetterResultList list) {
 	GenericXMLGetterResultList returnvalue = null;
+       returnvalue = new StringXMLGetterResultList();
 	if (list instanceof XMLXMLGetterResultList) {
-	    returnvalue = new XMLXMLGetterResultList();
 	    for (int i = 0;i < list.size();i ++)
-		returnvalue.add((XMLXMLGetterResult)list.elementAt(i));
+		returnvalue.add(new StringXMLGetterResult(((XMLXMLGetterResult)list.elementAt(i)).getText()));
 	} else if (list instanceof StringXMLGetterResultList)  {
-	    returnvalue = new StringXMLGetterResultList();
 	    for (int i = 0;i < list.size();i ++)
 		returnvalue.add(list.elementAt(i));
 	}

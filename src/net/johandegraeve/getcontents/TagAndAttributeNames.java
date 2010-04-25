@@ -165,7 +165,7 @@ package net.johandegraeve.getcontents;
      * the attribute names
      */
      static final String idAttribute = "id";
-      static final String variantAttribute = "variant";
+     static final String variantAttribute = "variant";
      static final String case_sensitiveAttribute = "case_sensitive";
      static final String charsetnameAttribute = "charsetname";
      static  final String countryAttribute = "country";
