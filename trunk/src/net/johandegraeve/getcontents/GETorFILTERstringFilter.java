@@ -20,54 +20,58 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Locale;
-
-import org.htmlparser.NodeFilter;
-import org.htmlparser.filters.RegexFilter;
-import org.htmlparser.filters.StringFilter;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
-/*
- * StringFilter created with Locale.English
+import org.htmlparser.NodeFilter;
+import org.htmlparser.filters.StringFilter;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
+/**
+ * StringFilter as defined in HTML parser package.<br>
+ * created with Locale.English
  *
  * @author Johan Degraeve
  *
  */
 public class GETorFILTERstringFilter implements XMLElement, HTMLFilter {
     
-    private boolean caseSensitive;
+    /**
+     * the pattern
+     */
     private GENERICpattern mPattern;
     
+    /**
+     * constructor setting mPattern to null
+     */
     public GETorFILTERstringFilter() {
 	mPattern = null;
-	caseSensitive = false;
     }
 
+    /**
+     * @return a StringFilter with mPattern and Locale = Locale.English
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
-	return new StringFilter(mPattern.getPattern(),caseSensitive,Locale.ENGLISH);
+	return new StringFilter(mPattern.getPattern(),mPattern.caseSensitive(),Locale.ENGLISH);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
-	String[] attrValues = Utilities.getOptionalAttributeValues(
-		attributes, 
-		new String[] {
-			TagAndAttributeNames.case_sensitiveAttribute,
-		}, 
-		new String[]  {
-			"false",
-		});
-	if (attrValues[0].equalsIgnoreCase("true")) 
-	    caseSensitive = true;
     }
 
+    /**
+     * if child is a pattern, then child is assigned to mPattern, otherwise an exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, TagAndAttributeNames.genericPrefix, 
@@ -76,51 +80,74 @@ public class GETorFILTERstringFilter implements XMLElement, HTMLFilter {
 	mPattern = (GENERICpattern) child;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * an exception is thrown if mPattern = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (mPattern == null)
 	    throw new SAXException("Element " + TagAndAttributeNames.GETorFILTERstringFilterTag + " must have a pattern as child.");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
-	AttributesImpl attr = new AttributesImpl();
-	attr.addAttribute(null, 
-		TagAndAttributeNames.case_sensitiveAttribute, 
-		TagAndAttributeNames.case_sensitiveAttribute, 
-		"CDATA", 
-		(caseSensitive ? "true":"false"));
-	return attr;
+	return null;
     }
 
+    /**
+     * @return mPattern in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return Utilities.createXMLElementList((XMLElement)mPattern);
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERstringFilterTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 

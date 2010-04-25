@@ -31,8 +31,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**
- * a case_sensitive pattern here will not play any difference, it will be case sensitive, that seems
- * a restriction in org.htmlparser.filters.regexfilter
+ * RegexFiler as defined in the HTML parser package.<br>
+ * Always case sensitive.
  *<br><br>
  *Example, regexfilter created with pattern=&quot;([01][0-9]|2[0-3]):[0-5][0-9]&quot; This filters on text being a time
  *in the format HH:mm<br>
@@ -50,19 +50,39 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class GETorFILTERregexFilter implements XMLElement, HTMLFilter {
     
+    /**
+     * mStrategy as defined in RegexFilter in HTML Parser package<br>
+     * mStrategy is the sum of attributes MATCH, LOOKINGAT and FIND
+     */
     private int mStrategy;
-    private GENERICpattern mPattern;
+    /**
+     * the Pattern
+     */
+    private String mPattern;
     
+    /**
+     * constructor, default value for mStrategy = FIND
+     */
     public GETorFILTERregexFilter() {
 	mStrategy = RegexFilter.FIND;
 	mPattern = null;
     }
 
+    /**
+     * @return the RegexFilter
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
-	return new RegexFilter(mPattern.getPattern(),mStrategy);
+	return new RegexFilter(mPattern,mStrategy);
     }
 
+    /**
+     * assigns attribute "strategy" to mStrategy. Default value = find.<br>
+     * Possible values = find, lookingat, match.<br>
+     * Values are case insensitive.<br>
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	String[] attrValues = Utilities.getOptionalAttributeValues(
@@ -83,31 +103,39 @@ public class GETorFILTERregexFilter implements XMLElement, HTMLFilter {
 		"Should be \"find\", \"lookingat\" or \"match\".\n");
     }
 
+    /**
+     * throws an Exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	Utilities.verifyChildType(child, TagAndAttributeNames.genericPrefix, 
-		new String[] {TagAndAttributeNames.GENERICpatternTag}, 
+	Utilities.verifyChildType(child, "", 
+		new String[] {}, 
 		TagAndAttributeNames.GETorFILTERregexFilterTag);
-	mPattern = (GENERICpattern) child;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exceptino if mPattern = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (mPattern == null)
-	    throw new SAXException("Element " + TagAndAttributeNames.GETorFILTERregexFilterTag + " must have a pattern as child.");
+	    throw new SAXException("Element " + TagAndAttributeNames.GETorFILTERregexFilterTag + " must have a text that represents the pattern.");
     }
 
-    private String createAttributes() {
-	if (mStrategy == RegexFilter.FIND) return "strategy=\"find\"";
-	if (mStrategy == RegexFilter.LOOKINGAT) return "strategy=\"lookingat\"";
-	if (mStrategy == RegexFilter.MATCH) return "strategy=\"match\"";
-	return "if you read this then something went wrong in TAGregexfilter.java, method createAttributes";
-    }
-
+    /**
+     * @return the strategy attribute 
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -123,30 +151,48 @@ public class GETorFILTERregexFilter implements XMLElement, HTMLFilter {
 	return attr;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
-	return Utilities.createXMLElementList((XMLElement)mPattern);
+	return null;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERregexFilterTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
-	return null;
+	return mPattern;
     }
 
+    /**
+     * assigns text to mPattern
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
+	mPattern = text;
     }
 
+    /**
+     * @return true;
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
-	return false;
+	return true;
     }
 }
