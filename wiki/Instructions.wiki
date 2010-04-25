@@ -377,6 +377,7 @@ The input to the htmlFilter instruction doesn't need to be a full HTML page. So 
  * or
  * regexFilter
  * stringFilter
+ * tagName
 
 ===== and =====
 
@@ -779,6 +780,4 @@ a StringFilter as defined in the HTML parser package :
 
 *text field*
  none
-
-
 
