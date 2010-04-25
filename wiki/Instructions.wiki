@@ -622,7 +622,7 @@ The pattern needs to compile with
 Pattern.compile(pattern,  case_sensitive == true ? 0: Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE));
 
 *Attributes*
- case_sensitive true or false
+ case_sensitive true or false, default value = true
 
 *Occurrence*
  1
@@ -633,17 +633,6 @@ Pattern.compile(pattern,  case_sensitive == true ? 0: Pattern.CASE_INSENSITIVE +
 *text field*
  the pattern string
 
-*Example*<br>
-In this example we filter on nodes that have text with a time in the format HH:mm
-{{{
-<getContentItemList>
-...
-        <htmlFilter recursive="true">
-            <regexFilter>([01][0-9]|2[0-3]):[0-5][0-9]</regexFilter>
-         </htmlFilter>
-...
-</getContentItemList>
-}}} 
 
 ===== linkStringFilter =====
 
@@ -740,3 +729,56 @@ In this example we filter on nodes that have a tagname "DIV" or an attribute bor
 ...
 </getContentItemList>
 }}}
+
+===== regexFilter =====
+
+a RegexFilter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+
+*Attributes*
+ strategy : possible values are "find", "lookingat" or "match"
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the pattern, untrimmed
+
+*Example*<br>
+In this example we filter on nodes that have text with a time in the format HH:mm
+{{{
+<getContentItemList>
+...
+        <htmlFilter recursive="true">
+            <regexFilter>([01][0-9]|2[0-3]):[0-5][0-9]</regexFilter>
+         </htmlFilter>
+...
+</getContentItemList>
+}}} 
+
+
+===== stringFilter =====
+
+a StringFilter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * Mandatory children
+   pattern
+
+*text field*
+ none
+
+
+
