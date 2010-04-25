@@ -615,6 +615,33 @@ a LinkRegexFilter  as defined in the HTML parser package :
 *text field*
  none
 
+====== pattern ======
+
+a pattern being a string and a case_sensitive attribute.
+The pattern needs to compile with 
+Pattern.compile(pattern,  case_sensitive == true ? 0: Pattern.CASE_INSENSITIVE + Pattern.UNICODE_CASE));
+
+*Attributes*
+ case_sensitive true or false
+
+*Occurrence*
+ 1
+
+*Allowed Children*
+ none
+
+*text field*
+ the pattern string
+
+*Example*<br>
+In this example we filter on nodes that have text with a time in the format HH:mm
+{{{
+...
+        <htmlFilter recursive="true">
+            <regexFilter>([01][0-9]|2[0-3]):[0-5][0-9]</regexFilter>
+         </htmlFilter>
+....
+}}} 
 
 ===== linkStringFilter =====
 
@@ -661,9 +688,7 @@ Filters nodes that do not have text matching the regular expression
          <htmlFilter recursive="true">
 ...
             <not>
-		<regexFilter>
-		    <pattern>([01][0-9]|2[0-3]):[0-5][0-9]</pattern>
-		</regexFilter>
+		<regexFilter>([01][0-9]|2[0-3]):[0-5][0-9]</regexFilter>
              </not>
 ....
          </htmlFilter>
@@ -713,4 +738,3 @@ In this example we filter on nodes that have a tagname "DIV" or an attribute bor
 ...
 </getContentItemList>
 }}}
-
