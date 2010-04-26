@@ -353,7 +353,7 @@ If the input is not a URL, it returns the input.
 
 An htmlFilter instruction can have an unlimited number of html filters. For filtering, the package <a href="http://htmlparser.sourceforge.net/">HTML Parser</a> is used.
 
-The input to the htmlFilter instruction doesn't need to be a full HTML page. So you could have the output of one htmlFilter instruction, use that as input for example to a processString instruction, and use the output of that instruction again as input for a new htmlFilter instruction.
+The input to the htmlFilter instruction doesn't need to be a full HTML page that includes a body, head tag and so on. So you could have the output of one htmlFilter instruction, use that as input for example to a processString instruction, and use the output of that instruction again as input for a new htmlFilter instruction.
 
 *Attributes*
  * recursive
@@ -781,3 +781,57 @@ a StringFilter as defined in the HTML parser package :
 *text field*
  none
 
+
+===== tagName =====
+
+a TagNameFilter as defined in the HTML parser package :  
+<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the tag name
+
+*Example*<br>
+In this example we filter on nodes that have a tagname "DIV"
+{{{
+<getContentItemList>
+...
+         <htmlFilter recursive="true">
+               <tagName>
+                  DIV
+               </tagName>
+         </htmlFilter>
+...
+</getContentItemList>
+}}}
+
+
+==== htmlGetter ====
+
+a bit like a filter but applies to one specific node identified by an index ranging from 0...
+
+
+*Attributes*
+ recursive with value true or false. If recursive and if one specific node returns no NodeList then dig deeper into that node
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ One ore more of following HTMLGetter :
+ * children
+ * text
+
+*text field*
+ none
+
+===== children =====
