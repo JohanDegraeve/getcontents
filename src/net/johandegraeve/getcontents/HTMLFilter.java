@@ -21,8 +21,17 @@ package net.johandegraeve.getcontents;
 
 import org.htmlparser.NodeFilter;
 
+/**
+ * Interface that has one method which is to return a NodeFilter as defined in the HTML Parser pacakge
+ *
+ * @author Johan Degraeve
+ *
+ */
 interface HTMLFilter {
     
+    /**
+     * @return a NodeFilter
+     */
     NodeFilter getHTMLFilter();
     
 }

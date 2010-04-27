@@ -128,26 +128,26 @@ public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringPro
 	
     }
 
-	    @Override
-	    public String[] processString(String[] source) {
-		String[] actualReturnValue = new String[0];
-		String[] terms = new String [stringChildList.size()];
-		for (int i = 0; i < stringChildList.size();i++)
-		    terms[i] = stringChildList.get(i).getText();
+    @Override
+    public String[] processString(String[] source) {
+	String[] actualReturnValue = new String[0];
+	String[] terms = new String [stringChildList.size()];
+	for (int i = 0; i < stringChildList.size();i++)
+	    terms[i] = stringChildList.get(i).getText();
 
-		if (source == null) return null;
-		ArrayList<String> returnvalue = new ArrayList<String> ();
-		for (int i = 0; i < source.length;i++) {
-		    if (caseSensitive) {
-			if (StringHelper.containsAny(source[i], terms))
-			    returnvalue.add(source[i]);
-		    } else
-			if (StringHelper.containsAnyIgnoreCase(source[i], terms))
-			    returnvalue.add(source[i]);
-		}
-		return (String[]) returnvalue.toArray(actualReturnValue);
-	    }
-	    
+	if (source == null) return null;
+	ArrayList<String> returnvalue = new ArrayList<String> ();
+	for (int i = 0; i < source.length;i++) {
+	    if (caseSensitive) {
+		if (StringHelper.containsAny(source[i], terms))
+		    returnvalue.add(source[i]);
+	    } else
+		if (StringHelper.containsAnyIgnoreCase(source[i], terms))
+		    returnvalue.add(source[i]);
+	}
+	return (String[]) returnvalue.toArray(actualReturnValue);
+    }
+
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
 	// XXX Auto-generated method stub

@@ -20,7 +20,9 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.htmlparser.Parser;
 import org.htmlparser.util.NodeList;
@@ -29,22 +31,29 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
-/*
- * this is similar to htmlfilterinstruction but for getting content
- * recursive attribute exists but it doesn't seem to make sense, probably to be removed
- * @version 1.0
+/**
+ * This is similar to htmlfilterinstruction but for getting content, applies to one specific node<br>
+ * 
  * @author Johan Degraeve
  *
  */
 public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 
+    /**
+     * list of HTMLGetter to be applied one after the other
+     */
     private ArrayList<HTMLGetter> getterList;
-    private boolean recursive;
     
+    /**
+     * If recursive and if one specific node returns no NodeList then dig deeper into that node 
+     *
+     */
+    private boolean recursive;
 
+    /**
+     * executes the HTMLGetter in the getterList one after the other
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     */
     @Override
     String[] execute(String[] source) {
 	String[] returnvalue;
@@ -63,7 +72,10 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	
 	//apply all filters to the nodelist
 	for (int i = 0;i < getterList.size();i++) {
-	    parsedNodeList = applyOneGetterToNodeList(parsedNodeList, getterList.get(i));
+	    if (parsedNodeList.size() > 0) {
+		parsedNodeList = applyOneGetterToNodeList(parsedNodeList, getterList.get(i));
+	    } else
+		break;
 	}
 	    
 	//prepare string array to return
@@ -74,28 +86,40 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * applies one getter
+     * @param nodeList
+     * @param getter
+     * @return a NodeList
+     */
     private NodeList applyOneGetterToNodeList(NodeList nodeList, HTMLGetter getter) {
 	NodeList newNodeList = new NodeList();
-	int size;
 	
 	for (int i = 0; i < nodeList.size(); i++) {
-	    size = newNodeList.size();
-	    newNodeList.add(getter.getList(nodeList.elementAt(i)));
-	    if ((size == newNodeList.size()) && 
-		    (recursive) && 
-		    ((nodeList.elementAt(i).getChildren() == null ? 
+	    NodeList resultList = getter.getList(nodeList.elementAt(i));
+	    if (resultList != null) {
+		newNodeList.add(resultList);
+	    } else if ((recursive) && 
+		    	((nodeList.elementAt(i).getChildren() == null ? 
 			    false :nodeList.elementAt(i).getChildren().size() > 0))
-	       )
+	               )
 		newNodeList.add(applyOneGetterToNodeList(nodeList.elementAt(i).getChildren(), getter));
 	}
 	return newNodeList;
     }
     
+    /**
+     * constructor, sets resursive to false
+     */
     public INSTRUCTIONhtmlGetter() {
 	recursive = false;
 	getterList = new ArrayList<HTMLGetter>();
     }
 
+    /**
+     * considers recursive as optional attribute, default value = false, allowed values are true or false
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	try {
@@ -124,6 +148,10 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * if child is an HTMLGetter then it's added to the list, otherwise an Exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	if (child instanceof HTMLGetter)
@@ -140,10 +168,18 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception of there's no HTMLGetter in the list
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (getterList.size() == 0) {
@@ -152,6 +188,10 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * @return the recursive attribute in an AttributesImpl
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -163,6 +203,10 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	return attr;
     }
 
+    /**
+     * the HTMLGetters in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement>();
@@ -171,25 +215,38 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.INSTRUCTIONhtmlGetterTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }

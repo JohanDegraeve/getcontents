@@ -28,19 +28,39 @@ import org.htmlparser.filters.TagNameFilter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * a TagNameFilter as defined in the HTML parser package.
+ * 
+ * @author Johan Degraeve
+ *
+ */
 public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter  {
 
+    /**
+     * the name of the tag to filter on
+     */
     private String mName;
     
+    /**
+     * @return mName
+     */
     public String getName() {
 	return mName;
     }
 
+    /**
+     * @return the TagNameFilter
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
     @Override
     public NodeFilter getHTMLFilter() {
 	return new TagNameFilter(mName);
     }
 
+    /**
+     * @return an XMLElementFilter that will filter on elements with tag name = mName
+     * @see net.johandegraeve.getcontents.XMLFilter#getXMLFilter()
+     */
     @Override
     public XMLElementFilter getXMLFilter() {
 	return new XMLElementFilter() {
@@ -52,25 +72,45 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter  {
 	};
     }
     
+    /**
+     * constructor setting mName to null
+     */
     public GETorFILTERtagName() {
 	mName = null;
     }
     
+    /**
+     * does nothing
+     * 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERtagNameTag);
     }
 
+    /**
+     * assigns text to mName
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
 	mName = text;
     }
 
+    /**
+     * throws an exception of mName = null or mName.length = 0
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if ((mName == null) || (mName.length() == 0) )
@@ -80,30 +120,53 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter  {
 		    " must have text");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return the tag name (not the name of the tag on which this filter will filter but really "tagName" 
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERtagNameTag;
     }
 
+    /**
+     * @return mName
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return mName;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;

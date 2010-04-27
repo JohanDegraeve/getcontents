@@ -22,8 +22,18 @@ package net.johandegraeve.getcontents;
 import org.htmlparser.Node;
 import org.htmlparser.util.NodeList;
 
+/**
+ * Interface for getting a list of Nodes (Node as defined in HTML Parser package)
+ * 
+ * @author Johan Degraeve
+ *
+ */
 public interface HTMLGetter {
 
+    /**
+     * @param elementAt the element from which a list of nodes needs to be returned
+     * @return a list of Nodes (Node as defined in HTML Parser package)
+     */
     NodeList getList(Node elementAt);
  
     
