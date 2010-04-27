@@ -33,7 +33,6 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * html filter instruction<br>
- * 
  *
  * @author Johan Degraeve
  *
@@ -45,6 +44,7 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
      */
     private ArrayList<HTMLFilter> filterList;
     /**
+     * If recursive and if one specific node returns no NodeList then dig deeper into that node 
      * recursive attribute
      */
     private boolean recursive;

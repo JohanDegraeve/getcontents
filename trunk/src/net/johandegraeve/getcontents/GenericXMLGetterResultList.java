@@ -19,9 +19,6 @@
  */
 package net.johandegraeve.getcontents;
 
-import java.util.Iterator;
-
-import net.johandegraeve.easyxmldata.XMLElement;
 
 /*
  * this class is made to serve as parent for two other classes that can hold return values of XML getters.

@@ -19,6 +19,8 @@
  */
 package net.johandegraeve.getcontents;
 
+import java.util.ArrayList;
+
 import net.johandegraeve.easyxmldata.DefaultXMLElement;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
@@ -42,8 +44,15 @@ class XMLXMLGetterResult extends GenericXMLGetterResult {
 	return defaultXMLElement.getText();
     }
 
+    /**
+     * get the children
+     * @return the children, null if there are none
+     */
     XMLXMLGetterResultList getChildren() {
-	return new XMLXMLGetterResultList(defaultXMLElement.getChildren());
+	ArrayList<XMLElement> children = defaultXMLElement.getChildren();
+	if (children != null)
+	    return new XMLXMLGetterResultList(defaultXMLElement.getChildren());
+	return null;
     }
     
     XMLElement getDefaultXMLElement() {
