@@ -835,3 +835,105 @@ a bit like a filter but applies to one specific node identified by an index rang
  none
 
 ===== children =====
+
+will get the children
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+
+*example*
+Let's assume we have following HTML as input, stored in /Users/Johan/temp/temp.txt
+
+{{{
+<TBODY>
+  <TR bgColor=#f0f0f0>
+   <TD width="40%"><strong>Item</strong></TD>
+   <TD width="10%"><strong>Hoeveel</strong></TD>
+   <TD width="10%"><strong>Eenheid</strong></TD>
+
+   <TD width="10%" ALIGN="center"><strong>kcal</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>Eiwit (g)</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>koolh (g)</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>vet (g)</strong></TD>
+  </TR>
+</TBODY>
+}}}
+
+Now we run following instruction file :
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+      </url>
+      <description>
+         <![CDATA[example htmlGetter - children]]>
+      </description>
+      <instructionList>
+         <htmlGetter>
+            <children>
+            </children>
+         </htmlGetter>   
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+the result is 
+
+{{{
+<TR bgColor=#f0f0f0>
+   <TD width="40%"><strong>Item</strong></TD>
+   <TD width="10%"><strong>Hoeveel</strong></TD>
+   <TD width="10%"><strong>Eenheid</strong></TD>
+
+   <TD width="10%" ALIGN="center"><strong>kcal</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>Eiwit (g)</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>koolh (g)</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>vet (g)</strong></TD>
+  </TR>
+}}}
+
+
+we can go one step further with the instructin file :
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+      </url>
+      <description>
+         <![CDATA[Programs http://www.belgids.be/television haal de zenders op]]>
+      </description>
+      <instructionList>
+         <htmlGetter>
+            <children>
+            </children>
+            <children>
+            </children>
+         </htmlGetter>   
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+now the result is (I must admit that I removed a lot of blank lines, I'm sure there will be other instructions to remove the blank lines like String Processors : 
+{{{
+<TD width="40%"><strong>Item</strong></TD>
+<TD width="10%"><strong>Hoeveel</strong></TD>   
+<TD width="10%"><strong>Eenheid</strong></TD>   
+<TD width="10%" ALIGN="center"><strong>kcal</strong></TD>   
+<TD width="10%" ALIGN="center"><strong>Eiwit (g)</strong></TD>   
+<TD width="10%" ALIGN="center"><strong>koolh (g)</strong></TD>   
+<TD width="10%" ALIGN="center"><strong>vet (g)</strong></TD>
+}}}
+  
