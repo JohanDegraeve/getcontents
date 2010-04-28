@@ -1012,7 +1012,7 @@ String 1, length = 83
    vet (g)
 }}}
 
-The method toPlainTextString will work here on two Nodes. The first node being a text node which seems to be appearing on top of the input, before the TBODY tag, probably the carriage return, which has length 1. Then a TBODY node, of which all text is taken, inclusive carriage returns.
+The method toPlainTextString will work here on two Nodes. The first node being a text node which is appearing on top of the input, before the TBODY tag, namely there's one blank before the TBODY opening tag, which has length 1. Then a TBODY node, of which all text is taken, inclusive carriage returns.
 
 
   
