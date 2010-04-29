@@ -355,6 +355,9 @@ An htmlFilter instruction can have an unlimited number of html filters. For filt
 
 The input to the htmlFilter instruction doesn't need to be a full HTML page that includes a body, head tag and so on. So you could have the output of one htmlFilter instruction, use that as input for example to a processString instruction, and use the output of that instruction again as input for a new htmlFilter instruction.
 
+The output of an htmlFilter will be an array of strings, where each string is the result of applying toHTML on each Node (as defined in the HTML Parser package).<br>
+This output can then be used again as input to either another instruction like htmlFilter, htmlGetter, processString (it is unlikely that the output of an htmlFilter will be the  input to an XMLFilter or XMLGetter).
+
 *Attributes*
  * recursive
    Values : true or false.<br>
@@ -386,7 +389,8 @@ Nodes that match every filer match the and filter.
 
 
 *Attributes*
-none
+ none
+
 *Occurrence*
  not defined
 
@@ -1014,5 +1018,149 @@ String 1, length = 83
 
 The method toPlainTextString will work here on two Nodes. The first node being a text node which is appearing on top of the input, before the TBODY tag, namely there's one blank before the TBODY opening tag, which has length 1. Then a TBODY node, of which all text is taken, inclusive carriage returns.
 
+==== processString ====
 
+To do stuff with strings. Usually that will be the last list of instructions and will take a list of strings as input. That list of strings is the output of the last html- or XML- Filter or Getter.<br>
+For most of the string processors, I've been using a package called com.Ostermiller.util, class StringHelper.<br>
+ 
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ One ore more of following StringProcessor :
+ * containsAny
+ * endsWithAny
+ * equalsAny
+ * escapeHTML
+ * findAndReplace
+ * html2text
+ * idSelector
+ * midPad
+ * postPad
+ * prePad
+ * readDateAndTime
+ * split
+ * trim
+ * unescapeHTML
+
+*text field*
+ none
   
+===== containsAny =====
+
+Filters on nodes that have text that contains any of a list of strings<br>
+Using com.Ostermiller.util, class StringHelper, method containsAnyIgnoreCase and containsAny 
+
+*Attributes*
+ case_sensitive, values true or false
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ one or more string
+
+*text field*
+ none
+  
+*example*
+As input for an example we can start with a small piece of HTML
+
+{{{
+<TBODY>
+  <TR bgColor=#f0f0f0>
+   <TD width="40%"><strong>Item</strong></TD>
+   <TD width="10%"><strong>Hoeveel</strong></TD>
+   <TD width="10%"><strong>Eenheid</strong></TD>
+
+   <TD width="10%" ALIGN="center"><strong>kcal</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>Eiwit (g)</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>koolh (g)</strong></TD>
+   <TD width="10%" ALIGN="center"><strong>vet (g)</strong></TD>
+  </TR>
+</TBODY>
+}}}
+
+Now we first apply a tagName Filter for tag "TD" :
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+      </url>
+      <description>
+         <![CDATA[example]]>
+      </description>
+      <instructionList>
+         <htmlFilter recursive="true">
+            <tagName>
+                TD
+            </tagName>
+         </htmlFilter>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+the result is a list of 7 Strings :
+{{{
+7 matching lines
+Result 0, length = 42
+<TD width="40%"><strong>Item</strong></TD>
+Result 1, length = 45
+<TD width="10%"><strong>Hoeveel</strong></TD>
+Result 2, length = 45
+<TD width="10%"><strong>Eenheid</strong></TD>
+Result 3, length = 57
+<TD width="10%" ALIGN="center"><strong>kcal</strong></TD>
+Result 4, length = 62
+<TD width="10%" ALIGN="center"><strong>Eiwit (g)</strong></TD>
+Result 5, length = 62
+<TD width="10%" ALIGN="center"><strong>koolh (g)</strong></TD>
+Result 6, length = 60
+<TD width="10%" ALIGN="center"><strong>vet (g)</strong></TD>
+}}}
+
+Now we extend the instructionlist with a containsAny string processor, with two strings, "ei" and "cal", not case_sensitive :
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+      </url>
+      <description>
+         <![CDATA[example]]>
+      </description>
+      <instructionList>
+         <htmlFilter recursive="true">
+            <tagName>
+                TD
+            </tagName>
+         </htmlFilter>
+         <processString>
+           <containsAny case_sensitive="false">
+			  <string>ei</string>
+			  <string>Cal</string>
+		   </containsAny>
+         </processString>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+resulting in : 
+
+3 matching lines
+{{{
+<TD width="10%"><strong>Eenheid</strong></TD>
+<TD width="10%" ALIGN="center"><strong>kcal</strong></TD>
+<TD width="10%" ALIGN="center"><strong>Eiwit (g)</strong></TD>
+}}}
+
+The processor checks the complete String. I might as well define a search string "width" which would return all 7 strings.
