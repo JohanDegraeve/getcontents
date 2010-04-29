@@ -29,74 +29,132 @@ import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * gegt text
+ * 
+ * @author Johan Degraeve
+ *
+ */
 public class GETorFILTERtext implements XMLElement, HTMLGetter, XMLGetter {
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	throw new SAXException("Element type gettext does not accept children");
+	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERtextTag);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * get the text in the HTML node
+     * @return a nodelist with one TextNode (as defined in HTML Parser package) that contains the plain text of element
+     * 
+     * 
+     * @see net.johandegraeve.getcontents.HTMLGetter#getList(org.htmlparser.Node)
+     */
     @Override
-    public NodeList getList(Node elementAt) {
-	return new NodeList(new TextNode(elementAt.toPlainTextString()));
+    public NodeList getList(Node element) {
+	return new NodeList(new TextNode(element.toPlainTextString()));
     }
 
+    /**
+     * get the texts
+     * @return a StringXMLGetterResultList, non null, size can be 0, if list is a StringXMLGetterResultList, then returnvalue
+     * is the list, if list is a XMLXMLGetterResultList then returnvalue is a StringXMLGetterResultList with XMLXMLGetterResult's
+     * that hold the text of each XMLXMLGetterResult 
+     * @see net.johandegraeve.getcontents.XMLGetter#getList(net.johandegraeve.getcontents.GenericXMLGetterResultList)
+     */
     @Override
     public GenericXMLGetterResultList getList(GenericXMLGetterResultList list) {
 	GenericXMLGetterResultList returnvalue = null;
-       returnvalue = new StringXMLGetterResultList();
-	if (list instanceof XMLXMLGetterResultList) {
-	    for (int i = 0;i < list.size();i ++)
-		returnvalue.add(new StringXMLGetterResult(((XMLXMLGetterResult)list.elementAt(i)).getText()));
-	} else if (list instanceof StringXMLGetterResultList)  {
-	    for (int i = 0;i < list.size();i ++)
-		returnvalue.add(list.elementAt(i));
+
+	if (list != null) {
+	    if (list instanceof XMLXMLGetterResultList) {
+		returnvalue = new StringXMLGetterResultList();
+		for (int i = 0;i < list.size();i ++)
+		    returnvalue.add(new StringXMLGetterResult(((XMLXMLGetterResult)list.elementAt(i)).getText()));
+	    } else if (list instanceof StringXMLGetterResultList)  {
+		return list;
+	    }
 	}
 	return returnvalue;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERtextTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
-	// XXX Auto-generated method stub
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 

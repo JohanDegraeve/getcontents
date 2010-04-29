@@ -20,19 +20,31 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
+/**
+ * to process Strings. 
+ * For most of the string processors, I've been using a package called com.Ostermiller.util, class StringHelper.
+ * 
+ * @author Johan Degraeve
+ *
+ */
 public class INSTRUCTIONprocessString extends Instruction {
 
+    /**
+     * the list of string processors
+     */
     private ArrayList<StringProcessor> processorList;
 
+    /**
+     * to execute the list of string processors
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     */
     @Override
     String[] execute(String[] source) throws Exception {
 	if (source == null) return null;
@@ -44,14 +56,26 @@ public class INSTRUCTIONprocessString extends Instruction {
 	return source;
     }
     
+    /**
+     * constructor
+     */
     public INSTRUCTIONprocessString() {
 	processorList = new ArrayList<StringProcessor>();
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * if child is a StringProcessor, then it's added to the list, otherwise an Exceptio is thrown
+     * 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	if (child instanceof StringProcessor)
@@ -68,10 +92,18 @@ public class INSTRUCTIONprocessString extends Instruction {
 	}
     }
 
+    /**
+     * none
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if processorList has size 0
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (processorList.size() == 0) {
@@ -80,11 +112,19 @@ public class INSTRUCTIONprocessString extends Instruction {
 	}
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return the list of StringProcessor in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement>();
@@ -93,25 +133,38 @@ public class INSTRUCTIONprocessString extends Instruction {
 	return returnvalue;
     }
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.INSTRUCTIONprocessStringTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false;
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }
