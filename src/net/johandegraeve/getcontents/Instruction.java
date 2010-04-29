@@ -34,6 +34,7 @@ abstract class Instruction implements XMLElement {
      * Executes an instruction<br>
      * @param source the source to process
      * @return  the result of executing the instruction on the source
+     * @throws Exception 
      */
      abstract String[] execute(String[] source) throws Exception;
 

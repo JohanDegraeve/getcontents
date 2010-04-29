@@ -34,7 +34,13 @@ import net.johandegraeve.easyxmldata.XMLElement;
  *
  */
 public class INSTRUCTIONaddXMLDeclaration  extends Instruction implements XMLElement {
+    /**
+     * the version
+     */
     private GENERICversion version;
+    /**
+     * the encoding
+     */
     private GENERICencoding encoding;
     
     /**
