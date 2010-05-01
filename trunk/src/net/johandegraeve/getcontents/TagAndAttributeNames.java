@@ -102,6 +102,7 @@ package net.johandegraeve.getcontents;
     static final String GENERICSimpleDateFormatTag = "SimpleDateFormat";
     static final String STRING_PROCESSORreadDateAndTimeTag = "readDateAndTime";
     static final String GENERICTimeZoneTag = "TimeZone";
+    static final String GETorFILTERstartsWithAnyTag = "startsWithAny";
 
     
     /**
@@ -121,7 +122,8 @@ package net.johandegraeve.getcontents;
 	STRING_PROCESSORprePadTag,
 	STRING_PROCESSORsplitTag,
 	STRING_PROCESSORidSelectorTag,
-	STRING_PROCESSORreadDateAndTimeTag
+	STRING_PROCESSORreadDateAndTimeTag,
+	GETorFILTERstartsWithAnyTag
     };
     
      /**
@@ -158,6 +160,7 @@ package net.johandegraeve.getcontents;
 	GETorFILTERcontainsAnyTag,
 	GETorFILTERequalsAny,
 	GETorFILTERendsWithAnyTag,
+	GETorFILTERstartsWithAnyTag,
 	STRING_PROCESSORidSelectorTag
     };
 
