@@ -1224,6 +1224,11 @@ Now we apply following instructionlist :
 </getContentItemList>
 }}}
 
+the result is :
+{{{
+This is a less than sign : &lt;
+}}}
+
 ===== startsWithAny =====
 
 Filters on nodes that have text that starts with any of a list of strings<br>
