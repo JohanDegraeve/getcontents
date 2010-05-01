@@ -30,7 +30,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * ands at least two other html filters
+ * ands at least two other html filters as defined in {@link org.htmlparser.filters.AndFilter}
  *
  * @author Johan Degraeve
  *
@@ -50,7 +50,7 @@ public class GETorFILTERand implements XMLElement, HTMLFilter {
     }
     
     /**
-     * returns an and filter with the list of filters
+     * @return an and filter with the list of filters
      * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
      */
     @Override

@@ -32,7 +32,7 @@ import com.Ostermiller.util.StringHelper;
 
 /**
  * Filters on nodes that have text that starts with any of a list of strings<br>
- * Using com.Ostermiller.util, class StringHelper, method endsWithAnyIgnoreCase and endsWithAny
+ * Using com.Ostermiller.util, class StringHelper, method startsWithAnyIgnoreCase and startsWithAny
  *
  * @author Johan Degraeve
  *

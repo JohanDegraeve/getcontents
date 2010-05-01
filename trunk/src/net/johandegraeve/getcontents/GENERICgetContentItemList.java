@@ -29,7 +29,7 @@ import net.johandegraeve.easyxmldata.XMLElement;
 /**
  * Class for holding a getContentItemList XML element.<br>
  * A getContentItemList can hold one or more XML elements of the type getContentItem 
- * (class GENERICgetContentItemList)<br>
+ * (class {@link GENERICgetContentItem})<br>
  * 
  *
  * For more details see http://code.google.com/p/getcontents/w/list
@@ -39,6 +39,9 @@ import net.johandegraeve.easyxmldata.XMLElement;
  */
 public class GENERICgetContentItemList implements XMLElement  {
     
+    /**
+     * the list of {@link GENERICgetContentItem getContentItem}
+     */
     private ArrayList<GENERICgetContentItem> getContentItemList;
     
     /**
