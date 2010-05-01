@@ -45,7 +45,7 @@ public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringPro
     private boolean caseSensitive;
 
     /**
-     * 
+     * list of strings 
      */
     private ArrayList<GENERICstring> stringChildList;
     
