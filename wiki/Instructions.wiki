@@ -1229,6 +1229,160 @@ the result is :
 This is a less than sign : &lt;
 }}}
 
+===== findAndReplace =====
+
+to find and replace a string<br>
+Using com.Ostermiller.util, class StringHelper, method replace.
+
+*Attributes*
+ case sensitive, value "true" or "false"
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * find
+ * replace
+
+*text field*
+ none
+  
+*example*
+Let's start an instructionlist that fetches a list of TV programs :
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[http://www.belgids.be/television]]>
+      </url>
+      <description>
+         <![CDATA[Programs http://www.belgids.be/television haal de programa's op]]>
+      </description>
+      <instructionList>
+         <htmlFilter recursive="true">
+            <and>
+               <hasChild>
+                  <hasChild>
+                     <hasChild>
+                        <stringFilter case_sensitive="false">
+                           <pattern case_sensitive="false"><![CDATA[Time]]></pattern>
+                        </stringFilter>
+                     </hasChild>
+                  </hasChild>
+               </hasChild>
+               <and>
+                  <tagName>
+                     <![CDATA[table]]>
+                  </tagName>
+                  <hasAttribute>
+                     <attributename>
+                        <![CDATA[border]]>
+                     </attributename>
+                     <attributevalue>
+                        <![CDATA[0]]>
+                     </attributevalue>
+                  </hasAttribute>
+               </and>
+            </and> 
+            <hasAttribute>
+               <attributename>
+                  <![CDATA[width]]>
+               </attributename>
+               <attributevalue>
+                  <![CDATA[60%]]>
+               </attributevalue>
+            </hasAttribute>
+         </htmlFilter>
+         <htmlGetter recursive="false">
+            <text>
+            </text>
+         </htmlGetter>
+         <processString>
+            <trim>
+            </trim>
+         </processString>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>}}}
+}}}
+
+This may result in a list of tv programs, but unfortunately it may contains some unreadable characters, like for example :<br> 
+{{{
+Kookstrijders BelgiÃ«-Nederland:
+}}}
+
+So we can add a find and replace instruction which will replace Ã« into ë
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[http://www.belgids.be/television]]>
+      </url>
+      <description>
+         <![CDATA[Programs http://www.belgids.be/television haal de programa's op]]>
+      </description>
+      <instructionList>
+         <htmlFilter recursive="true">
+            <and>
+               <hasChild>
+                  <hasChild>
+                     <hasChild>
+                        <stringFilter case_sensitive="false">
+                           <pattern case_sensitive="false"><![CDATA[Time]]></pattern>
+                        </stringFilter>
+                     </hasChild>
+                  </hasChild>
+               </hasChild>
+               <and>
+                  <tagName>
+                     <![CDATA[table]]>
+                  </tagName>
+                  <hasAttribute>
+                     <attributename>
+                        <![CDATA[border]]>
+                     </attributename>
+                     <attributevalue>
+                        <![CDATA[0]]>
+                     </attributevalue>
+                  </hasAttribute>
+               </and>
+            </and> 
+            <hasAttribute>
+               <attributename>
+                  <![CDATA[width]]>
+               </attributename>
+               <attributevalue>
+                  <![CDATA[60%]]>
+               </attributevalue>
+            </hasAttribute>
+         </htmlFilter>
+         <htmlGetter recursive="false">
+            <text>
+            </text>
+         </htmlGetter>
+         <processString>
+            <trim>
+            </trim>
+            <findAndReplace>
+                <find>Ã«</find>
+                <replace>ë</replace>
+            </findAndReplace>
+         </processString>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>}}}
+}}}
+
+Now we get a nicer result , here's the result (I didn't add the full list of tv programs, only the one whic contained the dirty character :
+
+{{{
+...
+Kookstrijders België-Nederland:
+...
+}}}
+
 ===== startsWithAny =====
 
 Filters on nodes that have text that starts with any of a list of strings<br>
