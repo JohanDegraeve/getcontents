@@ -1044,6 +1044,7 @@ For most of the string processors, I've been using a package called com.Ostermil
  * prePad
  * readDateAndTime
  * split
+ * startsWithAny
  * trim
  * unescapeHTML
 
@@ -1168,6 +1169,13 @@ The processor checks the complete String. I might as well define a search string
 ===== endsWithAny =====
 
 Filters on nodes that have text that ends with any of a list of strings<br>
-Using com.Ostermiller.util, class StringHelper, method containsAnyIgnoreCase and containsAny 
+Using com.Ostermiller.util, class StringHelper, method endsWithAnyIgnoreCase and endsWithAny 
+
+see also the string processor "containsAny"
+
+===== startsWithAny =====
+
+Filters on nodes that have text that starts with any of a list of strings<br>
+Using com.Ostermiller.util, class StringHelper, method startsWithAnyIgnoreCase and startsWithAny 
 
 see also the string processor "containsAny"
