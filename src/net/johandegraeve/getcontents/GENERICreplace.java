@@ -26,64 +26,110 @@ import org.xml.sax.SAXException;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
-/*untrimmed
- *
- * @version 1.0
+/**
+ * basically just a string, untrimmed
+ * 
  * @author Johan Degraeve
  *
  */
 public class GENERICreplace implements XMLElement {
 
+    /**
+     * the string
+     */
     private String replace;
     
+    /**
+     * @return {@link #replace}
+     */
     public String getReplace() {
 	return replace;
     }
     
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICreplaceTag);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception of replace = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (replace == null)
 	    throw new SAXException("Element of type " + TagAndAttributeNames.GENERICreplaceTag + " must have text");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return the tag name {@link TagAndAttributeNames#GENERICreplaceTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERICreplaceTag;
     }
 
+    /**
+     * @return {@link #replace}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return replace;
     }
 
+    /**
+     * assigns text to {@link #replace}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
 	replace = text;
     }
 
+    /**
+     * @return true
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return true;

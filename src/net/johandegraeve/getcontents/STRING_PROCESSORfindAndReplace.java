@@ -30,23 +30,49 @@ import com.Ostermiller.util.StringHelper;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+* Find and Replace<br>
+* the find and replace string can include carriage return, line feed, ...
+* Using {@link com.Ostermiller.util.StringHelper#replace(String, String, String)}
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class STRING_PROCESSORfindAndReplace implements XMLElement, StringProcessor {
     
+    /**
+     * the string to find
+     */
     private GENERICfind find;
+    /**
+     * the replacement string
+     */
     private GENERICreplace replace;
+    /**
+     * case sensitive attribute
+     */
     private boolean caseSensitive;
 
 
-	    public String[] processString(String[] source) {
-		if (source == null) return null;
-		for (int i = 0;i < source.length;i ++)
-		    if (caseSensitive)
-			source[i] = StringHelper.replace(source[i], find.getFind(), replace.getReplace());
-		    else 
-			source[i] = net.johandegraeve.getcontents.Utilities.replaceIgnoreCase(source[i], find.getFind(), replace.getReplace());
-		return source;
-	    }
+    /**
+     * replaces in each string in source, find by replace
+     * @return the source with {@link #find} replaced by {@link #replace}
+     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
+     */
+    public String[] processString(String[] source) {
+	if (source == null) return null;
+	for (int i = 0;i < source.length;i ++)
+	    if (caseSensitive)
+		source[i] = StringHelper.replace(source[i], find.getFind(), replace.getReplace());
+	    else 
+		source[i] = net.johandegraeve.getcontents.Utilities.replaceIgnoreCase(source[i], find.getFind(), replace.getReplace());
+	return source;
+    }
 
+    /**
+     * adds the case sensitive attribute, default value = false
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	String[] attrValues = Utilities.getOptionalAttributeValues(
@@ -61,6 +87,10 @@ public class STRING_PROCESSORfindAndReplace implements XMLElement, StringProcess
 	    caseSensitive = true;
     }
 
+    /**
+     * assigns child to find or replace or throws exception if another child is present 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(
@@ -74,10 +104,18 @@ public class STRING_PROCESSORfindAndReplace implements XMLElement, StringProcess
 	    replace = (GENERICreplace)child;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if find or replace is empty
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (find == null)
@@ -88,6 +126,10 @@ public class STRING_PROCESSORfindAndReplace implements XMLElement, StringProcess
 		    TagAndAttributeNames.GENERICreplaceTag);
     }
 
+    /**
+     * @return the case sensitive attribute
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -100,6 +142,10 @@ public class STRING_PROCESSORfindAndReplace implements XMLElement, StringProcess
     }
 
 
+    /**
+     * @return find and replace in an arraylist
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement>  returnvalue = new ArrayList<XMLElement> ();
@@ -109,26 +155,39 @@ public class STRING_PROCESSORfindAndReplace implements XMLElement, StringProcess
     }
 
 
+    /**
+     * @return the tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.STRING_PROCESSORfindAndReplaceTag;
     }
 
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }

@@ -31,7 +31,7 @@ import org.xml.sax.helpers.AttributesImpl;
 import com.Ostermiller.util.StringHelper;
 
 /**
- * Filters on nodes that have text that contains any of a list of strings<br>
+ * Filters on nodes that have text that ends with any of a list of strings<br>
  * Using com.Ostermiller.util, class StringHelper, method endsWithAnyIgnoreCase and endsWithAny
  *
  * @author Johan Degraeve
