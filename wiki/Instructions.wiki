@@ -1022,6 +1022,8 @@ The method toPlainTextString will work here on two Nodes. The first node being a
 
 To do stuff with strings. Usually that will be the last list of instructions and will take a list of strings as input. That list of strings is the output of the last html- or XML- Filter or Getter.<br>
 For most of the string processors, I've been using a package called com.Ostermiller.util, class StringHelper.<br>
+
+A string processor can never be the first instruction in an instructionList. In case you want to use non-HTML or XML as input to a the list of instructions, start with the instruction "getUnFilteredContent"
  
 
 *Attributes*
@@ -1172,6 +1174,55 @@ Filters on nodes that have text that ends with any of a list of strings<br>
 Using com.Ostermiller.util, class StringHelper, method endsWithAnyIgnoreCase and endsWithAny 
 
 see also the string processor "containsAny"
+
+===== escapeHTML =====
+
+escapes HTML<br>
+Using com.Ostermiller.util, class StringHelper, method escameHTML.
+
+This will normally not be used as the goal of this package is to retrieve content from HTML (and XML) pages, not the other way around.
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+  
+*example*
+Let's start with following input :
+
+{{{
+This is a less than sign : <
+}}}
+
+Now we apply following instructionlist :
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+      </url>
+      <description>
+         <![CDATA[example]]>
+      </description>
+      <instructionList>
+         <getUnFilteredContent>
+         </getUnFilteredContent>
+         <processString>
+            <escapeHTML>
+            </escapeHTML>
+         </processString>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
 
 ===== startsWithAny =====
 
