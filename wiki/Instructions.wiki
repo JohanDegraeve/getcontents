@@ -1059,7 +1059,9 @@ Filters on nodes that have text that contains any of a list of strings<br>
 Using com.Ostermiller.util, class StringHelper, method containsAnyIgnoreCase and containsAny 
 
 *Attributes*
- case_sensitive, values true or false
+ * case_sensitive, values true or false, default true
+ * include, values true or false, default false
+ 
 
 *Occurrence*
  not defined
@@ -1147,7 +1149,7 @@ Now we extend the instructionlist with a containsAny string processor, with two 
             </tagName>
          </htmlFilter>
          <processString>
-           <containsAny case_sensitive="false">
+           <containsAny case_sensitive="false" include="true">
 			  <string>ei</string>
 			  <string>Cal</string>
 		   </containsAny>
