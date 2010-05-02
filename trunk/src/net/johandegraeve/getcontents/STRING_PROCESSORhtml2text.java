@@ -21,14 +21,23 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
+/**
+ * a simple string processor that removes everything between &lt; and &gt
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class STRING_PROCESSORhtml2text  implements XMLElement, StringProcessor {
 
+    /**
+     * @return a new array with source but removes everything between &lt; and &gt
+     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
+     */
     public String[] processString(String[] source) {
 	if (source == null) return null;
 	String[] returnvalue = new String[source.length];
@@ -38,57 +47,95 @@ public class STRING_PROCESSORhtml2text  implements XMLElement, StringProcessor {
 	return returnvalue;
     }
 
+    /**
+     * does nothing 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.STRING_PROCESSORhtml2textTag);
     }
 
+    /**
+     * does nothing 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing 
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
 
+    /**
+     * @return tag name
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.STRING_PROCESSORhtml2textTag;
     }
 
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
 
+    /**
+     * does nothing
+     * 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
 
+    /**
+     * @return false;
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 
