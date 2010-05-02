@@ -32,6 +32,7 @@ import com.Ostermiller.util.StringHelper;
 
 /**
  * Filters on nodes that have text that contains any of a list of strings<br>
+ * It is possible to define inclusion or exclusion of elements that match.<br>
  * Using com.Ostermiller.util, class StringHelper, method containsAnyIgnoreCase and containsAny
  *
  * @author Johan Degraeve
@@ -39,6 +40,11 @@ import com.Ostermiller.util.StringHelper;
  */
 public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringProcessor {
     
+    /**
+     * defines if matching elements should be included or excluded
+     */
+    private boolean include;
+
     /**
      * case sensitive attribute
      */
@@ -54,10 +60,12 @@ public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringPro
      */
     public GETorFILTERcontainsAny() {
 	stringChildList = new ArrayList<GENERICstring> ();
+	caseSensitive = false;
+	include = true;
     }
 
     /**
-     * adds case_sensitive attribute, default value = false
+     * adds case_sensitive attribute, default value = false, adds include attribute, default value = true
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */
     @Override
@@ -66,12 +74,18 @@ public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringPro
 		attributes, 
 		new String[] {
 			TagAndAttributeNames.case_sensitiveAttribute,
+			TagAndAttributeNames.includeAttribute
 		}, 
 		new String[]  {
 			"false",
+			"true"
 		});
 	if (attrValues[0].equalsIgnoreCase("true")) 
 	    caseSensitive = true;
+	if (attrValues[1].equalsIgnoreCase("true")) 
+	    include = true;
+	else 
+	    include = false;
     }
 
     /**
@@ -107,7 +121,7 @@ public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringPro
     }
 
     /**
-     * @return the case_sensitive attribute
+     * @return the {@link #caseSensitive} and the {@link #include} attribute
      * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
      */
     @Override
@@ -118,6 +132,11 @@ public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringPro
 		TagAndAttributeNames.case_sensitiveAttribute, 
 		"CDATA", 
 		(caseSensitive ? "true":"false"));
+	attr.addAttribute(null, 
+		TagAndAttributeNames.includeAttribute, 
+		TagAndAttributeNames.includeAttribute,
+		"CDATA", 
+		(include ? "true":"false"));
 	return attr;
     }
 
@@ -173,11 +192,19 @@ public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringPro
 	
 	for (int i = 0;i < stringList.size();i ++)
 	    if (caseSensitive) {
-		if (StringHelper.containsAny(stringList.elementAt(i).convertToString(),terms))
-		    returnvalue.add(stringList.elementAt(i));
+		if (StringHelper.containsAny(stringList.elementAt(i).convertToString(),terms)) {
+		    if (include) 
+			returnvalue.add(stringList.elementAt(i));
+		} else 
+		    if (!include) 
+			returnvalue.add(stringList.elementAt(i));
 	    } else {
-		if (StringHelper.containsAnyIgnoreCase(stringList.elementAt(i).convertToString(),terms))
-		    returnvalue.add(stringList.elementAt(i));
+		if (StringHelper.containsAnyIgnoreCase(stringList.elementAt(i).convertToString(),terms)){
+		    if (include) 
+			returnvalue.add(stringList.elementAt(i));
+		} else 
+		    if (!include) 
+			returnvalue.add(stringList.elementAt(i));
 	    }
 	return returnvalue;
 	
@@ -200,11 +227,19 @@ public class GETorFILTERcontainsAny implements XMLElement,  XMLGetter, StringPro
 	ArrayList<String> returnvalue = new ArrayList<String> ();
 	for (int i = 0; i < source.length;i++) {
 	    if (caseSensitive) {
-		if (StringHelper.containsAny(source[i], terms))
-		    returnvalue.add(source[i]);
+		if (StringHelper.containsAny(source[i], terms)) {
+		    if (include) 
+			    returnvalue.add(source[i]);
+		} else 
+		    if (!include) 
+			    returnvalue.add(source[i]);
 	    } else
-		if (StringHelper.containsAnyIgnoreCase(source[i], terms))
-		    returnvalue.add(source[i]);
+		if (StringHelper.containsAnyIgnoreCase(source[i], terms)) {
+		    if (include) 
+			    returnvalue.add(source[i]);
+		} else 
+		    if (!include) 
+			    returnvalue.add(source[i]);
 	}
 	return (String[]) returnvalue.toArray(actualReturnValue);
     }
