@@ -22,26 +22,44 @@ package net.johandegraeve.getcontents;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.htmlparser.Node;
-import org.htmlparser.NodeFilter;
-import org.htmlparser.util.NodeList;
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 import com.Ostermiller.util.StringHelper;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
+/**
+ * Using an array as input (array of strings  or XML elements), keep or filter out a number of elements in the array
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class STRING_PROCESSORidSelector implements XMLElement,
 	XMLGetter, StringProcessor {
     
-    private static final String delimiter = ",";
+    /**
+     * delimiter to use between id&#146;s
+     */
+   private static final String delimiter = ",";
+    /**
+     * to use for range of id&#146;s
+     */
     private String rangeDelimiter = ":";
+    /**
+     * list of id&#146;s
+     */
     private ArrayList<Integer> integerList;
+    /**
+     * if true then elements in list of id&#146;s will be included, otherwise excluded
+     */
     private boolean include;
 
+    /**
+     * error string in case list of id&146;s is not correctly formatted
+     */
     private static final String exceptionString = 
 	"Element type " + TagAndAttributeNames.STRING_PROCESSORidSelectorTag + " must have a valid textfield.\n" +
 	"Valid text is a list of comma separated range of id's or just single id's, which can be negative.\n" +
@@ -49,13 +67,23 @@ public class STRING_PROCESSORidSelector implements XMLElement,
 	"\"-10:-5, 1:5, 8:9, 12, 0\".\n" +
 	"This would mean : last - 10 to last - 5 inclusive, 1 to 5, 8 to 9, last";
     
+    /**
+     * the list of id's as found in the xml instructionlist
+     */
     private String idSelector;
 
+    /**
+     * constructor
+     */
     public STRING_PROCESSORidSelector() {
 	integerList = new ArrayList<Integer> ();
 	include = true;
     }
     
+    /**
+     * adds attribute include, default value = true
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	String[] attrValues = Utilities.getOptionalAttributeValues(
@@ -72,27 +100,48 @@ public class STRING_PROCESSORidSelector implements XMLElement,
 	    include = false;
     }
 
+    /**
+     * throws an exception
+     * 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.STRING_PROCESSORidSelectorTag);
     }
 
+    /**
+     * assigns text to {@link #idSelector}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
 	idSelector = text;
 	createIntegerList();
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if {@link #idSelector} is null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (idSelector == null)
 	    throw new SAXException(exceptionString);
     }
 
+    /**
+     * @return attribute {@link #include} 
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -100,26 +149,48 @@ public class STRING_PROCESSORidSelector implements XMLElement,
 	return attr;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#STRING_PROCESSORidSelectorTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.STRING_PROCESSORidSelectorTag;
     }
 
+    /**
+     * @return {@link #idSelector}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return idSelector;
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;
     }
 
+    /**
+     * get list of elements matching the {@link #idSelector} and {@link #include}
+     * @return a {@link GenericXMLGetterResultList} with the same type as the input parameter list, with the elements from list 
+     * that match the {@link #idSelector} and {@link #include} values, size can be 0
+     * @see net.johandegraeve.getcontents.XMLGetter#getList(net.johandegraeve.getcontents.GenericXMLGetterResultList)
+     */
     @Override
     public GenericXMLGetterResultList getList(GenericXMLGetterResultList list) {
 	int sourceLength = list.size();
@@ -150,6 +221,12 @@ public class STRING_PROCESSORidSelector implements XMLElement,
 	return returnvalueArrayList;
     }
 
+    /**
+     * get list of elements matching the {@link #idSelector} and {@link #include}
+     * @return an array of String with the elements from list 
+     * that match the {@link #idSelector} and {@link #include} values, size can be 0
+     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
+     */
     @Override
     public String[] processString(String[] source) {
 	int sourceLength = source.length;
@@ -175,6 +252,10 @@ public class STRING_PROCESSORidSelector implements XMLElement,
 	return (String[]) returnvalueArrayList.toArray(new String[0]);
     }
     
+    /**
+     * creates IntegerList based in value of {@link #idSelector}, throws an exception if format of {@link #idSelector} is invalid.
+     * @throws SAXException
+     */
     private void createIntegerList() throws SAXException {
 	String[] split2;
 	String[] split1;

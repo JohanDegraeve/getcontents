@@ -68,10 +68,15 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 	    if (idSelector != null) {
 		returnvalue = idSelector.processString(returnvalue);
 	    }
+	    
+	    //I DONT REMEMBER WHY I DID THIS/////////
 	    for (int j = 0; j < returnvalue.length;j++) {
 		for (int k = 0; k < replacementStrings.length;k++)
 		    StringHelper.replace(returnvalue[j], replacementStrings[k][0], replacementStrings[k][1]);
-		stringArrayList.add(returnvalue[j]);
+            /////////////////////////////////////////
+		
+	    stringArrayList.add(returnvalue[j]);
+		
 	    }	
 	}
 	returnvalue = (String[]) stringArrayList.toArray(returnvalue);
