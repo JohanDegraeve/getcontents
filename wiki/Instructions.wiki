@@ -1170,12 +1170,21 @@ resulting in :
 
 The processor checks the complete String. I might as well define a search string "width" which would return all 7 strings.
 
+===== equalsAny =====
+
+Filters on nodes that have text that equals any of a list of strings<br>
+Using com.Ostermiller.util, class StringHelper, method equalsAnyIgnoreCase and equalsAny 
+
+see also the string processor "containsAny"
+
+
 ===== endsWithAny =====
 
 Filters on nodes that have text that ends with any of a list of strings<br>
 Using com.Ostermiller.util, class StringHelper, method endsWithAnyIgnoreCase and endsWithAny 
 
 see also the string processor "containsAny"
+
 
 ===== escapeHTML =====
 
