@@ -1383,6 +1383,85 @@ Kookstrijders België-Nederland:
 ...
 }}}
 
+===== html2text : remove everything between < and > =====
+
+removes everything between < and ><br>
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+  
+*example*
+
+with following input stored in /Users/Johan/temp/temp.txt
+
+{{{
+<p><a href="http://www.iwm.org.uk/server/show/ConWebDoc.3648"><strong>Current Annual Report</strong></a>
+<br>The Annual Report and Account examines the performance of the Museum over the financial year through the auditor&#8217;s report, visitor figures, costs, government funding and information on assets. The report also includes information on internal structure and management as well as plans for the future.</p>
+
+<p><a href="http://www.iwm.org.uk/server/show/ConWebDoc.5812"><strong>Current Annual Review</strong></a>
+<br>The Annual Review acts as a condensed version of the Annual Report and Account, focusing on the key information related to the Museum&#8217;s performance. </p>
+<h1>Plans and Governance</h1>
+
+<p><a href="http://www.iwm.org.uk/upload/pdf/IWMCP10web2.pdf"><strong>Corporate Plan 2010 - 2011</strong></a>
+<br>The Corporate Plan is the key to coordinating activities across the Museum&#8217;s branches along the same organisation-wide priorities and is the starting point for all staff forward job plans. It also serves as a benchmark to monitor the Museum&#8217;s progress against plans throughout the year and it seeks to respond to the risks and opportunities facing the Museum.</p>
+
+<p><a href="http://www.iwm.org.uk/server/show/ConWebDoc.3978"><strong>Current Funding Agreement</strong></a></p>
+
+<p><a href="http://www.iwm.org.uk/server/show/ConWebDoc.4621"><strong>Corporate Governance Code</strong></a></p>
+}}}
+
+with following instructionlist :
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+      </url>
+      <description>
+         <![CDATA[example]]>
+      </description>
+      <instructionList>
+         <getUnFilteredContent>
+         </getUnFilteredContent>
+         <processString>
+            <html2text>
+            </html2text>
+         </processString>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+the result is 14 Strings :
+
+{{{
+Current Annual Report
+The Annual Report and Account examines the performance of the Museum over the financial year through the auditor&#8217;s report, visitor figures, costs, government funding and information on assets. The report also includes information on internal structure and management as well as plans for the future.
+
+Current Annual Review
+The Annual Review acts as a condensed version of the Annual Report and Account, focusing on the key information related to the Museum&#8217;s performance. 
+Plans and Governance
+
+Corporate Plan 2010 - 2011
+The Corporate Plan is the key to coordinating activities across the Museum&#8217;s branches along the same organisation-wide priorities and is the starting point for all staff forward job plans. It also serves as a benchmark to monitor the Museum&#8217;s progress against plans throughout the year and it seeks to respond to the risks and opportunities facing the Museum.
+
+Current Funding Agreement
+
+Corporate Governance Code
+}}}
+
+
+
 ===== startsWithAny =====
 
 Filters on nodes that have text that starts with any of a list of strings<br>
