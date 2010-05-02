@@ -32,12 +32,15 @@ import com.Ostermiller.util.StringHelper;
 
 /**
  * Filters on nodes that have text that starts with any of a list of strings<br>
+ * It is possible to define inclusion or exclusion of elements that match.<br>
  * Using com.Ostermiller.util, class StringHelper, method startsWithAnyIgnoreCase and startsWithAny
  *
  * @author Johan Degraeve
  *
  */
 public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringProcessor {
+    
+    private boolean include;
     
     /**
      * case sensitive attribute
@@ -54,10 +57,12 @@ public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringP
      */
     public GETorFILTERstartsWithAny() {
 	stringChildList = new ArrayList<GENERICstring> ();
+	caseSensitive = false;
+	include = true;
     }
 
     /**
-     * adds case_sensitive attribute, default value = false
+     * adds case_sensitive attribute, default value = false, adds include attribute, default value = true
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */
     @Override
@@ -66,12 +71,18 @@ public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringP
 		attributes, 
 		new String[] {
 			TagAndAttributeNames.case_sensitiveAttribute,
+			TagAndAttributeNames.includeAttribute
 		}, 
 		new String[]  {
 			"false",
+			"true"
 		});
 	if (attrValues[0].equalsIgnoreCase("true")) 
 	    caseSensitive = true;
+	if (attrValues[1].equalsIgnoreCase("true")) 
+	    include = true;
+	else 
+	    include = false;
     }
 
     /**
@@ -107,7 +118,7 @@ public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringP
     }
 
     /**
-     * @return the case_sensitive attribute
+     * @return the {@link #caseSensitive} and the {@link #include} attribute
      * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
      */
     @Override
@@ -118,6 +129,11 @@ public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringP
 		TagAndAttributeNames.case_sensitiveAttribute, 
 		"CDATA", 
 		(caseSensitive ? "true":"false"));
+	attr.addAttribute(null, 
+		TagAndAttributeNames.includeAttribute, 
+		TagAndAttributeNames.includeAttribute, 
+		"CDATA", 
+		(include ? "true":"false"));
 	return attr;
     }
 
@@ -171,11 +187,19 @@ public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringP
 	
 	for (int i = 0;i < list.size();i ++)
 	    if (caseSensitive) {
-		if (StringHelper.startsWithAny(list.elementAt(i).convertToString(),terms))
-		    returnvalue.add(list.elementAt(i));
+		if (StringHelper.startsWithAny(list.elementAt(i).convertToString(),terms)) {
+		    if (include) 
+			returnvalue.add(list.elementAt(i));
+		} else 
+		    if (!include) 
+			returnvalue.add(list.elementAt(i));
 	    } else {
-		if (StringHelper.startsWithAnyIgnoreCase(list.elementAt(i).convertToString(),terms))
-		    returnvalue.add(list.elementAt(i));
+		if (StringHelper.startsWithAnyIgnoreCase(list.elementAt(i).convertToString(),terms)) {
+		    if (include) 
+			returnvalue.add(list.elementAt(i));
+		} else 
+		    if (!include) 
+			returnvalue.add(list.elementAt(i));
 	    }
 	return returnvalue;
     }
@@ -197,11 +221,19 @@ public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringP
 	ArrayList<String> returnvalue = new ArrayList<String> ();
 	for (int i = 0; i < source.length;i++) {
 	    if (caseSensitive) {
-		if (StringHelper.startsWithAny(source[i], terms))
-		    returnvalue.add(source[i]);
+		if (StringHelper.startsWithAny(source[i], terms)) {
+		    if (include) 
+			    returnvalue.add(source[i]);
+		} else 
+		    if (!include) 
+			    returnvalue.add(source[i]);
 	    } else
-		if (StringHelper.startsWithAnyIgnoreCase(source[i], terms))
-		    returnvalue.add(source[i]);
+		if (StringHelper.startsWithAnyIgnoreCase(source[i], terms)) {
+		    if (include) 
+			    returnvalue.add(source[i]);
+		} else 
+		    if (!include) 
+			    returnvalue.add(source[i]);
 	}
 	return (String[]) returnvalue.toArray(actualReturnValue);
     }

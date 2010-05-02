@@ -32,12 +32,18 @@ import com.Ostermiller.util.StringHelper;
 
 /**
  * Filters on nodes that have text that ends with any of a list of strings<br>
+ * It is possible to define inclusion or exclusion of elements that match.<br>
  * Using com.Ostermiller.util, class StringHelper, method endsWithAnyIgnoreCase and endsWithAny
  *
  * @author Johan Degraeve
  *
  */
 public class GETorFILTERendsWithAny implements XMLElement,  XMLGetter, StringProcessor {
+    
+    /**
+     * defines if matching elements should be included or excluded
+     */
+    private boolean include;
     
     /**
      * case sensitive attribute
@@ -54,10 +60,12 @@ public class GETorFILTERendsWithAny implements XMLElement,  XMLGetter, StringPro
      */
     public GETorFILTERendsWithAny() {
 	stringChildList = new ArrayList<GENERICstring> ();
+	include = false;
+	include = true;
     }
 
     /**
-     * adds case_sensitive attribute, default value = false
+     * adds case_sensitive attribute, default value = false, , adds include attribute, default value = true
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */
     @Override
@@ -66,12 +74,18 @@ public class GETorFILTERendsWithAny implements XMLElement,  XMLGetter, StringPro
 		attributes, 
 		new String[] {
 			TagAndAttributeNames.case_sensitiveAttribute,
+			TagAndAttributeNames.includeAttribute
 		}, 
 		new String[]  {
 			"false",
+			"true"
 		});
 	if (attrValues[0].equalsIgnoreCase("true")) 
 	    caseSensitive = true;
+	if (attrValues[1].equalsIgnoreCase("true")) 
+	    include = true;
+	else
+	    include = false;
     }
 
     /**
@@ -107,7 +121,7 @@ public class GETorFILTERendsWithAny implements XMLElement,  XMLGetter, StringPro
     }
 
     /**
-     * @return the case_sensitive attribute
+     * @return the {@link #caseSensitive} and the {@link #include} attribute
      * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
      */
     @Override
@@ -118,6 +132,11 @@ public class GETorFILTERendsWithAny implements XMLElement,  XMLGetter, StringPro
 		TagAndAttributeNames.case_sensitiveAttribute, 
 		"CDATA", 
 		(caseSensitive ? "true":"false"));
+	attr.addAttribute(null, 
+		TagAndAttributeNames.includeAttribute, 
+		TagAndAttributeNames.case_sensitiveAttribute, 
+		"CDATA", 
+		(include ? "true":"false"));
 	return attr;
     }
 
@@ -171,11 +190,19 @@ public class GETorFILTERendsWithAny implements XMLElement,  XMLGetter, StringPro
 	
 	for (int i = 0;i < list.size();i ++)
 	    if (caseSensitive) {
-		if (StringHelper.endsWithAny(list.elementAt(i).convertToString(),terms))
-		    returnvalue.add(list.elementAt(i));
+		if (StringHelper.endsWithAny(list.elementAt(i).convertToString(),terms)) {
+		    if (include) 
+			returnvalue.add(list.elementAt(i));
+		} else 
+		    if (!include) 
+			returnvalue.add(list.elementAt(i));
 	    } else {
-		if (StringHelper.endsWithAnyIgnoreCase(list.elementAt(i).convertToString(),terms))
-		    returnvalue.add(list.elementAt(i));
+		if (StringHelper.endsWithAnyIgnoreCase(list.elementAt(i).convertToString(),terms)) {
+		    if (include) 
+			returnvalue.add(list.elementAt(i));
+		} else 
+		    if (!include) 
+			returnvalue.add(list.elementAt(i));
 	    }
 	return returnvalue;
     }
@@ -197,11 +224,19 @@ public class GETorFILTERendsWithAny implements XMLElement,  XMLGetter, StringPro
 	ArrayList<String> returnvalue = new ArrayList<String> ();
 	for (int i = 0; i < source.length;i++) {
 	    if (caseSensitive) {
-		if (StringHelper.endsWithAny(source[i], terms))
-		    returnvalue.add(source[i]);
+		if (StringHelper.endsWithAny(source[i], terms)) {
+		    if (include) 
+			    returnvalue.add(source[i]);
+		} else 
+		    if (!include) 
+			    returnvalue.add(source[i]);
 	    } else
-		if (StringHelper.endsWithAnyIgnoreCase(source[i], terms))
-		    returnvalue.add(source[i]);
+		if (StringHelper.endsWithAnyIgnoreCase(source[i], terms)) {
+		    if (include) 
+			    returnvalue.add(source[i]);
+		} else 
+		    if (!include) 
+			    returnvalue.add(source[i]);
 	}
 	return (String[]) returnvalue.toArray(actualReturnValue);
     }
