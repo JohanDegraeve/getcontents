@@ -337,8 +337,11 @@ encoding
 
 ==== getUnFilteredContent ====
 
-If the input is a URL (not starting with '<'), it will fetch the content.
-If the input is not a URL, it returns the input.
+If the input is a URL (anything not starting with '<'), it will fetch the content.
+If the input is not a URL, it returns the input.<br>
+So it is important, if the input is to be seen as a source text (ie not a URL), then the first non blank character should be a '<'.<br>
+
+The instruction will read line by line in the source, each line results in a string in an array that will be the result of this instruction. So the result of this instruction will be an array of String.
 
 *Attributes*
  none
@@ -1600,6 +1603,68 @@ resulting in
 {{{
 <TD width="10%" ALIGN="center"><strong>Eiwit (g)</strong></TD>
 <TD width="10%" ALIGN="center"><strong>vet (g)</strong></TD>
+}}}
+
+===== midPad : pad beginning and end =====
+
+Pad the beginning and end of each String with the given character until the result is the desired length. The result is that the original String is centered in the middle of the new string.<br>
+
+If the number of characters to pad is even, then the padding will be split evenly between the beginning and end, otherwise, the extra character will be added to the end.
+
+*Attributes*
+ * mandatory attribute
+   length : defines the minimum length that the new String should have
+ * optional attribute
+   character : defines the character to pad, default is one blank space
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+  
+*example*
+
+start with following input
+
+{{{
+this is text 1
+this is a long text, it's a very long text
+this is text 2
+}}}
+
+apply following instruction list :
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+      </url>
+      <description>
+         <![CDATA[example]]>
+      </description>
+      <instructionList>
+         <getUnFilteredContent>
+         </getUnFilteredContent>
+         <processString>
+            <midPad character="+" length = "20">
+            </midPad>
+         </processString>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+and this is the result : 
+
+{{{
++++this is text 1+++
+this is a long text, it's a very long text
++++this is text 2+++
 }}}
 
 ===== startsWithAny =====
