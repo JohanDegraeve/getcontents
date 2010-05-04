@@ -18,8 +18,10 @@
  *  additional information or have any questions.
  */
 package net.johandegraeve.getcontents;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -27,21 +29,38 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import com.Ostermiller.util.StringHelper;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
 
-
+/**
+ * Pad the beginning and end of the given String with spaces until the String is of the given length.<br>
+ * Uses {@link com.Ostermiller.util.StringHelper#midpad(String, int, char)} 
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class STRING_PROCESSORmidPad implements XMLElement,
 	StringProcessor {
 
+    /**
+     * length to be achieved by adding character {@link #c}
+     */
     private int length;
+    /**
+     * character to add at beginning and end of string until string has size {@link #length}
+     */
     private char c;
     
+    /**
+     * constructor assigning {@link #c} to one blank space
+     */
     public STRING_PROCESSORmidPad() {
 	length=0;
 	c=' ';
     }
     
+    /**
+     * requires length and character as mandatory attributes
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	try {
@@ -56,19 +75,35 @@ public class STRING_PROCESSORmidPad implements XMLElement,
 	c = net.johandegraeve.getcontents.Utilities.createCharFromString(tempC);
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.STRING_PROCESSORmidPadTag);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return {@link #c} and {@link #length} in an attribute
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -77,21 +112,37 @@ public class STRING_PROCESSORmidPad implements XMLElement,
 	return attr;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#STRING_PROCESSORmidPadTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.STRING_PROCESSORmidPadTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * @return an array of string with source strings midPadded
+     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
+     */
     @Override
     public String[] processString(String[] source) {
 	for (int i = 0; i < source.length; i ++)
@@ -99,10 +150,18 @@ public class STRING_PROCESSORmidPad implements XMLElement,
 	return source;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;

@@ -18,8 +18,10 @@
  *  additional information or have any questions.
  */
 package net.johandegraeve.getcontents;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -27,16 +29,30 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import com.Ostermiller.util.StringHelper;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
 
-
+/**
+ * ppend the given character to the String until the result is the desired length. 
+ * If a String is longer than the desired length, it will not be truncated, however no padding will be added.<br>
+ * Uses {@link com.Ostermiller.util.StringHelper#postpad(String, int, char)} 
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class STRING_PROCESSORpostPad implements XMLElement,
 	StringProcessor {
 
+    /**
+     * minimum length that new strings should have
+     */
     private int length;
+    /**
+     * character to pad
+     */
     private char c;
     
+    /**
+     * constructor, setting {@link #c} to one blank space and {@link #length} to 0
+     */
     public STRING_PROCESSORpostPad() {
 	length=0;
 	c=' ';
