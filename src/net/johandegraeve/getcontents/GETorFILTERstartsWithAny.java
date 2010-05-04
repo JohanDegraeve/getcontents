@@ -40,6 +40,9 @@ import com.Ostermiller.util.StringHelper;
  */
 public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringProcessor {
     
+    /**
+     * defines if matching elements should be included or excluded
+     */
     private boolean include;
     
     /**
