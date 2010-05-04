@@ -1691,6 +1691,30 @@ Append the given character to the String until the result is the desired length.
 
 see midPad
 
+===== prePad : pad beginning =====
+
+Prepend the given character to the String until the result is the desired length. If a String is longer than the desired length, it will not be truncated, however no padding will be added.<br>
+
+
+*Attributes*
+ * mandatory attribute
+   length : defines the minimum length that the new String should have
+ * optional attribute
+   character : defines the character to pad, default is one blank space
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+  
+*example*
+
+see midPad
+
 ===== startsWithAny =====
 
 Filters on nodes that have text that starts with any of a list of strings<br>
