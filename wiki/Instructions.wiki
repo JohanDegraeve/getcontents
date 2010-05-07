@@ -99,7 +99,11 @@ This is free format description. Not really used yet.
 
 === url ===
 
-The url where the source needs to be downloaded.
+The url where the source needs to be downloaded.<br>
+Can also be a local file.<br>
+Format for a remote url : http://...<br>
+Format for a local file : file://localhost/....<br>
+
 Is optional, in case not present, then application must start the instructionList with source parameter which can again be a url (anything starting with '<') or the actual source content (anything not starting with '<').
 
 *Attributes*
@@ -112,12 +116,29 @@ Is optional, in case not present, then application must start the instructionLis
  none
 
 *Example*
+
+a remote url
 {{{
 <?xml version="1.0" encoding="UTF-8" ?>
 <getContentItemList>
    <getContentItem id="1"> 
       <url>
           http://www.androidworld.nl/forum/external.php
+      </url>
+...
+   </getContentItem>
+...
+</getContentItemList>
+}}}
+
+
+a local file
+{{{
+<?xml version="1.0" encoding="UTF-8" ?>
+<getContentItemList>
+   <getContentItem id="1"> 
+      <url>
+          file://localhost/Users/Johan/temp/test.html
       </url>
 ...
    </getContentItem>
@@ -880,7 +901,7 @@ Now we run following instruction file :
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[example htmlGetter - children]]>
@@ -916,7 +937,7 @@ we can go one step further with the instructin file :
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[Programs http://www.belgids.be/television haal de zenders op]]>
@@ -986,7 +1007,7 @@ to which we apply following instructionlist :
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[example]]>
@@ -1099,7 +1120,7 @@ Now we first apply a tagName Filter for tag "TD" :
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[example]]>
@@ -1140,7 +1161,7 @@ Now we extend the instructionlist with a containsAny string processor, with two 
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[example]]>
@@ -1221,7 +1242,7 @@ Now we apply following instructionlist :
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[example]]>
@@ -1439,7 +1460,7 @@ with following instructionlist :
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[example]]>
@@ -1511,7 +1532,7 @@ we first push it through a getUnFilteredContent instruction which will give 4 st
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[example]]>
@@ -1642,7 +1663,7 @@ apply following instruction list :
 <getContentItemList>
    <getContentItem id="1">
       <url>
-         <![CDATA[file:/Users/Johan/temp/temp.txt]]>
+         <![CDATA[file://localhost/Users/Johan/temp/temp.txt]]>
       </url>
       <description>
          <![CDATA[example]]>
