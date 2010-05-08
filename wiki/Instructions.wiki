@@ -1857,6 +1857,77 @@ Mon Jan 04 19:16:00 CET 2010
 Sun Dec 06 15:49:00 CET 2009
 }}}
 
+====== simpleDateFormat ======
+
+a simpleDateFormat
+
+*Attributes*
+ none
+
+*Occurrence*
+ 1
+
+*Allowed Children*
+ * allowed combinations of children :
+   * no children : a default constructor of SimpleDateFormat will be used
+   * 1 simpleDateFormatPattern : the constructor SimpleDateFormat(String pattern) will be used
+   * 1 simpleDateFormatPattern & 1 DateFormatSymbols : the constructor SimpleDateFormat(String pattern, DateFormatSymbols formatSymbols) will be used
+   * 1 simpleDateFormatPattern & 1 locale : the constructor  SimpleDateFormat(String pattern, Locale locale) will be used
+
+
+*text field*
+none
+
+======= DateFormatSymbols =======
+
+DateFormatSymbols
+
+*Attributes*
+ none
+
+*Occurrence*
+ 1
+
+*Children*
+ * 
+
+*text
+none
+
+======= simpleDateFormatPattern =======
+
+a simpleDateFormatPattern
+
+*Attributes*
+ none
+
+*Occurrence*
+ 1
+
+*text
+untrimmed, the date format pattern
+   
+   
+ 
+====== TimeZone ======
+
+a TimeZone
+
+*Attributes*
+ none
+
+*Occurrence*
+ 1
+
+*Allowed Children*
+ none
+   
+
+*text field*
+ a timeZone ID
+
+
+ 
 
 ===== startsWithAny =====
 
