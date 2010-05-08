@@ -37,6 +37,10 @@ public class GENERICMonths implements XMLElement {
 	return Months;
     }
     
+    /**
+     * constructor , setting {@link #Months} to default values as set by default constructor 
+     * {@link java.text.DateFormatSymbols#DateFormatSymbols()}
+     */
     public GENERICMonths() {
 	Months = new DateFormatSymbols().getMonths();
     }

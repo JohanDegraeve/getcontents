@@ -37,6 +37,10 @@ public class GENERICShortMonths implements XMLElement {
 	return ShortMonths;
     }
     
+    /**
+     * constructor , setting {@link #ShortMonths} to default values as set by default constructor 
+     * {@link java.text.DateFormatSymbols#DateFormatSymbols()}
+     */
     public GENERICShortMonths() {
 	ShortMonths = new DateFormatSymbols().getShortMonths();
     }

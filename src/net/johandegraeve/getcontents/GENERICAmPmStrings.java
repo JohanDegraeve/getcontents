@@ -30,27 +30,59 @@ import com.Ostermiller.util.StringHelper;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * AmPmStrings as defined in {@link java.text.DateFormatSymbols#setAmPmStrings(String[])}
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GENERICAmPmStrings implements XMLElement {
     
+    /**
+     * the AmPmStrings
+     */
     String[] AmPmStrings;
     
+    /**
+     * @return {@link #AmPmStrings}
+     */
     String[] getAmPmStrings() {
 	return AmPmStrings;
     }
     
+    /**
+     * constructor , setting {@link #AmPmStrings} to default values as set by default constructor 
+     * {@link java.text.DateFormatSymbols#DateFormatSymbols()}
+     */
     public GENERICAmPmStrings() {
 	AmPmStrings = new DateFormatSymbols().getAmPmStrings();
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {	
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICAmPmStringsTag);
     }
 
+    /**
+     * splits text in two parts using &quot;,&quot; fas separator, expects two fields, first field a string representing &quot;am&quot;, 
+     * second field a string representing &quot;pm&quot;<br>
+     * <br>
+     * After splitting the text, the individiual strings are trimmed using {@link java.lang.String#trim()}
+     * If there are less or more than two fields then an exception is thrown.
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
 	AmPmStrings = StringHelper.split(text, ",");
@@ -61,34 +93,62 @@ public class GENERICAmPmStrings implements XMLElement {
 	AmPmStrings[1] = AmPmStrings[1].trim();
     }
     
+    /** 
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#GENERICAmPmStringsTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERICAmPmStringsTag;
     }
 
+    /**
+     * @return the AmPmStrings, concatenated to one string with a &quot;'&quot; in between
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return AmPmStrings[0] + "," + AmPmStrings[1];
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;
