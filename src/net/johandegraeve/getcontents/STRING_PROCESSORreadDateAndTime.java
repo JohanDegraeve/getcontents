@@ -21,11 +21,13 @@ package net.johandegraeve.getcontents;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -33,26 +35,43 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import com.Ostermiller.util.StringHelper;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
+/**
+ * To read a date and time and to parse, returns the date and time using Date.toString();
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	StringProcessor {
     
+    /**
+     * the simpleDateFormat will be used to parse the date and time
+     */
     GENERICSimpleDateFormat simpleDateFormat;
-    private String offset;
-    private boolean chronological;
-    //names must be on decreasing order
-    private static final String year = "year";
-    private static final String month = "month";
-    private static final String day = "day";
-    private static final String halfday = "halfday";
-    private static final String hour = "hour";
-    
-    private static final String[] validOffsets = {"",year,month,day,halfday,hour};
-    
+
+    /**
+     * timezone used for parsing the input
+     */
     private GENERICTimeZone timeZone;
 
+    /**
+     * indicates if the individual source strings should represent a date and time in chronological order
+     */
+    private boolean chronological;
+    
+    /**
+     * defines the offset to add to the parsed date, for instance when input is something like 1430, offset would be day
+     */
+    private String offset;
+    
+    /**
+     * valid values for {@link #offset}
+     */
+    private static final String[] validOffsets = {"","year","month","day","halfday","hour"};
+    
+    /**
+     * constructor setting {@link #simpleDateFormat} to null, {@link #offset} to empty string, {@link #chronological} to true
+     */
     public STRING_PROCESSORreadDateAndTime() {
 	simpleDateFormat = null;
 	offset="";
@@ -60,6 +79,11 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
     }
     
 
+    /**
+     * reads attributes {@link #offset} and {@link #chronological} with default values respectively empty string 
+     * and true
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	String[] attrValues = Utilities.getOptionalAttributeValues(
@@ -89,6 +113,12 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	    chronological = false;
     }
 
+    /**
+     * if child is not a {@link TagAndAttributeNames#GENERICTimeZoneTag} pr {@link TagAndAttributeNames#GENERICSimpleDateFormatTag}
+     * then an exception is thrown<br>
+     * 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child,
@@ -114,14 +144,26 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
     
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if {@link #simpleDateFormat} is null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (simpleDateFormat == null)
@@ -129,6 +171,10 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 		    "must have a child of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag);
     }
 
+    /**
+     * @return the attributes {@link #offset}, {@link #chronological}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -137,26 +183,50 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	return attr;
     }
 
+    /**
+     * @return {@link #simpleDateFormat} in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
-	return Utilities.createXMLElementList(simpleDateFormat);
+	ArrayList<XMLElement> returnvalue  = new ArrayList<XMLElement>();
+	returnvalue.add(simpleDateFormat);
+	returnvalue.add(timeZone);
+	return returnvalue;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#STRING_PROCESSORreadDateAndTimeTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.STRING_PROCESSORreadDateAndTimeTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;
     }
 
+    /**
+     * Here's where the actual parsing happens. 
+     * @return array of strings with parsed dates, using Date.toString()
+     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
+     */
     @Override
     public String[] processString(String[] source) {
 	DateFormat format = simpleDateFormat.getSimpleDateFormat();
@@ -189,7 +259,7 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
      * wintertime. In that case, parsedDate would correspond to "Thu Jan 01 23:25:00 CET 1970". The method here will change that into today (for example today it's 21st of 
      * March 2010, so the returnvalue would be a Date corresponding to "Sun Mar 21 23:25:00 CET 2010", Date in milliseconds off course, I didn't
      * take the time to calculate how much that would be right now.<br>
-     * In this example, offset would need to be set to "day", whic means the string "23:25", is a time accurate only on a specific day.<br>
+     * In this example, offset would need to be set to "day", which means the string "23:25", is a time accurate only on a specific day.<br>
      * Other example : "21 March, 22:00:15", if this would have been parsed, the result would be  "Sat Mar 21 23:25:00 CET 1970". So the offset would need to be
      * set to "year", and the result would then be "Sun Mar 21 23:25:00 CET 2010", so the method will add the current year which is 2010.<br><br>
      * Parameter previousDate is used in conjunction with field "chronological". If chronological is true, then the returnvalue should come after the previousDate.
@@ -219,27 +289,27 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	
 	//for sure current year will need to be added, since offset is not ""
 	parsedCalendar.set(GregorianCalendar.YEAR,today.get(GregorianCalendar.YEAR));
-	if (!offset.equals(year)) {
+	if (!offset.equals("year")) {
 	    parsedCalendar.set(GregorianCalendar.MONTH,today.get(GregorianCalendar.MONTH));
-	    if (!offset.equals(month))
+	    if (!offset.equals("month"))
 		parsedCalendar.set(GregorianCalendar.DAY_OF_MONTH,today.get(GregorianCalendar.DAY_OF_MONTH));
-		if (offset.equals(halfday))
+		if (offset.equals("halfday"))
 		    if (today.get(GregorianCalendar.AM_PM) == Calendar.PM)
 			parsedCalendar.set(GregorianCalendar.AM_PM,Calendar.PM);
-		if (!offset.equals(day))
+		if (!offset.equals("day"))
 		    parsedCalendar.set(GregorianCalendar.HOUR_OF_DAY,today.get(GregorianCalendar.HOUR_OF_DAY));
 	}
 	if (previousDate != null && chronological) {
 	    if (parsedCalendar.getTimeInMillis() < previousDate.getTime()){
-		if (offset.equals(year))
+		if (offset.equals("year"))
 		    parsedCalendar.add(GregorianCalendar.YEAR,1);
-		if (offset.equals(month))
+		if (offset.equals("month"))
 		    parsedCalendar.add(GregorianCalendar.MONTH,1);
-		if (offset.equals(day))
+		if (offset.equals("day"))
 		    parsedCalendar.add(GregorianCalendar.DAY_OF_MONTH,1);
-		if (offset.equals(halfday))
+		if (offset.equals("halfday"))
 		    parsedCalendar.add(GregorianCalendar.HOUR_OF_DAY,12);
-		if (offset.equals(hour))
+		if (offset.equals("hout"))
 		    parsedCalendar.add(GregorianCalendar.HOUR_OF_DAY,1);
 	    }
 	}
