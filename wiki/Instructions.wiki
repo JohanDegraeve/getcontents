@@ -2,7 +2,7 @@
 
 <font color="red">THIS PAGE IS UNDER CONSTRUCTION</font>
 
-<wiki:toc max_depth="6" />
+<wiki:toc max_depth="8" />
 
 = Introduction =
 
@@ -1890,12 +1890,12 @@ DateFormatSymbols
 
 *Children*
  * locale : if a locale child is present then none of the other children is allowed
- * AmPmStrings
- * eras
- * Months
- * ShortMonths
- * WeekDays
- * ShortWeekays
+ * AmPmStrings : a list of two strings, seperated by comma
+ * eras ?
+ * Months : a list of twelve strings, seperated by comma
+ * ShortMonths : a list of twelve strings, seperated by comma
+ * WeekDays : a list of seven, seperated by comma
+ * ShortWeekays : a list of seven strings, seperated by comma
 
 *text
 none
@@ -1932,8 +1932,6 @@ a TimeZone
 *text field*
  a timeZone ID
 
-
- 
 
 ===== startsWithAny =====
 
