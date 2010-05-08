@@ -21,28 +21,46 @@ package net.johandegraeve.getcontents;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
-
-import com.Ostermiller.util.StringHelper;
 
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
+/**
+ * class for SimpleDateFormat element
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GENERICSimpleDateFormat implements XMLElement {
     
+    /**
+     * the pattern
+     */
     private GENERICsimpleDateFormatPattern pattern;
+    /**
+     * the symbols
+     */
     private GENERICDateFormatSymbols symbols;
+    /**
+     * the locale
+     */
     private GENERIClocale locale;
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * @return the SimpleDateFormat stored to this element
+     */
     SimpleDateFormat getSimpleDateFormat() {
 	if (pattern == null) return new SimpleDateFormat();
 	if (symbols != null) return new SimpleDateFormat(pattern.getPattern(),symbols.getDateFormatSymbols());
@@ -50,10 +68,17 @@ public class GENERICSimpleDateFormat implements XMLElement {
 	return new SimpleDateFormat(pattern.getPattern());
     }
     
+    /**
+     * @return the locale stored in {@link #locale}
+     */
     Locale getLocale() {
 	return locale.getLocal();
     }
     
+    /**
+     * throws an exception if child is not {@link #locale}, {@link #pattern}, {@link #symbols}, otherwise assignes corresponding variable
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	if (Utilities.getClassname(child.getClass()).equals(
@@ -94,14 +119,26 @@ public class GENERICSimpleDateFormat implements XMLElement {
 	
     }
 
+    /**
+     *  does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if combination of children is not correct, should be as allowed formats of simpleDateFormat constructor
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	String exceptionString = "Element of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag + 
@@ -139,9 +176,17 @@ public class GENERICSimpleDateFormat implements XMLElement {
 	}
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() { return null; }
 
+    /**
+     * @return {@link #locale}, {@link #symbols}, {@link #pattern} in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement>();
@@ -151,17 +196,29 @@ public class GENERICSimpleDateFormat implements XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#GENERICSimpleDateFormatTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	// XXX Auto-generated method stub
 	return TagAndAttributeNames.GENERICSimpleDateFormatTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;

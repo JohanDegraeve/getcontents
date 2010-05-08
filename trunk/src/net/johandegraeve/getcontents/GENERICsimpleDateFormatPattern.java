@@ -27,27 +27,55 @@ import org.xml.sax.SAXException;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * pattern for SimpleDateFormat, pattern is untrimmed
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GENERICsimpleDateFormatPattern implements XMLElement {
     
+    /**
+     * the pattern
+     */
     private String pattern;
     
+    /**
+     * @return the {@link #pattern}
+     */
     String getPattern() {
 	return pattern;
     }
     
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * assigns text to {@link #pattern}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
 	pattern = text;
@@ -59,6 +87,10 @@ public class GENERICsimpleDateFormatPattern implements XMLElement {
 	}
     }
 
+    /**
+     * throws an exception if {@link #pattern} is null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (pattern == null)
@@ -66,26 +98,46 @@ public class GENERICsimpleDateFormatPattern implements XMLElement {
 		    "contain a text that represents the pattern");
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#GENERICsimpleDateFormatPatternTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERICsimpleDateFormatPatternTag;
     }
 
+    /**
+     * @return {@link #pattern}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return pattern;
     }
 
+    /**
+     * @return true
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return true;

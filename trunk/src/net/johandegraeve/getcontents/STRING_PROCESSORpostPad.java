@@ -31,7 +31,7 @@ import com.Ostermiller.util.StringHelper;
 
 
 /**
- * ppend the given character to the String until the result is the desired length. 
+ * append the given character to the String until the result is the desired length. 
  * If a String is longer than the desired length, it will not be truncated, however no padding will be added.<br>
  * Uses {@link com.Ostermiller.util.StringHelper#postpad(String, int, char)} 
  *
@@ -58,6 +58,10 @@ public class STRING_PROCESSORpostPad implements XMLElement,
 	c=' ';
     }
     
+    /**
+     * adds the mandatory attribute length and the optional attribute character with default value one blank space
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	try {
@@ -72,19 +76,35 @@ public class STRING_PROCESSORpostPad implements XMLElement,
 	c = net.johandegraeve.getcontents.Utilities.createCharFromString(tempC);
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.STRING_PROCESSORpostPadTag);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return the attribute length and character
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -93,32 +113,56 @@ public class STRING_PROCESSORpostPad implements XMLElement,
 	return attr;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#STRING_PROCESSORpostPadTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.STRING_PROCESSORpostPadTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
-	    @Override
-	    public String[] processString(String[] source) {
-		for (int i = 0; i < source.length; i ++)
-		    source[i] = StringHelper.postpad(source[i],length,c);
-		return source;
-	    }
+    /**
+     * @return the source strings postpadded with {@link #c} until {@link #length} is achieved
+     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
+     */
+    @Override
+    public String[] processString(String[] source) {
+	for (int i = 0; i < source.length; i ++)
+	    source[i] = StringHelper.postpad(source[i],length,c);
+	return source;
+    }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;
