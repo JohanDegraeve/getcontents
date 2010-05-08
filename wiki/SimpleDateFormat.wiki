@@ -8,7 +8,6 @@
 
 Add your content here.
 
-
 = simpleDateFormat =
 
 a simpleDateFormat
@@ -25,7 +24,6 @@ a simpleDateFormat
    * 1 simpleDateFormatPattern : the constructor SimpleDateFormat(String pattern) will be used
    * 1 simpleDateFormatPattern & 1 DateFormatSymbols : the constructor SimpleDateFormat(String pattern, DateFormatSymbols formatSymbols) will be used
    * 1 simpleDateFormatPattern & 1 locale : the constructor  SimpleDateFormat(String pattern, Locale locale) will be used
-
 
 *text field*
 none
