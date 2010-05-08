@@ -1859,61 +1859,7 @@ Sun Dec 06 15:49:00 CET 2009
 
 ====== simpleDateFormat ======
 
-a simpleDateFormat
-
-*Attributes*
- none
-
-*Occurrence*
- 1
-
-*Allowed Children*
- * allowed combinations of children :
-   * no children : a default constructor of SimpleDateFormat will be used
-   * 1 simpleDateFormatPattern : the constructor SimpleDateFormat(String pattern) will be used
-   * 1 simpleDateFormatPattern & 1 DateFormatSymbols : the constructor SimpleDateFormat(String pattern, DateFormatSymbols formatSymbols) will be used
-   * 1 simpleDateFormatPattern & 1 locale : the constructor  SimpleDateFormat(String pattern, Locale locale) will be used
-
-
-*text field*
-none
-
-======= DateFormatSymbols =======
-
-DateFormatSymbols
-
-*Attributes*
- none
-
-*Occurrence*
- 1
-
-*Children*
- * locale : if a locale child is present then none of the other children is allowed
- * AmPmStrings : a list of two strings, seperated by comma
- * eras ?
- * Months : a list of twelve strings, seperated by comma
- * ShortMonths : a list of twelve strings, seperated by comma
- * WeekDays : a list of seven, seperated by comma
- * ShortWeekays : a list of seven strings, seperated by comma
-
-*text
-none
-
-======= simpleDateFormatPattern =======
-
-a simpleDateFormatPattern
-
-*Attributes*
- none
-
-*Occurrence*
- 1
-
-*text
-untrimmed, the date format pattern
-   
-   
+see http://code.google.com/p/getcontents/wiki/SimpleDateFormat   
  
 ====== TimeZone ======
 
@@ -1931,7 +1877,6 @@ a TimeZone
 
 *text field*
  a timeZone ID
-
 
 ===== startsWithAny =====
 
