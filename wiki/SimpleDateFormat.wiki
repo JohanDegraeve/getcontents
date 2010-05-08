@@ -1,5 +1,9 @@
 #summary Explanation of the SimpleDateFormat XML Element, which is used only in the string processor readDateAndTime
 
+<font color="red">THIS PAGE IS UNDER CONSTRUCTION</font>
+
+<wiki:toc max_depth="8" />
+
 = Introduction =
 
 Add your content here.
