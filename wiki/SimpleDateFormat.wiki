@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Explanation of the SimpleDateFormat XML Element, which is used only in the string processor readDateAndTime
 
 = Introduction =
 
