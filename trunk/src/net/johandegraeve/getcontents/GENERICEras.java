@@ -29,11 +29,24 @@ import com.Ostermiller.util.StringHelper;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * represents eras as used in a {@link java.text.DateFormatSymbols DateFormatSymbol}<br>
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GENERICEras implements XMLElement {
 
+    /**
+     * the eras
+     */
     private String[] Eras;
     
-    public GENERICEras () {
+    /**
+     * constructor , setting {@link #Eras} to default values as set by default constructor 
+     * {@link java.text.DateFormatSymbols#DateFormatSymbols()}
+     */
+   public GENERICEras () {
 	Eras = new DateFormatSymbols().getEras();
     }
     
@@ -50,6 +63,10 @@ public class GENERICEras implements XMLElement {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICErasTag);
     }
 
+    /**
+     * splits text using &quot;,&quot; as delimiter, trims each field and stores the strings in {@link #Eras}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
 	Eras = StringHelper.split(text, ",");
@@ -80,6 +97,10 @@ public class GENERICEras implements XMLElement {
 	return TagAndAttributeNames.GENERICErasTag;
     }
 
+    /**
+     * @return the eras in one string, using &quot;,&quot; as separator
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	StringBuilder returnvalue  = new StringBuilder();

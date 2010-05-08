@@ -37,6 +37,10 @@ public class GENERICWeekDays implements XMLElement {
 	return WeekDays;
     }
     
+    /**
+     * constructor , setting {@link #WeekDays} to default values as set by default constructor 
+     * {@link java.text.DateFormatSymbols#DateFormatSymbols()}
+     */
     public GENERICWeekDays() {
 	WeekDays = new DateFormatSymbols().getWeekdays();
     }

@@ -37,6 +37,10 @@ public class GENERICShortWeekDays implements XMLElement {
 	return ShortWeekDays;
     }
     
+    /**
+     * constructor , setting {@link #ShortWeekDays} to default values as set by default constructor 
+     * {@link java.text.DateFormatSymbols#DateFormatSymbols()}
+     */
     public GENERICShortWeekDays() {
 	ShortWeekDays = new DateFormatSymbols().getShortWeekdays();
     }

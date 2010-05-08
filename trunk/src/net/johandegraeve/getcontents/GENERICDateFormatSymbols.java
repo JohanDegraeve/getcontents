@@ -29,16 +29,49 @@ import org.xml.sax.SAXException;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * represents a {@link java.text.DateFormatSymbols}<br>
+ * It is possible to create a {@link GENERICDateFormatSymbols DateFormatSymbols object} with {@link GENERIClocale Locale}, {@link GENERICAmPmStrings AmPmStrings},
+ * {@link GENERICEras Eras}, {@link GENERICMonths Months}, {@link GENERICShortMonths ShortMonths}, {@link GENERICWeekDays WeekDays}, {@link GENERICShortWeekDays ShortWeekDays},
+ * 
+ * 
+ * @author Johan Degraeve
+ *
+ */
 public class GENERICDateFormatSymbols implements XMLElement {
     
+    /**
+     * locale
+     */
     private GENERIClocale locale;
+    /**
+     * AmPmStrings
+     */
     private GENERICAmPmStrings amPMStrings;
+    /**
+     * eras
+     */
     private GENERICEras eras;
+    /**
+     * months
+     */
     private GENERICMonths months;
+    /**
+     * shortMonths
+     */
     private GENERICShortMonths shortMonths;
+    /**
+     * weekDays
+     */
     private GENERICWeekDays weekDays;
+    /**
+     * shortWeekDays
+     */
     private GENERICShortWeekDays shortWeekDays;
     
+    /**
+     * @return the DateFormatSymbol represented by this object
+     */
     DateFormatSymbols getDateFormatSymbols() {
 	DateFormatSymbols returnvalue;
 	if (locale == null) 
@@ -54,10 +87,19 @@ public class GENERICDateFormatSymbols implements XMLElement {
 	return returnvalue;    
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * depending on type of child, assigns {@link #locale}, {@link #amPMStrings}, {@link #eras}, {@link #months},
+     * {@link #shortMonths}, {@link #weekDays}, {@link #shortWeekDays}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	if (Utilities.getClassname(child.getClass()).equals(
@@ -126,31 +168,52 @@ public class GENERICDateFormatSymbols implements XMLElement {
 	
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * tries to create a {@link java.text.DateFormatSymbols DateFormatSymbols Object}
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	//try to create the dateformatsymbols object to see if no exception is thrown
 	try {
 	    getDateFormatSymbols();
 	} catch (MissingResourceException e) {
-	    throw new SAXException("An MissingResourceException was thrown while trying to create a DateFormatSymbols object." + 
+	    throw new SAXException("A MissingResourceException was thrown while trying to create a DateFormatSymbols object." + 
 		    " Check the contents of the child elements. Here's the result of MissingResourceException.toString() :\n" +
 		    e.toString());
 	}
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return {@link #locale}, {@link #eras}, {@link #amPMStrings}, {@link #shortWeekDays}, {@link #weekDays},
+     * {@link #shortMonths}, {@link #months} in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement>();
@@ -164,16 +227,28 @@ public class GENERICDateFormatSymbols implements XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#GENERICDateFormatSymbolsTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERICDateFormatSymbolsTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;
