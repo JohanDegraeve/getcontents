@@ -103,7 +103,7 @@ the ampm Strings
  none
 
 *text*
-a list of two strings, seperated by comma   
+ a list of two strings, seperated by comma   
      
 === Eras ===
 
@@ -120,7 +120,7 @@ the Eras Strings
  none
 
 *text*
-a list of strings, seperated by comma   
+ a list of strings, seperated by comma   
       
       
 === Months ===
@@ -138,7 +138,7 @@ the Months Strings
  none
 
 *text*
-a list of 12 strings, seperated by comma   
+ a list of 12 strings, seperated by comma   
       
       
 === !ShortMonths ===
@@ -156,7 +156,7 @@ the !ShortMonths Strings
  none
 
 *text*
-a list of 12 strings, seperated by comma   
+ a list of 12 strings, seperated by comma   
      
 === !WeekDays ===
 
@@ -173,7 +173,7 @@ the !WeekDays Strings
  none
 
 *text*
-a list of 7 strings, seperated by comma   
+ a list of 7 strings, seperated by comma   
       
 === !ShortWeekDays ===
 
@@ -190,7 +190,7 @@ the !ShortWeekDays Strings
  none
 
 *text*
-a list of 7 strings, seperated by comma   
+ a list of 7 strings, seperated by comma   
       
       
 == Locale ==
