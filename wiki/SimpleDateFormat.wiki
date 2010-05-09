@@ -38,7 +38,7 @@ a !SimpleDateFormatPattern
 *Occurrence*
  1
 
-*text
+*text*
 untrimmed, the date format pattern
 
 == !DateFormatSymbols ==
@@ -52,8 +52,8 @@ untrimmed, the date format pattern
  1
 
 *Children*
- * Locale : if a Locale child is present then none of the other children is allowed
- * !AmPmStrings : a list of two strings, seperated by comma
+ * Locale
+ * !AmPmStrings
  * Eras ?
  * Months : a list of twelve strings, seperated by comma
  * !ShortMonths : a list of twelve strings, seperated by comma
@@ -62,7 +62,137 @@ untrimmed, the date format pattern
 
 *text*
  none   
-   
+
+=== Locale ===
+
+Locale
+
+*Attributes*
+ * language
+ * country
+ * variant
+Allowed combinations of language, country and variant follow the three constructors that exist for {@link java.util.Locale}, in addition it is possible to create a locale without specifying any attribute.<br>
+if language attribute present then country attribute is allowed<br>
+if language and country attribute present, then variant is allowed<br>
+if language not present then all get default values<br>
+if language present but not country and variant then country and variant get default values<br>
+if language and country present, but not variant, then variant gets default value<br>
+
+
+*Occurrence*
+ 1
+
+*Children*
+ none
+
+*text*
+ none   
+
+=== !AmPmStrings ===
+
+the ampm Strings
+
+*Attributes*
+ none
+
+
+*Occurrence*
+ 1
+
+*Children*
+ none
+
+*text*
+a list of two strings, seperated by comma   
+     
+=== Eras ===
+
+the Eras Strings
+
+*Attributes*
+ none
+
+
+*Occurrence*
+ 1
+
+*Children*
+ none
+
+*text*
+a list of strings, seperated by comma   
+      
+      
+=== Months ===
+
+the Months Strings
+
+*Attributes*
+ none
+
+
+*Occurrence*
+ 1
+
+*Children*
+ none
+
+*text*
+a list of 12 strings, seperated by comma   
+      
+      
+=== !ShortMonths ===
+
+the !ShortMonths Strings
+
+*Attributes*
+ none
+
+
+*Occurrence*
+ 1
+
+*Children*
+ none
+
+*text*
+a list of 12 strings, seperated by comma   
+     
+=== !WeekDays ===
+
+the !WeekDays Strings
+
+*Attributes*
+ none
+
+
+*Occurrence*
+ 1
+
+*Children*
+ none
+
+*text*
+a list of 7 strings, seperated by comma   
+      
+=== !ShortWeekDays ===
+
+the !ShortWeekDays Strings
+
+*Attributes*
+ none
+
+
+*Occurrence*
+ 1
+
+*Children*
+ none
+
+*text*
+a list of 7 strings, seperated by comma   
+      
+      
 == Locale ==
 
 Locale
