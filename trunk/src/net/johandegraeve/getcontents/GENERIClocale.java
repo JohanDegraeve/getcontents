@@ -28,20 +28,52 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * represents a local as defined in {@link java.util.Locale}
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GENERIClocale implements XMLElement {
     
+    /**
+     * language
+     */
     private String language;
+    /**
+     * country
+     */
     private String country;
+    /**
+     * variant
+     */
     private String variant;
     
+    /**
+     * constructor, intializes {@link #language}, {@link #country}, {@link #variant} using {@link java.util.Locale#getLanguage()},
+     * {@link java.util.Locale#getCountry()}, {@link java.util.Locale#getVariant()}
+     */
     public GENERIClocale() {
 	createDefaultAttributes();
     }
     
+    /**
+     * @return the local represtend by this object
+     */
     Locale getLocal() {
 	return new Locale(language,country,variant);
     }
 
+    /**
+     * assigns {@link #language}, {@link #country}, {@link #variant} using following rules :<br>
+     *  if language attribute present then country attribute is allowed, otherwise throw exception<br>
+     *  if country present, then variant is allowed<br>
+     *  if language not present then all get default values<br>
+     *  if language present but not country and variant then country and variant get default values<br>
+     *  if language and country present, but not variant, then variant gets default value<br>
+     *  
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	//if language attribute present then country attribute is allowed, otherwise throw exception
@@ -77,29 +109,53 @@ public class GENERIClocale implements XMLElement {
 	}
     }
 
+    /**
+     * throws an Exception
+     * 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERIClocaleTag);
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
     
+    /**
+     * initialize {@link #language}, {@link #country}, {@link #variant} using {@link java.util.Locale#getDefault()}
+     */
     private void createDefaultAttributes() {
 		language = Locale.getDefault().getLanguage();
 		country = Locale.getDefault().getCountry();
 		variant = Locale.getDefault().getVariant();
     }
 
+    /**
+     * @return the attributes {@link #language}, {@link #country}, {@link #variant}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -109,21 +165,37 @@ public class GENERIClocale implements XMLElement {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#GENERIClocaleTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERIClocaleTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;

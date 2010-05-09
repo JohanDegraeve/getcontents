@@ -149,10 +149,10 @@ public class GENERICDateFormatSymbols implements XMLElement {
 	}
 	if (Utilities.getClassname(child.getClass()).equals(
 		TagAndAttributeNames.genericPrefix +
-		TagAndAttributeNames.GENERICSWeekDaysTag)) {
+		TagAndAttributeNames.GENERICWeekDaysTag)) {
 	    if (weekDays != null)
 		throw new SAXException("Element of type " + TagAndAttributeNames.GENERICDateFormatSymbolsTag +
-			" should have only one child of type " + TagAndAttributeNames.GENERICSWeekDaysTag);
+			" should have only one child of type " + TagAndAttributeNames.GENERICWeekDaysTag);
 	    weekDays = (GENERICWeekDays) child;
 	    return;
 	}

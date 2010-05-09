@@ -29,10 +29,22 @@ import com.Ostermiller.util.StringHelper;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * represents ShortWeekDays as used in a {@link java.text.DateFormatSymbols DateFormatSymbol}<br>
+ * 
+ * @author Johan Degraeve
+ *
+ */
 public class GENERICShortWeekDays implements XMLElement {
     
+    /**
+     * short weekdays
+     */
     private String[] ShortWeekDays;
     
+    /**
+     * @return {@link #ShortWeekDays}
+     */
     String[] getShortWeekDays() {
 	return ShortWeekDays;
     }
@@ -45,15 +57,27 @@ public class GENERICShortWeekDays implements XMLElement {
 	ShortWeekDays = new DateFormatSymbols().getShortWeekdays();
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICShortWeekDaysTag);
     }
 
+    /**
+     * expects seven substrings seperated by &quot;,&quot;, splits, trims and assigns to {@link #ShortWeekDays}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
 	ShortWeekDays = StringHelper.split(text, ",");
@@ -64,29 +88,53 @@ public class GENERICShortWeekDays implements XMLElement {
 	    ShortWeekDays[i] = ShortWeekDays[i].trim();
     }
     
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#GENERICShortWeekDaysTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERICShortWeekDaysTag;
     }
 
+    /**
+     * @return the shortweekdays, seprated by &quot;,&quot;
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	StringBuilder returnvalue  = new StringBuilder();
@@ -101,6 +149,10 @@ public class GENERICShortWeekDays implements XMLElement {
 	return returnvalue.toString();
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;

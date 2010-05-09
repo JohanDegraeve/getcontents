@@ -97,7 +97,7 @@ package net.johandegraeve.getcontents;
     static final String GENERICMonthsTag = "Months";
     static final String GENERICShortMonthsTag = "ShortMonths";
     static final String GENERICShortWeekDaysTag = "ShortWeekDays";
-    static final String GENERICSWeekDaysTag = "WeekDays";
+    static final String GENERICWeekDaysTag = "WeekDays";
     static final String GENERICDateFormatSymbolsTag = "DateFormatSymbols";
     static final String GENERICSimpleDateFormatTag = "SimpleDateFormat";
     static final String STRING_PROCESSORreadDateAndTimeTag = "readDateAndTime";
