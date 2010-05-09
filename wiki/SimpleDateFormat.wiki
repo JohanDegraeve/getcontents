@@ -63,3 +63,28 @@ untrimmed, the date format pattern
 *text*
  none   
    
+== Locale ==
+
+Locale
+
+*Attributes*
+ * language
+ * country
+ * variant
+Allowed combinations of language, country and variant follow the three constructors that exist for {@link java.util.Locale}, in addition it is possible to create a locale without specifying any attribute.<br>
+if language attribute present then country attribute is allowed<br>
+if language and country attribute present, then variant is allowed<br>
+if language not present then all get default values<br>
+if language present but not country and variant then country and variant get default values<br>
+if language and country present, but not variant, then variant gets default value<br>
+
+
+*Occurrence*
+ 1
+
+*Children*
+ none
+
+*text*
+ none   
+   
