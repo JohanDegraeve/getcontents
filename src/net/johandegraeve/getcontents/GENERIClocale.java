@@ -34,7 +34,7 @@ import net.johandegraeve.easyxmldata.XMLElement;
  * @author Johan Degraeve
  *
  */
-public class GENERIClocale implements XMLElement {
+public class GENERICLocale implements XMLElement {
     
     /**
      * language
@@ -53,7 +53,7 @@ public class GENERIClocale implements XMLElement {
      * constructor, intializes {@link #language}, {@link #country}, {@link #variant} using {@link java.util.Locale#getLanguage()},
      * {@link java.util.Locale#getCountry()}, {@link java.util.Locale#getVariant()}
      */
-    public GENERIClocale() {
+    public GENERICLocale() {
 	createDefaultAttributes();
     }
     
@@ -65,9 +65,11 @@ public class GENERIClocale implements XMLElement {
     }
 
     /**
-     * assigns {@link #language}, {@link #country}, {@link #variant} using following rules :<br>
-     *  if language attribute present then country attribute is allowed, otherwise throw exception<br>
-     *  if country present, then variant is allowed<br>
+     * assigns {@link #language}, {@link #country}, {@link #variant}<br>
+     * Allowed combinations of language, country and variant follow the three constructors that exist for {@link java.util.Locale},
+     * in addition it is possible to create a locale without specifying any attribute.<br>
+     *  if language attribute present then country attribute is allowed<br>
+     *  if language and country attribute present, then variant is allowed<br>
      *  if language not present then all get default values<br>
      *  if language present but not country and variant then country and variant get default values<br>
      *  if language and country present, but not variant, then variant gets default value<br>
@@ -75,17 +77,11 @@ public class GENERIClocale implements XMLElement {
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */
     @Override
-    public void addAttributes(Attributes attributes) throws SAXException {
-	//if language attribute present then country attribute is allowed, otherwise throw exception
-	//if country present, then variant is allowed
-	//if language not present then all get default values
-	//if language present but not country and variant then country and variant get default values
-	//if language and country present, but not variant, then variant gets default value
-	
+    public void addAttributes(Attributes attributes) throws SAXException {	
 	if ((language = attributes.getValue(TagAndAttributeNames.languageAttribute)) == null) {
 	    if( (!(attributes.getValue(TagAndAttributeNames.countryAttribute) == null) || 
 		    !(attributes.getValue(TagAndAttributeNames.variantAttribute) == null)))
-	    	throw new SAXException("Element type " + TagAndAttributeNames.GENERIClocaleTag + " : if " + TagAndAttributeNames.languageAttribute +
+	    	throw new SAXException("Element type " + TagAndAttributeNames.GENERICLocaleTag + " : if " + TagAndAttributeNames.languageAttribute +
 	    		"is not present then " + TagAndAttributeNames.countryAttribute + " and " + TagAndAttributeNames.variantAttribute +
 	    		" are also not allowed.");
 	    else {
@@ -95,7 +91,7 @@ public class GENERIClocale implements XMLElement {
 	} else {
 	    if ((country = attributes.getValue(TagAndAttributeNames.countryAttribute)) == null) {
 		if (!(attributes.getValue(TagAndAttributeNames.variantAttribute) == null))
-		    	throw new SAXException("Element type " + TagAndAttributeNames.GENERIClocaleTag + " : if " + TagAndAttributeNames.countryAttribute +
+		    	throw new SAXException("Element type " + TagAndAttributeNames.GENERICLocaleTag + " : if " + TagAndAttributeNames.countryAttribute +
 		    		"is not present then " + TagAndAttributeNames.variantAttribute +
 		    		" are also not allowed.");
 		else {
@@ -116,7 +112,7 @@ public class GENERIClocale implements XMLElement {
      */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERIClocaleTag);
+	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICLocaleTag);
     }
 
     /**
@@ -175,12 +171,12 @@ public class GENERIClocale implements XMLElement {
     }
 
     /**
-     * @return {@link TagAndAttributeNames#GENERIClocaleTag}
+     * @return {@link TagAndAttributeNames#GENERICLocaleTag}
      * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
      */
     @Override
     public String getTagName() {
-	return TagAndAttributeNames.GENERIClocaleTag;
+	return TagAndAttributeNames.GENERICLocaleTag;
     }
 
     /**

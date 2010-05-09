@@ -48,7 +48,7 @@ public class GENERICSimpleDateFormat implements XMLElement {
     /**
      * the locale
      */
-    private GENERIClocale locale;
+    private GENERICLocale locale;
 
     /**
      * does nothing
@@ -83,10 +83,10 @@ public class GENERICSimpleDateFormat implements XMLElement {
     public void addChild(XMLElement child) throws SAXException {
 	if (Utilities.getClassname(child.getClass()).equals(
 		TagAndAttributeNames.genericPrefix +
-		TagAndAttributeNames.GENERICsimpleDateFormatPatternTag)) {
+		TagAndAttributeNames.GENERICSimpleDateFormatPatternTag)) {
 	    if (symbols != null)
 		throw new SAXException("Element of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag +
-			pattern	+ " should have only one child of type " + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag);
+			pattern	+ " should have only one child of type " + TagAndAttributeNames.GENERICSimpleDateFormatPatternTag);
 	    pattern = (GENERICSimpleDateFormatPattern) child;
 	    return;
 	}
@@ -101,20 +101,20 @@ public class GENERICSimpleDateFormat implements XMLElement {
 	}
 	if (Utilities.getClassname(child.getClass()).equals(
 		TagAndAttributeNames.genericPrefix +
-		TagAndAttributeNames.GENERIClocaleTag)) {
+		TagAndAttributeNames.GENERICLocaleTag)) {
 	    if (locale != null)
 		throw new SAXException("Element of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag +
-			" should have only one child of type " + TagAndAttributeNames.GENERIClocaleTag);
-	    locale = (GENERIClocale) child;
+			" should have only one child of type " + TagAndAttributeNames.GENERICLocaleTag);
+	    locale = (GENERICLocale) child;
 	    return;
 	}
 	    throw new SAXException("Element " + TagAndAttributeNames.GENERICSimpleDateFormatTag +
 		    " can only have " + 
-		    TagAndAttributeNames.GENERICsimpleDateFormatPatternTag + 
+		    TagAndAttributeNames.GENERICSimpleDateFormatPatternTag + 
 		    " or " +
 		    TagAndAttributeNames.GENERICDateFormatSymbolsTag + 
 		    " or " +
-		    TagAndAttributeNames.GENERIClocaleTag + 
+		    TagAndAttributeNames.GENERICLocaleTag + 
 		    " as child.");
 	
     }
@@ -144,13 +144,13 @@ public class GENERICSimpleDateFormat implements XMLElement {
 	String exceptionString = "Element of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag + 
 	" can have following children :\n" +
 	" - no children, in that case the Default constructor will be used to create a SimpleDateFormat object\n" +
-	" - one child of type " + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag + ". In this case a SimpleDateFormat" +
+	" - one child of type " + TagAndAttributeNames.GENERICSimpleDateFormatPatternTag + ". In this case a SimpleDateFormat" +
 	" object will be created with the constructor SimpleDateFormat(String pattern).\n" +
-	" - one child of type "  + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag + " and one child of type "  + 
+	" - one child of type "  + TagAndAttributeNames.GENERICSimpleDateFormatPatternTag + " and one child of type "  + 
 	TagAndAttributeNames.GENERICDateFormatSymbolsTag + ". Here a SimpleDateFormat" +
 	" object will be created with the constructor SimpleDateFormat(String pattern, DateFormatSymbols formatSymbols.\n" +
-	" - one child of type "  + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag + " and one child of type "  + 
-	TagAndAttributeNames.GENERIClocaleTag + ". Here a SimpleDateFormat" +
+	" - one child of type "  + TagAndAttributeNames.GENERICSimpleDateFormatPatternTag + " and one child of type "  + 
+	TagAndAttributeNames.GENERICLocaleTag + ". Here a SimpleDateFormat" +
 	" object will be created with the constructor SimpleDateFormat(String pattern, Locale locale.\n" +
 	"Other combinations are not allowed.";
 	if (symbols != null) {
