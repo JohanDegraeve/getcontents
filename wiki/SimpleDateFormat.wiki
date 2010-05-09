@@ -23,7 +23,7 @@ a !SimpleDateFormat
    * no children : a default constructor of !SimpleDateFormat will be used
    * 1 !SimpleDateFormatPattern : the constructor !SimpleDateFormat(String pattern) will be used
    * 1 !SimpleDateFormatPattern & 1 !DateFormatSymbols : the constructor !SimpleDateFormat(String pattern, !DateFormatSymbols formatSymbols) will be used
-   * 1 !SimpleDateFormatPattern & 1 !locale : the constructor  !SimpleDateFormat(String pattern, !Locale !locale) will be used
+   * 1 !SimpleDateFormatPattern & 1 Locale : the constructor  !SimpleDateFormat(String pattern, Locale locale) will be used
 
 *text field*
 none
@@ -52,11 +52,11 @@ untrimmed, the date format pattern
  1
 
 *Children*
- * !locale : if a locale child is present then none of the other children is allowed
+ * Locale : if a Locale child is present then none of the other children is allowed
  * !AmPmStrings : a list of two strings, seperated by comma
- * !eras ?
- * !!Months : a list of twelve strings, seperated by comma
- * ShortMonths : a list of twelve strings, seperated by comma
+ * Eras ?
+ * Months : a list of twelve strings, seperated by comma
+ * !ShortMonths : a list of twelve strings, seperated by comma
  * !WeekDays : a list of seven, seperated by comma
  * !ShortWeekays : a list of seven strings, seperated by comma
 
