@@ -8,9 +8,9 @@
 
 Add your content here.
 
-= simpleDateFormat =
+= !SimpleDateFormat =
 
-a simpleDateFormat
+a !SimpleDateFormat
 
 *Attributes*
  none
@@ -20,39 +20,17 @@ a simpleDateFormat
 
 *Allowed Children*
  * allowed combinations of children :
-   * no children : a default constructor of SimpleDateFormat will be used
-   * 1 simpleDateFormatPattern : the constructor SimpleDateFormat(String pattern) will be used
-   * 1 simpleDateFormatPattern & 1 DateFormatSymbols : the constructor SimpleDateFormat(String pattern, DateFormatSymbols formatSymbols) will be used
-   * 1 simpleDateFormatPattern & 1 locale : the constructor  SimpleDateFormat(String pattern, Locale locale) will be used
+   * no children : a default constructor of !SimpleDateFormat will be used
+   * 1 !SimpleDateFormatPattern : the constructor !SimpleDateFormat(String pattern) will be used
+   * 1 !SimpleDateFormatPattern & 1 !DateFormatSymbols : the constructor !SimpleDateFormat(String pattern, !DateFormatSymbols formatSymbols) will be used
+   * 1 !SimpleDateFormatPattern & 1 !locale : the constructor  !SimpleDateFormat(String pattern, !Locale !locale) will be used
 
 *text field*
 none
 
-== DateFormatSymbols ==
+== !SimpleDateFormatPattern ==
 
-DateFormatSymbols
-
-*Attributes*
- none
-
-*Occurrence*
- 1
-
-*Children*
- * locale : if a locale child is present then none of the other children is allowed
- * AmPmStrings : a list of two strings, seperated by comma
- * eras ?
- * Months : a list of twelve strings, seperated by comma
- * ShortMonths : a list of twelve strings, seperated by comma
- * WeekDays : a list of seven, seperated by comma
- * ShortWeekays : a list of seven strings, seperated by comma
-
-*text
-none
-
-== simpleDateFormatPattern ==
-
-a simpleDateFormatPattern
+a !SimpleDateFormatPattern
 
 *Attributes*
  none
@@ -62,5 +40,26 @@ a simpleDateFormatPattern
 
 *text
 untrimmed, the date format pattern
-   
+
+== !DateFormatSymbols ==
+
+!DateFormatSymbols
+
+*Attributes*
+ none
+
+*Occurrence*
+ 1
+
+*Children*
+ * !locale : if a locale child is present then none of the other children is allowed
+ * !AmPmStrings : a list of two strings, seperated by comma
+ * !eras ?
+ * !!Months : a list of twelve strings, seperated by comma
+ * ShortMonths : a list of twelve strings, seperated by comma
+ * !WeekDays : a list of seven, seperated by comma
+ * !ShortWeekays : a list of seven strings, seperated by comma
+
+*text*
+ none   
    
