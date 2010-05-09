@@ -1739,7 +1739,7 @@ see midPad
 ===== readDateAndTime  =====
 
 To parse a date and time field. Has a mandatory child element named SimpleDateFormat. This SimpleDateFormat can be created in exactly the same way as a the corresponding java object.<br>
-Another child element is the optional element TimeZone.<br>
+Another child element is the optional element !TimeZone.<br>
 
 *Attributes*
  * chronological, values true or false, default true
@@ -1752,7 +1752,7 @@ Another child element is the optional element TimeZone.<br>
  * mandatory child
    SimpleDateFormat
  * optional child 
-   TimeZone
+   !TimeZone
 
 *text field*
  none
@@ -1788,7 +1788,7 @@ This is the input stored in /Users/Johan/temp/temp.txt
 6 december 2009 15:49
 }}}
 
-we apply following instructionlist, which has a String Processor called readDateAndTime with a SimpleDateFormat, with simpleDateFormatPattern "d MMMM y HH:mm", and a DateFormatSymbols element with Months "januari", ..."December"
+we apply following instructionlist, which has a String Processor called readDateAndTime with a SimpleDateFormat, with !SimpleDateFormatPattern "d MMMM y HH:mm", and a DateFormatSymbols element with Months "januari", ..."December"
 
 {{{
 <getContentItemList>
@@ -1803,7 +1803,7 @@ we apply following instructionlist, which has a String Processor called readDate
          <processString>
         	<readDateAndTime>
         		<SimpleDateFormat>
-    				<simpleDateFormatPattern>d MMMM y HH:mm</simpleDateFormatPattern>
+    				<SimpleDateFormatPattern>d MMMM y HH:mm</SimpleDateFormatPattern>
     			  	<DateFormatSymbols>
     			      <Months>
     			      januari, 
@@ -1861,9 +1861,9 @@ Sun Dec 06 15:49:00 CET 2009
 
 see http://code.google.com/p/getcontents/wiki/SimpleDateFormat   
  
-====== TimeZone ======
+====== !TimeZone ======
 
-a TimeZone
+a !TimeZone
 
 *Attributes*
  none
