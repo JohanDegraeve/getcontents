@@ -61,7 +61,7 @@ public class GENERICSimpleDateFormatPattern implements XMLElement {
      */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag);
+	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICSimpleDateFormatPatternTag);
     }
 
     /**
@@ -82,7 +82,7 @@ public class GENERICSimpleDateFormatPattern implements XMLElement {
 	try {
 	    new SimpleDateFormat(text);
 	} catch (IllegalArgumentException e) {
-	    throw new SAXException("Element type " + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag + 
+	    throw new SAXException("Element type " + TagAndAttributeNames.GENERICSimpleDateFormatPatternTag + 
 		    " is invalid. Check the Java documentation for class SimpleDateFormat");
 	}
     }
@@ -94,7 +94,7 @@ public class GENERICSimpleDateFormatPattern implements XMLElement {
     @Override
     public void complete() throws SAXException {
 	if (pattern == null)
-	    throw new SAXException("Element type " + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag + " should " +
+	    throw new SAXException("Element type " + TagAndAttributeNames.GENERICSimpleDateFormatPatternTag + " should " +
 		    "contain a text that represents the pattern");
     }
 
@@ -117,12 +117,12 @@ public class GENERICSimpleDateFormatPattern implements XMLElement {
     }
 
     /**
-     * @return {@link TagAndAttributeNames#GENERICsimpleDateFormatPatternTag}
+     * @return {@link TagAndAttributeNames#GENERICSimpleDateFormatPatternTag}
      * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
      */
     @Override
     public String getTagName() {
-	return TagAndAttributeNames.GENERICsimpleDateFormatPatternTag;
+	return TagAndAttributeNames.GENERICSimpleDateFormatPatternTag;
     }
 
     /**

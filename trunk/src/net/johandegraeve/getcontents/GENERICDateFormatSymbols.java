@@ -31,7 +31,7 @@ import net.johandegraeve.easyxmldata.XMLElement;
 
 /**
  * represents a {@link java.text.DateFormatSymbols}<br>
- * It is possible to create a {@link GENERICDateFormatSymbols DateFormatSymbols object} with {@link GENERIClocale Locale}, {@link GENERICAmPmStrings AmPmStrings},
+ * It is possible to create a {@link GENERICDateFormatSymbols DateFormatSymbols object} with {@link GENERICLocale Locale}, {@link GENERICAmPmStrings AmPmStrings},
  * {@link GENERICEras Eras}, {@link GENERICMonths Months}, {@link GENERICShortMonths ShortMonths}, {@link GENERICWeekDays WeekDays}, {@link GENERICShortWeekDays ShortWeekDays},
  * 
  * 
@@ -43,7 +43,7 @@ public class GENERICDateFormatSymbols implements XMLElement {
     /**
      * locale
      */
-    private GENERIClocale locale;
+    private GENERICLocale locale;
     /**
      * AmPmStrings
      */
@@ -104,11 +104,11 @@ public class GENERICDateFormatSymbols implements XMLElement {
     public void addChild(XMLElement child) throws SAXException {
 	if (Utilities.getClassname(child.getClass()).equals(
 		TagAndAttributeNames.genericPrefix +
-		TagAndAttributeNames.GENERIClocaleTag)) {
+		TagAndAttributeNames.GENERICLocaleTag)) {
 	    if (locale != null)
 		throw new SAXException("Element of type " + TagAndAttributeNames.GENERICDateFormatSymbolsTag +
-			" should have only one child of type " + TagAndAttributeNames.GENERIClocaleTag);
-	    locale = (GENERIClocale) child;
+			" should have only one child of type " + TagAndAttributeNames.GENERICLocaleTag);
+	    locale = (GENERICLocale) child;
 	    return;
 	}
 	if (Utilities.getClassname(child.getClass()).equals(
