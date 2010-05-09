@@ -29,10 +29,22 @@ import com.Ostermiller.util.StringHelper;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * represents ShortMonths as used in a {@link java.text.DateFormatSymbols DateFormatSymbol}<br>
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class GENERICShortMonths implements XMLElement {
     
+    /**
+     * shortmonths
+     */
     private  String[] ShortMonths;
     
+    /**
+     * @return {@link #ShortMonths}
+     */
     String[] getShortMonths() {
 	return ShortMonths;
     }
@@ -45,15 +57,27 @@ public class GENERICShortMonths implements XMLElement {
 	ShortMonths = new DateFormatSymbols().getShortMonths();
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICShortMonthsTag);
     }
 
+    /**
+     * expects twelve substrings seperated by &quot;,&quot;, splits, trims and assigns to {@link #ShortMonths}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
 	ShortMonths = StringHelper.split(text, ",");
@@ -64,29 +88,44 @@ public class GENERICShortMonths implements XMLElement {
 	    ShortMonths[i] = ShortMonths[i].trim();
     }
     
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
-    @Override
-    public ArrayList<XMLElement> getChildren() {
-	return null;
-    }
-
+    /**
+     * @return {@link TagAndAttributeNames#GENERICShortMonthsTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GENERICShortMonthsTag;
     }
 
+    /**
+     * @return the shortmonths, seprated by &quot;,&quot;
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	StringBuilder returnvalue  = new StringBuilder();
@@ -101,9 +140,23 @@ public class GENERICShortMonths implements XMLElement {
 	return returnvalue.toString();
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;
     }
+    
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
+    @Override
+    public ArrayList<XMLElement> getChildren() {
+	return null;
+    }
+
 
 }

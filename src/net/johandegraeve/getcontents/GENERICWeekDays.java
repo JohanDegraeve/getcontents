@@ -29,10 +29,22 @@ import com.Ostermiller.util.StringHelper;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+/**
+ * represents WeekDays as used in a {@link java.text.DateFormatSymbols DateFormatSymbol}<br>
+ * 
+ * @author Johan Degraeve
+ *
+ */
 public class GENERICWeekDays implements XMLElement {
     
+    /**
+     * the WeekDays
+     */
     private String[] WeekDays;
     
+    /**
+     * @return {@link #WeekDays}
+     */
     String[] getWeekDays() {
 	return WeekDays;
     }
@@ -45,49 +57,85 @@ public class GENERICWeekDays implements XMLElement {
 	WeekDays = new DateFormatSymbols().getWeekdays();
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICSWeekDaysTag);
+	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GENERICWeekDaysTag);
     }
 
+    /**
+     * expects seven substrings seperated by &quot;,&quot;, splits, trims and assigns to {@link #WeekDays}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
 	WeekDays = StringHelper.split(text, ",");
 	if (WeekDays.length != 7)
-	    throw new SAXException("Element " + TagAndAttributeNames.GENERICSWeekDaysTag + " must have text with 7 days that represent days, separated" + 
+	    throw new SAXException("Element " + TagAndAttributeNames.GENERICWeekDaysTag + " must have text with 7 days that represent days, separated" + 
 		    "by comma. Example : \"Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday\"");
 	for (int i = 0;i < WeekDays.length;i++)
 	    WeekDays[i] = WeekDays[i].trim();
     }
     
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /** 
+     * @return {@link TagAndAttributeNames#GENERICWeekDaysTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
-	return TagAndAttributeNames.GENERICSWeekDaysTag;
+	return TagAndAttributeNames.GENERICWeekDaysTag;
     }
 
-    @Override
+    /**
+     * @return the weekdays, seprated by &quot;,&quot;
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
+   @Override
     public String getText() {
 	StringBuilder returnvalue  = new StringBuilder();
 	int i;
@@ -101,6 +149,10 @@ public class GENERICWeekDays implements XMLElement {
 	return returnvalue.toString();
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;

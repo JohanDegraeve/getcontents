@@ -40,7 +40,7 @@ public class GENERICSimpleDateFormat implements XMLElement {
     /**
      * the pattern
      */
-    private GENERICsimpleDateFormatPattern pattern;
+    private GENERICSimpleDateFormatPattern pattern;
     /**
      * the symbols
      */
@@ -87,7 +87,7 @@ public class GENERICSimpleDateFormat implements XMLElement {
 	    if (symbols != null)
 		throw new SAXException("Element of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag +
 			pattern	+ " should have only one child of type " + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag);
-	    pattern = (GENERICsimpleDateFormatPattern) child;
+	    pattern = (GENERICSimpleDateFormatPattern) child;
 	    return;
 	}
 	if (Utilities.getClassname(child.getClass()).equals(
@@ -142,7 +142,7 @@ public class GENERICSimpleDateFormat implements XMLElement {
     @Override
     public void complete() throws SAXException {
 	String exceptionString = "Element of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag + 
-	"can have following children :\n" +
+	" can have following children :\n" +
 	" - no children, in that case the Default constructor will be used to create a SimpleDateFormat object\n" +
 	" - one child of type " + TagAndAttributeNames.GENERICsimpleDateFormatPatternTag + ". In this case a SimpleDateFormat" +
 	" object will be created with the constructor SimpleDateFormat(String pattern).\n" +

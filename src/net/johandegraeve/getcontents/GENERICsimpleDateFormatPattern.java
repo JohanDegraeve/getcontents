@@ -33,7 +33,7 @@ import net.johandegraeve.easyxmldata.XMLElement;
  * @author Johan Degraeve
  *
  */
-public class GENERICsimpleDateFormatPattern implements XMLElement {
+public class GENERICSimpleDateFormatPattern implements XMLElement {
     
     /**
      * the pattern
