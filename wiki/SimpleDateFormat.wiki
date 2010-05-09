@@ -6,7 +6,7 @@
 
 = Introduction =
 
-Add your content here.
+A !SimpleDateFormat element can be created right as there exist Java constructors for the corresponding class.
 
 = !SimpleDateFormat =
 
