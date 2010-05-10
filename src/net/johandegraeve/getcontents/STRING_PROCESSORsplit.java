@@ -43,7 +43,7 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
     
     private STRING_PROCESSORidSelector idSelector;
     
-    private static final String [][] replacementStrings = new String[][] {
+    /*private static final String [][] replacementStrings = new String[][] {
 	{"\\t","\t"},
 	{"\\b","\b"},
 	{"\\n","\n"},
@@ -52,7 +52,7 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 	{"\\'","\'"},
 	{"\\\"","\""},
 	{"\\\\","\\"}
-    };
+    };*/
     
     public STRING_PROCESSORsplit() {
 	delimiter = " ";
@@ -69,13 +69,13 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 		returnvalue = idSelector.processString(returnvalue);
 	    }
 	    
-	    //I DONT REMEMBER WHY I DID THIS/////////
 	    for (int j = 0; j < returnvalue.length;j++) {
-		for (int k = 0; k < replacementStrings.length;k++)
-		    StringHelper.replace(returnvalue[j], replacementStrings[k][0], replacementStrings[k][1]);
-            /////////////////////////////////////////
+	    //I DONT REMEMBER WHY I DID THIS///////
+		//for (int k = 0; k < replacementStrings.length;k++)
+		  //StringHelper.replace(returnvalue[j], replacementStrings[k][0], replacementStrings[k][1]);
+	    ////////////////////////////////////////
 		
-	    stringArrayList.add(returnvalue[j]);
+		stringArrayList.add(returnvalue[j]);
 		
 	    }	
 	}
