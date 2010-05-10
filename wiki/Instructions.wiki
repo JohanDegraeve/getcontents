@@ -1878,6 +1878,146 @@ a !TimeZone
 *text field*
  a timeZone ID
 
+===== split =====
+
+Split each string with String.split(delimiter)<br>
+
+
+*Attributes*
+ * optional attribute
+   delimiter : default value = " ", can be any String
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ idSelector
+
+*text field*
+ none
+  
+*example*
+
+We start with the result of previous example (readDateAndTime) which is a lilst of dates :
+
+{{{
+...
+Wed Oct 28 20:37:00 CET 2009
+Sun Apr 05 15:47:00 CEST 2009
+Sat Dec 27 20:40:00 CET 2008
+Mon Apr 19 10:11:00 CEST 2010
+...
+}}}
+
+we can add a split, on " "
+
+{{{
+<getContentItemList>
+...
+        	<readDateAndTime>
+        		<SimpleDateFormat>
+    				<SimpleDateFormatPattern>d MMMM y HH:mm</SimpleDateFormatPattern>
+    			  	<DateFormatSymbols>
+    			      <Months>januari, februari, maart, april, mei, juni, juli, augustus, september, oktober, november,  december
+    			      </Months>
+    			   	</DateFormatSymbols>
+	       		</SimpleDateFormat>
+        	</readDateAndTime>
+        	<split delimiter=" "></split>
+
+...
+</getContentItemList>
+}}}
+
+which results in 
+
+{{{
+...
+Mon
+Feb
+15
+22:03:00
+CET
+2010
+Wed
+Oct
+...
+}}}
+
+====== idSelector ======
+
+to filter out results based on id.
+This works similarly to stringProcessor idSelector, but works on individual results of split.
+Example if splitting one string results in 5 new strings, the idSelector will work on those 5 strings.
+
+*Attributes*
+ include, possible values "true" or "false", default value "true"
+
+*Occurrence*
+ 0 or 1
+
+*Allowed Children*
+ none
+
+*text field*
+ the id's, see example
+    
+*example*
+
+For more examples, see the stringProcessor instruction idSelector
+
+We will use an idSelector to get only the first result of each split instruction in the previous example :
+
+{{{
+<getContentItemList>
+...
+        	<readDateAndTime>
+        		<SimpleDateFormat>
+    				<SimpleDateFormatPattern>d MMMM y HH:mm</SimpleDateFormatPattern>
+    			  	<DateFormatSymbols>
+    			      <Months>januari, februari, maart, april, mei, juni, juli, augustus, september, oktober, november,  december
+    			      </Months>
+    			   	</DateFormatSymbols>
+	       		</SimpleDateFormat>
+        	</readDateAndTime>
+        	<split delimiter=" ">
+                    <idSelector include="true">
+                       1
+                    </idSelector>
+                </split>
+...
+</getContentItemList>
+}}}
+
+resulting in
+
+{{{
+Mon
+Wed
+Sun
+Sat
+Mon
+Sat
+Mon
+Fri
+Tue
+Sat
+Sun
+Mon
+Fri
+Sun
+Sun
+Sat
+Sat
+Sun
+Mon
+Sun
+Wed
+Wed
+Mon
+Sun
+}}}
+
 ===== startsWithAny =====
 
 Filters on nodes that have text that starts with any of a list of strings<br>
