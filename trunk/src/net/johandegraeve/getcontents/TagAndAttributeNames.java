@@ -69,7 +69,6 @@ package net.johandegraeve.getcontents;
     static final String INSTRUCTIONhtmlFilterTag = "htmlFilter";
     static final String INSTRUCTIONhtmlGetterTag = "htmlGetter";
     static final String GENERICinstructionListTag = "instructionList";
-    static final String INSTRUCTIONtoPlainTextStringTag = "toPlainTextString";
     static final String STRING_PROCESSORtrimTag = "trim";
     static final String STRING_PROCESSORunescapeHtmlTag = "unescapeHTML";
     static final String INSTRUCTIONgetUnfilteredContent = "getUnfilteredContent";
