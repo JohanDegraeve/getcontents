@@ -2018,6 +2018,79 @@ Mon
 Sun
 }}}
 
+In another example we start with following input, 24 strings (being the result of another set of instructions not shown here):
+
+{{{
+...
+Result 1, length = 38
+28 oktober 2009 20:37
+			door Steffie
+Result 2, length = 38
+5 april 2009 15:47
+			door clouseauke
+Result 3, length = 38
+27 december 2008 20:40
+			door Marina
+Result 4, length = 39
+19 april 2010 10:11
+			door Dennis1978
+Result 5, length = 39
+17 april 2010 12:56
+			door meurtelken
+Result 6, length = 38
+12 april 2010 20:05
+			door angelique
+...
+}}}
+
+now we apply the split instruction with a delimiter that will check on \r, \n or \r followed by \n, and an idSelector that will pick the first result of each split.
+
+{{{
+...
+<getContentItemList>
+        	<split delimiter="\r\n|\r|\n">
+	        	<idSelector include="true">
+	        	   1
+	        	</idSelector>
+        	</split>
+</getContentItemList>
+...
+}}}
+
+resulting in
+
+{{{
+...
+15 februari 2010 22:03
+28 oktober 2009 20:37
+5 april 2009 15:47
+27 december 2008 20:40
+19 april 2010 10:11
+17 april 2010 12:56
+12 april 2010 20:05
+9 april 2010 17:51
+6 april 2010 10:13
+27 maart 2010 22:18
+14 maart 2010 21:22
+1 maart 2010 11:48
+19 februari 2010 14:07
+14 februari 2010 23:12
+14 februari 2010 13:29
+13 februari 2010 18:46
+13 februari 2010 18:43
+31 januari 2010 16:54
+25 januari 2010 21:56
+17 januari 2010 21:43
+13 januari 2010 17:26
+6 januari 2010 21:35
+4 januari 2010 19:16
+6 december 2009 15:49
+...
+}}}
+
+
+
+
 ===== startsWithAny =====
 
 Filters on nodes that have text that starts with any of a list of strings<br>
