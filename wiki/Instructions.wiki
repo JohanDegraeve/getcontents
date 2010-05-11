@@ -2046,15 +2046,15 @@ Result 6, length = 38
 now we apply the split instruction with a delimiter that will check on \r, \n or \r followed by \n, and an idSelector that will pick the first result of each split.
 
 {{{
-...
 <getContentItemList>
+...
         	<split delimiter="\r\n|\r|\n">
 	        	<idSelector include="true">
 	        	   1
 	        	</idSelector>
         	</split>
-</getContentItemList>
 ...
+</getContentItemList>
 }}}
 
 resulting in
