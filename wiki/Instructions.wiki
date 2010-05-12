@@ -166,7 +166,6 @@ or a url. There are different instructions, each of them are further explained b
  * htmlFilter
  * htmlGetter
  * processString
- * toPlainTextString
  * XMLFilter
  * XMLGetter
 
@@ -2097,3 +2096,47 @@ Filters on nodes that have text that starts with any of a list of strings<br>
 Using com.Ostermiller.util, class StringHelper, method startsWithAnyIgnoreCase and startsWithAny 
 
 see also the string processor "containsAny"
+
+===== trim =====
+
+Trims each string with String.trim()<br>
+
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+  
+*example*
+
+there are already a few examples here.
+
+
+===== unescapeHTML =====
+
+Trims each string with String.trim()<br>
+
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+  
+*example*
+
+there are already a few examples here.
+
