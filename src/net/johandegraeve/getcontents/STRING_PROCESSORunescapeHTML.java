@@ -21,74 +21,120 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import com.Ostermiller.util.StringHelper;
 
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
+/**
+ * instruction to unescape HTML, using {@link com.Ostermiller.util.StringHelper#unescapeHTML(String)}
+ *
+ * @author Johan Degraeve
+ *
+ */
 public class STRING_PROCESSORunescapeHTML implements XMLElement, StringProcessor {
 
-	    @Override
-	    public String[] processString(String[] source) {
-		if (source == null) return null;
-		String[] returnvalue = new String[source.length] ;
-		for (int i = 0;i < source.length;i ++)
-		    returnvalue[i] = StringHelper.unescapeHTML(source[i]);
-		return returnvalue;
-	    }
+    /**
+     * @return each string in source, with {@link com.Ostermiller.util.StringHelper#unescapeHTML(String)} applied
+     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
+     */
+    @Override
+    public String[] processString(String[] source) {
+	if (source == null) return null;
+	String[] returnvalue = new String[source.length] ;
+	for (int i = 0;i < source.length;i ++)
+	    returnvalue[i] = StringHelper.unescapeHTML(source[i]);
+	return returnvalue;
+    }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
     }
 
+    /**
+     * throws an exception
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.STRING_PROCESSORunescapeHtmlTag);
     }
 
+    /**
+     * does nothing
+    * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	return null;
     }
 
 
+    /**
+     * @return null
+    * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
 
+    /**
+     * @return {@link TagAndAttributeNames#STRING_PROCESSORunescapeHtmlTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.STRING_PROCESSORunescapeHtmlTag;
     }
 
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }

@@ -21,17 +21,15 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.Ostermiller.util.StringHelper;
-
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
-
-/*
- * use String.split or StringHelper.split ?
+/**
+ * use String.split<br>
  * can have idSelector as child to indicate which of the split results needs to be included or excluded
  *
  * @author Johan Degraeve
@@ -39,10 +37,19 @@ import net.johandegraeve.easyxmldata.XMLElement;
  */
 public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 
+    /**
+     * delimiter to be used, 
+     */
     private String delimiter;
     
+    /**
+     * idSelector
+     */
     private STRING_PROCESSORidSelector idSelector;
     
+    /**
+     * constructor setting {@link #delimiter} to blank space, {@link #idSelector} to null
+     */
     /*private static final String [][] replacementStrings = new String[][] {
 	{"\\t","\t"},
 	{"\\b","\b"},
@@ -59,6 +66,11 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 	idSelector = null;
     }
 
+    /**
+     * @return each string in source is split using {@link #delimiter}, if {@link #idSelector} is not null then idSelector is
+     * applied, each result of split is added to returnvalue
+     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
+     */
     @Override
     public String[] processString(String[] source) {
 	ArrayList<String> stringArrayList = new ArrayList<String>(); 
@@ -83,12 +95,20 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * gets attribute delimiter, if not present then default value blank space is assigned
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	delimiter = Utilities.getOptionalAttributeValues(attributes, new String[] {TagAndAttributeNames.delimiterAttribute}, new String[] {" "})[0];
 	
     }
 
+    /**
+     * if child is an idSelector, then child is assigned to {@link #idSelector}, otherwise exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, 
@@ -98,18 +118,34 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 	idSelector = (STRING_PROCESSORidSelector) child;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
     }
 
+    /**
+     * @return {@link #delimiter} in an attribute
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -117,21 +153,37 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 	return attr;
     }
 
+    /**
+     * @return {@link #idSelector} in an arraylist
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return Utilities.createXMLElementList(idSelector);
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#STRING_PROCESSORsplitTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.STRING_PROCESSORsplitTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;
