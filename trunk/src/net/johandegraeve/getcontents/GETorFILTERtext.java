@@ -30,7 +30,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * gegt text
+ * get text
  * 
  * @author Johan Degraeve
  *
