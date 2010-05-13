@@ -150,8 +150,10 @@ a local file
 === instructionList ===
 
 List of instructions to be executed on the source.
-Instructions take as input an array of strings. The first instruction can take a string
-or a url. There are different instructions, each of them are further explained by giving examples.
+Instructions take as input an array of strings.<br>
+An htmlFilter, htmlGetter, XMLFilter and XMLGetter can take a string
+or a url (remote or local file) as input. <br>
+Also the instruction getUnFilteredContent takes as input a url.
 
 *Attributes*
  * none
@@ -2139,4 +2141,3 @@ Trims each string with String.trim()<br>
 *example*
 
 there are already a few examples here.
-
