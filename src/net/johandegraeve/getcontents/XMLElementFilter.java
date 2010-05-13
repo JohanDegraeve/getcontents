@@ -25,7 +25,6 @@ import net.johandegraeve.easyxmldata.XMLElement;
 /**
  * Place class description here
  *
- * @version 1.0
  * @author Johan Degraeve
  *
  */
