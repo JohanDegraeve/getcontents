@@ -64,6 +64,7 @@ public class GETorFILTERchildren implements HTMLGetter, XMLElement, XMLGetter {
 	    }
 	} else  {
 	    //it's a stringxmlgetterresultlist, no children, bad luck
+	    
 	}
 	
 	if (returnvalue.size() > 0) {

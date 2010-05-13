@@ -29,7 +29,9 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * a TagNameFilter as defined in the HTML parser package.
+ * a TagNameFilter  filters on nodes with a specific tagname.<br>
+ * for HTML : using HTMLFilter as defined in the HTML parser package.<br>
+ * XML : filters on tagname.  
  * 
  * @author Johan Degraeve
  *
