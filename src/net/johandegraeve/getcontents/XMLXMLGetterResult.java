@@ -34,7 +34,7 @@ class XMLXMLGetterResult extends GenericXMLGetterResult {
 
     @Override
     String convertToString() {
-	return defaultXMLElement.getText();
+	return Utilities.createXML(defaultXMLElement);
     }
     
     /**
