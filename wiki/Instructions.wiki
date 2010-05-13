@@ -866,7 +866,7 @@ In this example we filter on nodes that have a tagname "DIV"
 
 ==== htmlGetter ====
 
-a bit like a filter but applies to one specific node identified by an index ranging from 0...
+gets from html nodes.
 
 
 *Attributes*
@@ -885,7 +885,7 @@ a bit like a filter but applies to one specific node identified by an index rang
 
 ===== children =====
 
-will get the children
+will get the children nodes of each node
 
 *Attributes*
  none
@@ -2185,3 +2185,74 @@ Instructions :
 Result
 
 Fiscalité locale : la réformer pour plus d’équité
+
+==== XMLFilter ====
+
+An XMLFilter instruction can have an unlimited number of XML filters.<br>
+
+The input to an XMLFilter instruction must be valid XML. If you have some input which is missing an XML declaration, you can add this first with the instruction "addXMLDeclaration". If a root element is missing, this will be added by the instruction and removed ad the end.
+
+The output of an XMLFilter will be an array of strings, where each string is the XML representation of a node that matches the filters.
+This output can then be used again as input to either another instruction like another XMLFilter, XMLGetter or processString. 
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ One ore more of following StringProcessor :
+ * tagName
+
+*text field*
+ none
+
+
+===== tagName =====
+
+An XMLFilter instruction can have an unlimited number of XML filters.<br>
+
+The input to an XMLFilter instruction must be valid XML. If you have some input which is missing an XML declaration, you can add this first with the instruction "addXMLDeclaration". If a root element is missing, this will be added by the instruction and removed ad the end.
+
+The output of an XMLFilter will be an array of strings, where each string is the XML representation of a node that matches the filters.
+This output can then be used again as input to either another instruction like another XMLFilter, XMLGetter or processString. 
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ One ore more of following StringProcessor :
+ * tagName
+
+*text field*
+ none
+
+*example*
+
+an example is giving in the example for addXMLDeclaration instruction
+
+==== XMLGetter ====
+
+An XMLGetter instruction can have an unlimited number of XML getters.<br>
+
+The input to an XMLGetter instruction must be valid XML. If you have some input which is missing an XML declaration, you can add this first with the instruction "addXMLDeclaration". If a root element is missing, this will be added by the instruction and removed ad the end. This situation may happen if the previous instruction was an XMLFilter.
+
+The output of an XMLGetter will be an array of strings. What each string represents depends on the type of XMLGetter. It may be the text retrieved from an XML ELement, or the XML representation of an XML ELement.
+This output can then be used as input to processString, and if the output represents XML elements, it can also be the input to a new XMLFilter or XMLGetter.
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ One ore more of following StringProcessor :
+ * tagName
+
+*text field*
+ none
