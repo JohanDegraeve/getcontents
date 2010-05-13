@@ -2139,5 +2139,29 @@ Trims each string with String.trim()<br>
  none
   
 *example*
+ Here a simple example with input "Fiscalité locale&nbsp;: la réformer pour plus d&#8217;équité"
 
-there are already a few examples here.
+Instructions :
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+       <url><![CDATA[file://localhost/Users/Johan/temp/temp.txt]]></url>
+      <description>
+         <![CDATA[example]]>
+      </description>
+      <instructionList>
+         <getUnFilteredContent>
+         </getUnFilteredContent>
+         <processString>
+            <unescapeHTML>
+            </unescapeHTML>
+         </processString>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
+
+Result
+
+Fiscalité locale : la réformer pour plus d’équité
