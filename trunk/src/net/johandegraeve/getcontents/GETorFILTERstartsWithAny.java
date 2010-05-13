@@ -38,7 +38,7 @@ import com.Ostermiller.util.StringHelper;
  * @author Johan Degraeve
  *
  */
-public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringProcessor {
+public class GETorFILTERstartsWithAny implements XMLElement,  XMLFilter, StringProcessor {
     
     /**
      * defines if matching elements should be included or excluded
@@ -167,45 +167,6 @@ public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringP
 	return null;
     }
 
-    /**
-     * get list of elements that match the processor
-     * 
-     * @return a list of elements that have text that starts with any of the strings in {@link #stringChildList}; can be null or an arraylist 
-     * with size 0; if stringList is an {@link XMLXMLGetterResultList}, then a {@link XMLXMLGetterResultList} is returned; if stringList
-     * is a {@link StringXMLGetterResultList}, then a {@link StringXMLGetterResultList} is returned;
-     */
-    @Override
-    public GenericXMLGetterResultList getList(GenericXMLGetterResultList list) {
-	String[] terms = new String [stringChildList.size()];
-	GenericXMLGetterResultList returnvalue = null;
-
-	for (int i = 0; i < stringChildList.size();i++)
-	    terms[i] = stringChildList.get(i).getText();
-	
-	if (list instanceof XMLXMLGetterResultList) {
-	     returnvalue = new  XMLXMLGetterResultList();
-	}  else if (list instanceof StringXMLGetterResultList) {
-	     returnvalue = new  StringXMLGetterResultList();
-	}
-	
-	for (int i = 0;i < list.size();i ++)
-	    if (caseSensitive) {
-		if (StringHelper.startsWithAny(list.elementAt(i).convertToString(),terms)) {
-		    if (include) 
-			returnvalue.add(list.elementAt(i));
-		} else 
-		    if (!include) 
-			returnvalue.add(list.elementAt(i));
-	    } else {
-		if (StringHelper.startsWithAnyIgnoreCase(list.elementAt(i).convertToString(),terms)) {
-		    if (include) 
-			returnvalue.add(list.elementAt(i));
-		} else 
-		    if (!include) 
-			returnvalue.add(list.elementAt(i));
-	    }
-	return returnvalue;
-    }
 
     /**
      * get list of strings that match the processor
@@ -256,6 +217,37 @@ public class GETorFILTERstartsWithAny implements XMLElement,  XMLGetter, StringP
     @Override
     public boolean preserveSpaces() {
 	return false;
+    }
+
+    /**
+     * @return the filter that checks if the text in the XMLElement starts with any of the terms
+     * @see net.johandegraeve.getcontents.XMLFilter#getXMLFilter()
+     */
+    @Override
+    public XMLElementFilter getXMLFilter() {
+	return new XMLElementFilter() {
+	    @Override
+	    public boolean accept(XMLElement element) {
+		String[] terms = new String [stringChildList.size()];
+		for (int i = 0; i < stringChildList.size();i++)
+		    terms[i] = stringChildList.get(i).getText();
+		if (caseSensitive) {
+		    boolean returnvalue = (StringHelper.startsWithAny(element.getText(),terms));
+		    if (include)
+			return returnvalue;
+		    else 
+			return !returnvalue;
+		}
+		else {
+		    boolean returnvalue = (StringHelper.startsWithAnyIgnoreCase(element.getText(),terms));
+		    if (include)
+			return returnvalue;
+		    else 
+			return !returnvalue;
+		}
+	    }
+
+	};
     }
 
 }
