@@ -2204,6 +2204,10 @@ This output can then be used again as input to either another instruction like a
 *Allowed Children*
  One ore more of following StringProcessor :
  * tagName
+ * containsAny
+ * endsWithAny
+ * equalsAny
+ * startsWithAny
 
 *text field*
  none
@@ -2225,11 +2229,10 @@ This output can then be used again as input to either another instruction like a
  not defined
 
 *Allowed Children*
- One ore more of following StringProcessor :
- * tagName
+ none
 
 *text field*
- none
+ the tag to filter on
 
 *example*
 
@@ -2251,8 +2254,9 @@ This output can then be used as input to processString, and if the output repres
  not defined
 
 *Allowed Children*
- One ore more of following StringProcessor :
- * tagName
+ One ore more of following XMLGetter :
+ * children
+ * text
 
 *text field*
  none
