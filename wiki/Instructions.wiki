@@ -2287,6 +2287,59 @@ This output can then be used as input to processString, and if the output repres
  One ore more of following XMLGetter :
  * children
  * text
+ * idSelector
+
+*text field*
+ none
+
+===== children =====
+
+if the input is XML elements, it gets the children of each root element in the input.<br>
+if the input is strings, it returns null
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+
+===== text =====
+
+if the input is XML elements, it gets the text of each root element in the input.<br>
+if the input is strings, it returns the input
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+
+===== idSelector =====
+
+works as the other idSelectors (see for processString - idSelector)<br>
+If the input are just strings, then the output will also be strings.<br>
+If the input are strings with an XML representation of XML elements, then the output will also be XML.
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
 
 *text field*
  none
