@@ -2238,34 +2238,29 @@ This output can then be used again as input to either another instruction like a
 
 an example is giving in the example for addXMLDeclaration instruction
 
-===== containsAny =====
+===== containsAny filter on elements with text that contain any of the supplied strings =====
 
 expects as as input XML elements, takes the text in the XML element and verifies if it contains any of the strings. 
 
 As example check out processString - containsAny
 
-===== endsWithAny =====
+===== endsWithAny filter on elements with text that end with any of the supplied strings =====
 
 expects as as input XML elements, takes the text in the XML element and verifies if it ends with any of the strings. 
 
 As example check out processString - containsAny
 
-===== equalsAny =====
+===== equalsAny filter on elements with text that equals any of the supplied strings  =====
 
 expects as as input XML elements, takes the text in the XML element and verifies if it equals any of the strings. 
 
 As example check out processString - containsAny
 
-===== startsWithAny =====
+===== startsWithAny : filter on elements with text that start with any of the supplied strings =====
 
 expects as as input XML elements, takes the text in the XML element and verifies if it starts with any of the strings. 
 
 As example check out processString - containsAny
-
-
-
-
-
 
 
 ==== XMLGetter ====
