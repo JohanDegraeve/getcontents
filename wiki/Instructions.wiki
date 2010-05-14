@@ -2238,6 +2238,12 @@ This output can then be used again as input to either another instruction like a
 
 an example is giving in the example for addXMLDeclaration instruction
 
+===== containsAny =====
+
+expectas as input XML elements, takes the text in the XML element and verifies if it contains any of the strings. 
+
+As example check out processString - containsAny
+
 ==== XMLGetter ====
 
 An XMLGetter instruction can have an unlimited number of XML getters.<br>
