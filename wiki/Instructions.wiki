@@ -2240,9 +2240,33 @@ an example is giving in the example for addXMLDeclaration instruction
 
 ===== containsAny =====
 
-expectas as input XML elements, takes the text in the XML element and verifies if it contains any of the strings. 
+expects as as input XML elements, takes the text in the XML element and verifies if it contains any of the strings. 
 
 As example check out processString - containsAny
+
+===== endsWithAny =====
+
+expects as as input XML elements, takes the text in the XML element and verifies if it ends with any of the strings. 
+
+As example check out processString - containsAny
+
+===== equalsAny =====
+
+expects as as input XML elements, takes the text in the XML element and verifies if it equals any of the strings. 
+
+As example check out processString - containsAny
+
+===== startsWithAny =====
+
+expects as as input XML elements, takes the text in the XML element and verifies if it starts with any of the strings. 
+
+As example check out processString - containsAny
+
+
+
+
+
+
 
 ==== XMLGetter ====
 
