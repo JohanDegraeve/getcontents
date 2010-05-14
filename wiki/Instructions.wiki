@@ -2292,7 +2292,7 @@ This output can then be used as input to processString, and if the output repres
 *text field*
  none
 
-===== children =====
+===== children : if the input is XML, get the children =====
 
 if the input is XML elements, it gets the children of each root element in the input.<br>
 if the input is strings, it returns null
@@ -2309,7 +2309,7 @@ if the input is strings, it returns null
 *text field*
  none
 
-===== text =====
+===== text : get the text inside the elements =====
 
 if the input is XML elements, it gets the text of each root element in the input.<br>
 if the input is strings, it returns the input
@@ -2326,7 +2326,7 @@ if the input is strings, it returns the input
 *text field*
  none
 
-===== idSelector =====
+===== idSelector : include or exclude specific elements =====
 
 works as the other idSelectors (see for processString - idSelector)<br>
 If the input are just strings, then the output will also be strings.<br>
