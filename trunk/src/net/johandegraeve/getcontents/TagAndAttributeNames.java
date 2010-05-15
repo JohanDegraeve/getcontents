@@ -102,6 +102,7 @@ package net.johandegraeve.getcontents;
     static final String STRING_PROCESSORreadDateAndTimeTag = "readDateAndTime";
     static final String GENERICTimeZoneTag = "TimeZone";
     static final String GETorFILTERstartsWithAnyTag = "startsWithAny";
+    static final String GETorFILTERremoveNodesTag = "removeNodes";
 
     
     /**
@@ -146,7 +147,8 @@ package net.johandegraeve.getcontents;
     static String[] htmlgetterTags = new String[] {
 	GETorFILTERchildrenTag,
 	GETorFILTERtextTag,
-	STRING_PROCESSORidSelectorTag
+	STRING_PROCESSORidSelectorTag,
+	GETorFILTERremoveNodesTag
     };
 
     static final String[] XMLfilterTags = new String[] {
@@ -160,7 +162,8 @@ package net.johandegraeve.getcontents;
 	GETorFILTERequalsAny,
 	GETorFILTERendsWithAnyTag,
 	GETorFILTERstartsWithAnyTag,
-	STRING_PROCESSORidSelectorTag
+	STRING_PROCESSORidSelectorTag,
+	GETorFILTERremoveNodesTag
     };
 
     /*

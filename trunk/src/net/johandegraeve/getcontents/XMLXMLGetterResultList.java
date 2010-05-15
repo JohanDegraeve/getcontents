@@ -47,7 +47,7 @@ class XMLXMLGetterResultList extends GenericXMLGetterResultList {
     XMLXMLGetterResultList(ArrayList<XMLElement> elementList) {
 	theList = new ArrayList<XMLXMLGetterResult>();
 	for (int i = 0;i < elementList.size(); i++)
-	theList.add(new XMLXMLGetterResult(elementList.get(i)));
+	    theList.add(new XMLXMLGetterResult(elementList.get(i)));
     }
 
     XMLXMLGetterResultList() {
