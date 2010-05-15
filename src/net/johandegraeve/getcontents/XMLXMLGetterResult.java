@@ -26,10 +26,10 @@ import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 class XMLXMLGetterResult extends GenericXMLGetterResult {
-    private XMLElement defaultXMLElement;
+    private DefaultXMLElement defaultXMLElement;
     
     XMLXMLGetterResult(XMLElement element) {
-	defaultXMLElement = element;
+	defaultXMLElement = new DefaultXMLElement(element);
     }
 
     @Override
@@ -53,6 +53,19 @@ class XMLXMLGetterResult extends GenericXMLGetterResult {
 	if (children != null)
 	    return new XMLXMLGetterResultList(defaultXMLElement.getChildren());
 	return null;
+    }
+    
+    void setChildren(XMLXMLGetterResultList children) {
+	if (children == null)
+	    defaultXMLElement.setChildren(null);
+	else if (children.size() == 0 ) 
+	    defaultXMLElement.setChildren(null);
+	else {
+	    ArrayList<XMLElement> newList = new ArrayList<XMLElement>();
+	    for (int i = 0;i < children.size();i++)
+		newList.add((((XMLXMLGetterResult)children.elementAt(i)).getDefaultXMLElement()));
+	    defaultXMLElement.setChildren(newList);
+	}
     }
     
     XMLElement getDefaultXMLElement() {

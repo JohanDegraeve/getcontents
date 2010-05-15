@@ -62,7 +62,10 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
 	}
 	    
 	//prepare string array to return
-	returnvalue = new String[resultList.size()];
+	if (resultList != null) 
+	    returnvalue = new String[resultList.size()];
+	else 
+	    return new String[0];
 	for (int i = 0;i < resultList.size(); i++)
 	    returnvalue[i] = resultList.elementAt(i).convertToString();
 	
@@ -142,13 +145,10 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
 
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }
