@@ -41,9 +41,21 @@ import net.johandegraeve.easyxmldata.XMLElement;
  *
  */
 public class GENERICgetContentItem implements XMLElement {
+    /**
+     * description
+     */
     private GENERICdescription theDescription;
+    /**
+     * instructionList
+     */
     private GENERICinstructionList instructionList;
+    /**
+     * identifier for the getContentItem
+     */
     private String id;
+    /**
+     * url
+     */
     private GENERICurl theUrl;
     
     /**
@@ -92,6 +104,7 @@ public class GENERICgetContentItem implements XMLElement {
     }
     
     /**
+     * get the identifier for the getContentItem
      * @return the id
      */
     String getId() {
@@ -245,8 +258,6 @@ public class GENERICgetContentItem implements XMLElement {
      */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
     /**
@@ -255,7 +266,6 @@ public class GENERICgetContentItem implements XMLElement {
      */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }

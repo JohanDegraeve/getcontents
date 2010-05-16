@@ -32,6 +32,9 @@ import org.xml.sax.SAXException;
  *
  */
 public class GENERICinstructionList implements XMLElement {
+    /**
+     * instructionSet : arrayList of {@link Instruction instructions}
+     */
     private ArrayList<Instruction> instructionSet;
     
     /**
@@ -159,7 +162,6 @@ public class GENERICinstructionList implements XMLElement {
      */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 
