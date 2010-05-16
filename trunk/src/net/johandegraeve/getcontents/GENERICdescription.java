@@ -21,12 +21,10 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
-import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * holds a description, there's no specific checks , basically it's a string
@@ -35,15 +33,11 @@ import org.xml.sax.helpers.AttributesImpl;
  *
  */
 public class GENERICdescription implements XMLElement {
+    /**
+     * the description
+     */
     private String description;
     
-    /**
-     * constructor
-     */
-    public GENERICdescription() {
-	description = null;
-    }
-
     /**
      * does nothing
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
@@ -72,7 +66,7 @@ public class GENERICdescription implements XMLElement {
     }
 
     /**
-     * throws an exception if description = null
+     * throws an exception if {@link #description} = null or has length 0
      * @see net.johandegraeve.easyxmldata.XMLElement#complete()
      */
     @Override
@@ -140,7 +134,6 @@ public class GENERICdescription implements XMLElement {
      */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 
