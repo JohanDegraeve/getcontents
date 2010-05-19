@@ -2196,7 +2196,12 @@ The output of an XMLFilter will be an array of strings, where each string is the
 This output can then be used again as input to either another instruction like another XMLFilter, XMLGetter or processString. 
 
 *Attributes*
- none
+ * recursive
+   Values : true or false.<br>
+   If a first level node does not match a filter, and if recursive is true, then the filter will continue searching in the second level node and so on.
+
+ * charsetname
+   in case the source is a String, charsetname defines the charset to be used by String.getBytes
 
 *Occurrence*
  not defined
