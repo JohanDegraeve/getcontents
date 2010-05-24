@@ -21,12 +21,10 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
-import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * holds a url, there's no specific checks , basically it's a string
@@ -35,6 +33,9 @@ import org.xml.sax.helpers.AttributesImpl;
  *
  */
 public class GENERICurl implements XMLElement {
+    /**
+     * the url
+     */
     private String url;
     
     /**

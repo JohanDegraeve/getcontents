@@ -21,35 +21,43 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.AttributesImpl;
-
-import net.johandegraeve.easyxmldata.DefaultXMLElement;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
-/*
- * A filterinstruction can have many filters.
- * recursive attribute will apply  to all filters
- * SAXParseException thrown by the parser, are not thrown back by the execute. The XML must be valid.
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
+
+/**
+ * XML Filter instruction<br>
  *
  * @author Johan Degraeve
  *
  */
 public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
     
+    /**
+     * the XML filters
+     */
     private ArrayList<XMLFilter> filterList;
+    /**
+     * recursive attribute
+     */
     private boolean recursive;
+    /**
+     * charsetName, only useful in case the source is a String, which is read via String.getBytes(charsetName)
+     */
     private String charsetName;
     
+    /**
+     * run the instructions on the source, one by one<br>
+     * 
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     */
     @Override
     String[] execute(String[] source) throws Exception {
 	String[] returnvalue;
 	ArrayList<XMLElement> parsedList = null;
-	DefaultXMLElement root = null;
-
 	parsedList = net.johandegraeve.getcontents.Utilities.makeList(source,charsetName);
 	
 	//apply all filters to the nodelist
@@ -65,6 +73,13 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	return returnvalue;
     }
     
+    /**
+     * Filters the nodes, if {@link #recursive}, then filtering continues on each branch until know more children or until 
+     * at least one node is found that matches the filter
+     * @param nodeList list of XMLElements
+     * @param filter the filter to be applied to the nodeList
+     * @return a new list, after filtering
+     */
     private ArrayList<XMLElement> applyOneFilterToNodeList(ArrayList<XMLElement> nodeList, XMLFilter filter) {
 	ArrayList<XMLElement> newNodeList = new ArrayList<XMLElement>();
 	int size;
@@ -85,11 +100,19 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	return newNodeList;
     }
     
+    /**
+     * helper function to add an XMLElement to an ArrayList of XMLELement
+     * @param source the XMLElement to add
+     * @param toAddto the ArrayList to which the source must be added
+     */
     private void addLists(ArrayList<XMLElement> source, ArrayList<XMLElement> toAddto) {
 	for (int i = 0;i < source.size();i++)
 	    toAddto.add(source.get(i));
     }
 
+    /**
+     * constructor, setting {@link #recursive} to false, and {@link #charsetName} to ISO-8859-1
+     */
     public INSTRUCTIONXMLFilter() {
 	filterList = null;
 	recursive = false;
@@ -97,6 +120,10 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	charsetName = "ISO-8859-1";
     }
 
+    /**
+     * reads attributes {@link #recursive} and {@link #charsetName}, default values false and ISO-8859-1
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	try {
@@ -128,6 +155,10 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * if child is an XMLFilter, then it's added to the {@link #filterList}, otherwise an Exception is thrown
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	if (child instanceof XMLFilter)
@@ -144,10 +175,18 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if there's no XML Filters in the {@link #filterList}
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (filterList.size() == 0) {
@@ -156,6 +195,10 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	}
     }
 
+    /**
+     * @return the attributes {@link #recursive} and {@link #charsetName} in an {@link AttributesImpl}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -168,6 +211,10 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	return attr;
     }
 
+    /**
+     * @return the {@link #filterList} in an ArrayList
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement> returnvalue = new ArrayList<XMLElement>();
@@ -176,25 +223,38 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	return returnvalue;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#INSTRUCTIONXMLFilterTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.INSTRUCTIONXMLFilterTag;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return null;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
 }
