@@ -19,6 +19,13 @@
  */
 package net.johandegraeve.getcontents;
 
+/**
+ * interface for string processors
+ *
+ * @version 1.0
+ * @author Johan Degraeve
+ *
+ */
 public interface StringProcessor {
     
     /**

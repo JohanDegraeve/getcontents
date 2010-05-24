@@ -25,8 +25,6 @@ import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.htmlparser.Node;
-import org.htmlparser.NodeFilter;
-import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.nodes.TagNode;
 import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
@@ -43,15 +41,28 @@ import com.Ostermiller.util.StringHelper;
  */
 public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter  {
 
+    /**
+     * if recursive, then all nodes children will be searched for the nodes to be removed
+     */
     private boolean recursive;
 
+    /**
+     * the tagname of the nodes to be removed
+     */
     String tagName;
     
+    /**
+     * constructor
+     */
     public GETorFILTERremoveNodes() {
 	tagName = null;
 	recursive = false;
     }
     
+    /**
+     * expects the recursive attribute, default value true
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	try {
@@ -80,25 +91,45 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
 	}
     }
 
+    /**
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
+	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERremoveNodesTag);
     }
 
+    /**
+     * assigns text to {@link #tagName}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
 	tagName = text;
     }
 
+    /**
+     * does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
     }
 
+    /**
+     * throws an exception if {@link #tagName} = null
+     * @see net.johandegraeve.easyxmldata.XMLElement#complete()
+     */
     @Override
     public void complete() throws SAXException {
 	if (tagName == null)
 		throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERremoveNodesTag);
     }
 
+    /**
+     * @return  {@link #recursive} in an attribute 
+     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
+     */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
@@ -110,21 +141,37 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
 	return attr;
     }
 
+    /**
+     * @return null
+     * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
+     */
     @Override
     public ArrayList<XMLElement> getChildren() {
 	return null;
     }
 
+    /**
+     * @return {@link TagAndAttributeNames#GETorFILTERremoveNodesTag}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
+     */
     @Override
     public String getTagName() {
 	return TagAndAttributeNames.GETorFILTERremoveNodesTag;
     }
 
+    /**
+     * @return {@link #tagName}
+     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     */
     @Override
     public String getText() {
 	return tagName;
     }
 
+    /**
+     * @return false
+     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     */
     @Override
     public boolean preserveSpaces() {
 	return false;

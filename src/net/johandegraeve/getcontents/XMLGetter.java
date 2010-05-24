@@ -19,10 +19,20 @@
  */
 package net.johandegraeve.getcontents;
 
-import net.johandegraeve.easyxmldata.DefaultXMLElement;
 
+/**
+ * an XML Getter
+ *
+ * @author Johan Degraeve
+ *
+ */
 public interface XMLGetter {
 
+    /**
+     * gets list of XML GenericXML Elements
+     * @param list
+     * @return
+     */
     GenericXMLGetterResultList getList(GenericXMLGetterResultList list);
  
 }

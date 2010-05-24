@@ -19,10 +19,17 @@
  */
 package net.johandegraeve.getcontents;
 
-import org.htmlparser.NodeFilter;
 
+/**
+ * an XML filter
+ * @author Johan Degraeve
+ *
+ */
 public interface XMLFilter {
     
+    /**
+     * @return an XMLElementFilter
+     */
     XMLElementFilter getXMLFilter();
     
 }

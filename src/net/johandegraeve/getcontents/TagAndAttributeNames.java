@@ -20,8 +20,7 @@
 package net.johandegraeve.getcontents;
 
 /**
- * Names of the tags used in the XML. Changing these values requires also to change all class names,
- * as well the names of the classes as class names used in methods.
+ * Names of the tags used in the XML. Changing these values requires also to changing some class names.
  *
  * @author Johan Degraeve
  *
