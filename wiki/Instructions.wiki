@@ -1651,7 +1651,7 @@ resulting in
 
 Pad the beginning and end of each String with the given character until the result is the desired length. The result is that the original String is centered in the middle of the new string.<br>
 
-If the number of characters to pad is even, then the padding will be split evenly between the beginning and end, otherwise, the extra character will be added to the end.
+If the number of characters to pad is even, then the padding will be distributed evenly between the beginning and end, otherwise, the extra character will be added to the end.
 
 *Attributes*
  * mandatory attribute
@@ -1905,14 +1905,16 @@ Split each string with String.split(delimiter)<br>
 
 
 *Attributes*
- * optional attribute
-   delimiter : default value = " ", can be any String
+ none
 
 *Occurrence*
  not defined
 
 *Allowed Children*
- idSelector
+ * idSelector
+ * string
+   default value = " ", can be any String
+ 
 
 *text field*
  none
@@ -1944,7 +1946,7 @@ we can add a split, on " "
     			   	</DateFormatSymbols>
 	       		</SimpleDateFormat>
         	</readDateAndTime>
-        	<split delimiter=" "></split>
+        	<split><string> </string></split>
 
 ...
 </getContentItemList>
@@ -2001,7 +2003,8 @@ We will use an idSelector to get only the first result of each split instruction
     			   	</DateFormatSymbols>
 	       		</SimpleDateFormat>
         	</readDateAndTime>
-        	<split delimiter=" ">
+        	<split>
+                    <string> </string>
                     <idSelector include="true">
                        1
                     </idSelector>
@@ -2069,7 +2072,8 @@ now we apply the split instruction with a delimiter that will check on \r, \n or
 {{{
 <getContentItemList>
 ...
-        	<split delimiter="\r\n|\r|\n">
+        	<split>
+                        <string><![CDATA[\r\n|\r|\n]]></string>
 	        	<idSelector include="true">
 	        	   1
 	        	</idSelector>
