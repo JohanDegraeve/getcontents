@@ -34,7 +34,7 @@ import org.xml.sax.SAXParseException;
  * @author Johan Degraeve
  *
  */
-class Utilities  {
+public class Utilities  {
     
 
     /**
@@ -45,7 +45,7 @@ class Utilities  {
      * @return two strings will be added to the source, one in the beginning, one at the end
      * @throws Exception
      */
-    static String[] addRootElement(String[] source, String tagName) throws Exception {
+    public static String[] addRootElement(String[] source, String tagName) throws Exception {
 	String[]  returnvalue = new String[source.length + 2];
 	int i;
 	returnvalue[0] = source[0];
@@ -61,7 +61,7 @@ class Utilities  {
      * @param source
      * @return the complete source
      */
-    static String createSourceInOneString(String[] source) {
+    public static String createSourceInOneString(String[] source) {
 	StringBuilder temp;
 
 	//first put the whole source in a GenericXMLElementList
@@ -80,7 +80,7 @@ class Utilities  {
      * @return an XMLElement 
      * @throws Exception 
      */
-    static ArrayList<XMLElement> makeList(String[] source, String charsetName) throws Exception {
+    public static ArrayList<XMLElement> makeList(String[] source, String charsetName) throws Exception {
 	XMLElement root = null;
 	 ArrayList<XMLElement> resultList = null;
 	
@@ -206,7 +206,7 @@ class Utilities  {
 	 * @return char
 	 * @throws SAXException
 	 */
-	static char createCharFromString(String s) throws SAXException {
+	public static char createCharFromString(String s) throws SAXException {
 	    char c;
 	    try {
 		if (s.toLowerCase().startsWith("\\u") ) {

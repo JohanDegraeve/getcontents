@@ -41,6 +41,22 @@ public class GENERICstring implements XMLElement {
     private String string;
 
     /**
+     * default constructor
+     */
+    public GENERICstring() {
+	string = null;
+    }
+    
+    /**
+     * constructo taking string as argument
+     * @param newString
+     */
+    public GENERICstring(String newString) {
+	string = newString;
+    }
+    
+    
+    /**
      * does nothing
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */

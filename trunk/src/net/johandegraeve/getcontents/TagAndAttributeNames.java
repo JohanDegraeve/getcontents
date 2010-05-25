@@ -179,7 +179,7 @@ package net.johandegraeve.getcontents;
      static final String recursiveAttribute = "recursive";
      static final String lengthAttribute = "length";
      static final String characterAttribute = "character";
-     static final String delimiterAttribute = "delimiter";
+     //static final String delimiterAttribute = "delimiter";
      static final String offsetAttribute = "offset";
      static final String chronologicalAttribute = "chronological";
      

@@ -40,7 +40,7 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
     /**
      * delimiter to be used, 
      */
-    private String delimiter;
+    private GENERICstring delimiter;
     
     /**
      * idSelector
@@ -62,7 +62,7 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
     };*/
     
     public STRING_PROCESSORsplit() {
-	delimiter = " ";
+	delimiter = new  GENERICstring(" ");
 	idSelector = null;
     }
 
@@ -76,7 +76,7 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 	ArrayList<String> stringArrayList = new ArrayList<String>(); 
 	String[] returnvalue = null;
 	for (int i = 0; i < source.length; i ++) {
-	    returnvalue = source[i].split(delimiter);
+	    returnvalue = source[i].split(delimiter.getText());
 	    if (idSelector != null) {
 		returnvalue = idSelector.processString(returnvalue);
 	    }
@@ -96,13 +96,11 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
     }
 
     /**
-     * gets attribute delimiter, if not present then default value blank space is assigned
+     * does nothing
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
-	delimiter = Utilities.getOptionalAttributeValues(attributes, new String[] {TagAndAttributeNames.delimiterAttribute}, new String[] {" "})[0];
-	
     }
 
     /**
@@ -112,10 +110,15 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, 
-		TagAndAttributeNames.STRING_PROCESSORPrefix,
-		new String[]  {TagAndAttributeNames.STRING_PROCESSORidSelectorTag},
+		new String[]  {TagAndAttributeNames.STRING_PROCESSORPrefix,
+		               TagAndAttributeNames.genericPrefix},
+		new String[]  {TagAndAttributeNames.STRING_PROCESSORidSelectorTag,
+		               TagAndAttributeNames.GENERICstringTag},
 		TagAndAttributeNames.STRING_PROCESSORsplitTag);
-	idSelector = (STRING_PROCESSORidSelector) child;
+	if (child instanceof STRING_PROCESSORidSelector)
+	    idSelector = (STRING_PROCESSORidSelector) child;
+	if (child instanceof GENERICstring)
+	    delimiter = (GENERICstring) child;
     }
 
     /**
@@ -143,14 +146,12 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
     }
 
     /**
-     * @return {@link #delimiter} in an attribute
+     * @return null
      * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
      */
     @Override
     public Attributes getAttributes() {
-	AttributesImpl attr = new AttributesImpl();
-	attr.addAttribute(null, TagAndAttributeNames.delimiterAttribute, TagAndAttributeNames.delimiterAttribute, "CDATA", delimiter);
-	return attr;
+	return null;
     }
 
     /**
