@@ -1079,6 +1079,7 @@ A string processor can never be the first instruction in an instructionList. In 
 
 *Allowed Children*
  One ore more of following StringProcessor :
+ * append
  * containsAny
  * endsWithAny
  * equalsAny
@@ -1088,6 +1089,7 @@ A string processor can never be the first instruction in an instructionList. In 
  * idSelector
  * midPad
  * postPad
+ * prepend
  * prePad
  * readDateAndTime
  * split
@@ -1098,6 +1100,34 @@ A string processor can never be the first instruction in an instructionList. In 
 *text field*
  none
   
+===== append =====
+
+appends a string to each string in the input 
+
+*Attributes*
+ none 
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the string to append, untrimmed
+  
+*example*
+
+{{{
+<getContentItemList>
+...
+         <processString>
+            <append><![CDATA[piece of text to append to each string]]></append>
+         </processString>
+...         
+</getContentItemList>
+}}}
+
 ===== containsAny =====
 
 Filters on nodes that have text that contains any of a list of strings<br>
@@ -1732,6 +1762,34 @@ Append the given character to the String until the result is the desired length.
 *example*
 
 see midPad
+
+===== prepend =====
+
+prepends a string to each string in the input 
+
+*Attributes*
+ none 
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the string to prepend, untrimmed
+  
+*example*
+
+{{{
+<getContentItemList>
+...
+         <processString>
+            <prepend><![CDATA[piece of text to prepend to each string]]></prepend>
+         </processString>
+...         
+</getContentItemList>
+}}}
 
 ===== prePad : pad beginning =====
 
