@@ -384,9 +384,12 @@ The output of an htmlFilter will be an array of strings, where each string is th
 This output can then be used again as input to either another instruction like htmlFilter, htmlGetter, processString (it is unlikely that the output of an htmlFilter will be the  input to an XMLFilter or XMLGetter).
 
 *Attributes*
- * recursive
+ * recursive, optional
    Values : true or false.<br>
    If a first level node does not match a filter, and if recursive is true, then the filter will continue searching in the second level node and so on.
+ * charset, optional
+   values : for instance "ISO-8859-1" or "UTF-8"<br>
+   Even if it is not always necessary to specify the charset to be used, because mostly it is available in the HTML page in a META TAG, it is safer to specify it.
 
 *Occurrence*
  not defined
@@ -439,7 +442,7 @@ In this example we filter on nodes that have a tagname "DIV" and an attribute bo
 {{{
 <getContentItemList>
 ...
-         <htmlFilter recursive="true">
+         <htmlFilter recursive="true" charset="utf-8">
             <and>
                <tagName>
                   DIV
@@ -870,7 +873,12 @@ gets from html nodes.
 
 
 *Attributes*
- recursive with value true or false. If recursive and if one specific node returns no NodeList then dig deeper into that node
+ * recursive, optional,  with value true or false. If recursive and if one specific node returns no NodeList then dig deeper into that node
+ * charset, optional
+   values : for instance "ISO-8859-1" or "UTF-8"<br>
+   Even if it is not always necessary to specify the charset to be used, because mostly it is available in the HTML page in a META TAG, it is safer to specify it.
+
+
 
 *Occurrence*
  not defined
