@@ -19,6 +19,8 @@
  */
 package net.johandegraeve.getcontents;
 
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
 
 import net.johandegraeve.easyxmldata.Utilities;
@@ -51,6 +53,12 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
     private boolean recursive;
 
     /**
+     * charset to be used, the charset can be used as attribute in the xml element.<br>
+     * It is safer to specify the character set , even though it may be specified in the html page
+     */
+    private String charset;
+    
+    /**
      * executes the HTMLGetter in the getterList one after the other
      * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
      */
@@ -58,6 +66,7 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
     String[] execute(String[] source) {
 	String[] returnvalue;
 	NodeList parsedNodeList = null;
+	Parser htmlParser;
 	StringBuilder temp;
 
 	//first put the whole source in a NodeList
@@ -65,10 +74,12 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	for (int i = 0;i < source.length; i++)
 	    temp.append(source[i]);
 	try {
-	    parsedNodeList = (new Parser(temp.toString())).parse(null);
+	    htmlParser = new Parser(temp.toString());
+	    htmlParser.setEncoding(charset);
+	    parsedNodeList = htmlParser.parse(null);
 	} catch (ParserException e) {
 	    e.printStackTrace();
-	}
+	} 
 	
 	//apply all filters to the nodelist
 	for (int i = 0;i < getterList.size();i++) {
@@ -114,6 +125,7 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
     public INSTRUCTIONhtmlGetter() {
 	recursive = false;
 	getterList = new ArrayList<HTMLGetter>();
+	charset = "ISO-8859-1";
     }
 
     /**
@@ -127,14 +139,21 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	    	attributes, 
 	    	new String[] {
 	    		TagAndAttributeNames.recursiveAttribute,
+	    		TagAndAttributeNames.charsetAttribute
 	    	}, 
 	    	new String[]  {
 	    		"false",
+	    		"ISO-8859-1"
 	    	});
 	    if (attrValues[0].equalsIgnoreCase("true")) 
 	        recursive = true;
 	    else
 	        recursive = false;
+	    charset = attrValues[1];
+	    if (!Charset.isSupported(charset))
+		throw new SAXException("htmlGetter has an unsupported character encoding attribute - Charset.isSupported(" + charset + ") failed");
+	} catch (IllegalCharsetNameException ex) {
+	    throw new SAXException("htmlGetter has an illegal charset attribute");
 	} catch (Exception e) {
 	    StringBuilder exceptionString = new StringBuilder();
 	    exceptionString.append(e.toString() + "\n");
@@ -200,6 +219,11 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 		TagAndAttributeNames.recursiveAttribute, 
 		"CDATA", 
 		(recursive ? "true":"false"));
+	attr.addAttribute(null, 
+		TagAndAttributeNames.charsetAttribute, 
+		TagAndAttributeNames.charsetAttribute, 
+		"CDATA", 
+		charset);
 	return attr;
     }
 

@@ -184,5 +184,6 @@ package net.johandegraeve.getcontents;
      static final String characterAttribute = "character";
      static final String offsetAttribute = "offset";
      static final String chronologicalAttribute = "chronological";
+     static final String charsetAttribute = "charset";
      
 }

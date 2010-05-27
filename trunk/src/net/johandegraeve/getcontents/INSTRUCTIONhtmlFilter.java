@@ -19,6 +19,8 @@
  */
 package net.johandegraeve.getcontents;
 
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
 
 import net.johandegraeve.easyxmldata.Utilities;
@@ -50,6 +52,12 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
     private boolean recursive;
     
     /**
+     * charset to be used, the charset can be used as attribute in the xml element.<br>
+     * It is safer to specify the character set , even though it may be specified in the html page
+     */
+    private String charset;
+    
+    /**
      * Executes the list of filters to the source<br>
      * The strings in the source array will be concatenated to one string which is then parsed to a NodeList.<br>
      * Returns Nodes that match the tagfilter.
@@ -59,17 +67,19 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
     String[] execute(String[] source) {
 	String[] returnvalue;
 	NodeList parsedNodeList = null;
-	StringBuilder temp;
-
-	//first put the whole source in a NodeList
-	temp  = new StringBuilder();
-	for (int i = 0;i < source.length; i++)
+	StringBuilder temp = new StringBuilder();
+	Parser htmlParser;
+	
+	for (int i = 0; i < source.length; i++)
 	    temp.append(source[i]);
+	
 	try {
-	    parsedNodeList = (new Parser(temp.toString())).parse(null);
+	    htmlParser = new Parser(temp.toString());
+	    htmlParser.setEncoding(charset);
+	    parsedNodeList = htmlParser.parse(null);
 	} catch (ParserException e) {
 	    e.printStackTrace();
-	}
+	} 
 	
 	//apply all filters to the nodelist
 	for (int i = 0;i < filterList.size();i++) {
@@ -108,11 +118,12 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
     }
 
     /**
-     * constructor, sets recursive attribute to false
+     * constructor, sets recursive attribute to false, encoding to ISO-8859-1
      */
     public INSTRUCTIONhtmlFilter() {
 	recursive = false;
 	filterList = new ArrayList<HTMLFilter>();
+	charset = "ISO-8859-1";
     }
 
     /**
@@ -126,14 +137,21 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	    	attributes, 
 	    	new String[] {
 	    		TagAndAttributeNames.recursiveAttribute,
+	    		TagAndAttributeNames.charsetAttribute
 	    	}, 
 	    	new String[]  {
 	    		"false",
+	    		"ISO-8859-1"
 	    	});
 	    if (attrValues[0].equalsIgnoreCase("true")) 
 	        recursive = true;
 	    else
 	        recursive = false;
+	    charset = attrValues[1];
+	    if (!Charset.isSupported(charset))
+		throw new SAXException("htmlFilter has an unsupported character encoding attribute - Charset.isSupported(" + charset + ") failed");
+	} catch (IllegalCharsetNameException ex) {
+	    throw new SAXException("htmlFilter has an illegal charset attribute");
 	} catch (Exception e) {
 	    StringBuilder exceptionString = new StringBuilder();
 	    exceptionString.append(e.toString() + "\n");
@@ -200,6 +218,11 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 		TagAndAttributeNames.recursiveAttribute, 
 		"CDATA", 
 		(recursive ? "true":"false"));
+	attr.addAttribute(null, 
+		TagAndAttributeNames.charsetAttribute, 
+		TagAndAttributeNames.charsetAttribute, 
+		"CDATA", 
+		charset);
 	return attr;
     }
 
