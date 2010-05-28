@@ -2391,6 +2391,7 @@ This output can then be used as input to processString, and if the output repres
  * children
  * text
  * idSelector
+ * removeNodes
 
 *text field*
  none
@@ -2411,6 +2412,42 @@ if the input is strings, it returns null
 
 *text field*
  none
+
+===== removeNodes =====
+
+will remove all nodes matching the specified tag
+
+*Attributes*
+ recursive, if true will search till the end, otherwise false
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the tagname
+
+*example*
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         ...
+      </url>
+...
+      <instructionList>
+         <htmlGetter recursive="false">
+            <removeNodes recursive="true">script</removeNodes>
+         </htmlGetter>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>  
+}}}
+
+
 
 ===== text : get the text inside the elements =====
 
