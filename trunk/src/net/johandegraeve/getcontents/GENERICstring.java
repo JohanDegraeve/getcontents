@@ -29,7 +29,6 @@ import net.johandegraeve.easyxmldata.XMLElement;
 /**
  * class for a string, spaces and carriage returns are preserved
  * 
- * @version 1.0
  * @author Johan Degraeve
  *
  */
@@ -41,10 +40,10 @@ public class GENERICstring implements XMLElement {
     private String string;
 
     /**
-     * default constructor
+     * default constructor, initializing {@link #string} to &quot;&quot;
      */
     public GENERICstring() {
-	string = null;
+	string = "";
     }
     
     /**
@@ -82,13 +81,11 @@ public class GENERICstring implements XMLElement {
     }
 
     /**
-     * if string = null then an exception is thrown
+     * does nothing
      * @see net.johandegraeve.easyxmldata.XMLElement#complete()
      */
     @Override
     public void complete() throws SAXException {
-	if (string == null)
-	    throw new SAXException("Element of type " + TagAndAttributeNames.GENERICstringTag + " should have a text");
     }
 
     /**
