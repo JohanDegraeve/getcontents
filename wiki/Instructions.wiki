@@ -994,6 +994,39 @@ now the result is (I must admit that I removed a lot of blank lines, I'm sure th
 <TD width="10%" ALIGN="center"><strong>vet (g)</strong></TD>
 }}}
   
+===== removeNodes =====
+
+will remove all nodes matching the specified tag
+
+*Attributes*
+ recursive, if true will search till the end, otherwise false
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the tagname
+
+*example*
+
+{{{
+<getContentItemList>
+   <getContentItem id="1">
+      <url>
+         ...
+      </url>
+...
+      <instructionList>
+         <htmlGetter recursive="false">
+            <removeNodes recursive="true">script</removeNodes>
+         </htmlGetter>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>  
+}}}
 
 ===== text =====
 
