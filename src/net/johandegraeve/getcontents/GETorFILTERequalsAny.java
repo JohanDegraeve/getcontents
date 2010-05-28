@@ -178,26 +178,42 @@ public class GETorFILTERequalsAny implements XMLElement,  XMLFilter, StringProce
 	    public String[] processString(String[] source) {
 		String[] actualReturnValue = new String[0];
 		String[] terms = new String [stringChildList.size()];
+		boolean found;
 		for (int i = 0; i < stringChildList.size();i++)
 		    terms[i] = stringChildList.get(i).getText();
 
 		if (source == null) return null;
 		ArrayList<String> returnvalue = new ArrayList<String> ();
 		for (int i = 0; i < source.length;i++) {
-		    if (caseSensitive) {
-			if (StringHelper.equalsAny(source[i], terms)) {
-			    if (include) 
+		    //first check if any of the terms has length 0 and if so check if source[i] has length 0
+		    //and if yes there's a match - strings with length 0 seem not correctly compated by StringHelper
+		    found = false;
+		    for (int j = 0;j < terms.length;j++) {
+			if (terms[j].length() == 0)
+			    if (source[i].length() == 0) {
+				//there's a match
+			        if (include) 
 				    returnvalue.add(source[i]);
-			} else 
-			    if (!include) 
-				    returnvalue.add(source[i]);
-		    } else
-			if (StringHelper.equalsAnyIgnoreCase(source[i], terms)) {
-			    if (include) 
-				    returnvalue.add(source[i]);
-			} else 
-			    if (!include) 
-				    returnvalue.add(source[i]);
+			        found = true;//there's no need to check the other, non-0-length terms
+			        break;//there's no need to check if the other terms have 0, otherwise source would be added again.
+			    }
+		    } 
+		    if (!found) {
+	    		    if (caseSensitive) {
+	    			if (StringHelper.equalsAny(source[i], terms)) {
+	    			    if (include) 
+	    				    returnvalue.add(source[i]);
+	    			} else 
+	    			    if (!include) 
+	    				    returnvalue.add(source[i]);
+	    		    } else
+	    			if (StringHelper.equalsAnyIgnoreCase(source[i], terms)) {
+	    			    if (include) 
+	    				    returnvalue.add(source[i]);
+	    			} else 
+	    			    if (!include) 
+	    				    returnvalue.add(source[i]);
+		    }
 		}
 		return (String[]) returnvalue.toArray(actualReturnValue);
 	    }
