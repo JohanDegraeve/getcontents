@@ -1107,7 +1107,7 @@ The method toPlainTextString will work here on two Nodes. The first node being a
 ==== processString ====
 
 To do stuff with strings. Usually that will be the last list of instructions and will take a list of strings as input. That list of strings is the output of the last html- or XML- Filter or Getter.<br>
-For most of the string processors, I've been using a package called com.Ostermiller.util, class StringHelper.<br>
+For some of the string processors, I've been using a package called com.Ostermiller.util, class StringHelper.<br>
 
 A string processor can never be the first instruction in an instructionList. In case you want to use non-HTML or XML as input to a the list of instructions, start with the instruction "getUnFilteredContent"
  
@@ -1133,6 +1133,7 @@ A string processor can never be the first instruction in an instructionList. In 
  * prepend
  * prePad
  * readDateAndTime
+ * repeat
  * split
  * startsWithAny
  * trim
@@ -1997,6 +1998,60 @@ a !TimeZone
 
 *text field*
  a timeZone ID
+
+===== repeat =====
+
+it is possible to repeat a number of stringProcessors, by adding the element "repeat" as child of the element processString.<br>
+Element repeat extends processString and so can have a number of
+stringProcessor children , the whole list will be repeated.<br>
+Typically useful for example to process a findAndReplace processor multiple times, to replace two carriage returns by one, resulting in a list of strings where there are no more double carriage returns.
+
+*Attributes*
+ * attributes inherited from processString
+ * repeat , minimum value 1, defines the number of repetitions
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * same as for processString
+
+*text field*
+ none
+  
+*example*
+
+the following example gets text from a news site, at the end all double carriage returns are replaced by one carriage return, this is repeated 15 times.<br>
+As a result, suppose the original text occurrences of 15 subsequent carriage returns, this will be replaced finally by just one carriage return.
+
+{{{
+<?xml version="1.0" encoding="UTF-8" ?>
+<getContentItemList>
+   <getContentItem id="hln-fulltext">
+...
+      <instructionList>
+         <htmlFilter recursive="true"  charset="UTF-8">
+...
+         </htmlFilter>
+         <htmlGetter charset="UTF-8">
+            <text/>
+         </htmlGetter>
+         <processString>
+         	<unescapeHTML/><trim/>
+         	<repeat repeat="15">
+	         	<findAndReplace>
+         		   <find>
+
+</find>
+					<replace>
+</replace>
+				</findAndReplace>
+			</repeat>
+         </processString>
+      </instructionList>
+   </getContentItem>
+</getContentItemList>
+}}}
 
 ===== split =====
 
