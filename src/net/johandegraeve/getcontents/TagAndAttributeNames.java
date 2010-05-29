@@ -88,6 +88,7 @@ package net.johandegraeve.getcontents;
     static final String STRING_PROCESSORprePadTag = "prePad";
     static final String STRING_PROCESSORprependTag = "prepend";
     static final String STRING_PROCESSORappendTag = "append";
+    static final String STRING_PROCESSORrepeatTag = "repeat";
     static final String STRING_PROCESSORsplitTag = "split";
     static final String STRING_PROCESSORidSelectorTag = "idSelector";
     static final String GENERICLocaleTag = "Locale";
@@ -125,7 +126,8 @@ package net.johandegraeve.getcontents;
 	STRING_PROCESSORidSelectorTag,
 	STRING_PROCESSORreadDateAndTimeTag,
 	GETorFILTERstartsWithAnyTag,
-	STRING_PROCESSORprependTag
+	STRING_PROCESSORprependTag,
+	STRING_PROCESSORrepeatTag
     };
     
      /**
@@ -185,5 +187,6 @@ package net.johandegraeve.getcontents;
      static final String offsetAttribute = "offset";
      static final String chronologicalAttribute = "chronological";
      static final String charsetAttribute = "charset";
+     static final String repeatAttribute = "repeat";
      
 }
