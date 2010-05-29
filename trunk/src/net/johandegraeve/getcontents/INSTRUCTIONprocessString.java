@@ -46,7 +46,7 @@ public class INSTRUCTIONprocessString extends Instruction {
      * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
      */
     @Override
-    String[] execute(String[] source) throws Exception {
+    String[] execute(String[] source)  {
 	if (source == null) return null;
 	
 	//apply all processors to the list
@@ -82,7 +82,7 @@ public class INSTRUCTIONprocessString extends Instruction {
 	    processorList.add((StringProcessor)child);
 	else {
 	    StringBuilder exceptionString = new StringBuilder();
-	    exceptionString.append("Element " + TagAndAttributeNames.INSTRUCTIONprocessStringTag +
+	    exceptionString.append("Element " + Utilities.getClassname(this.getClass())  +
 		    " can only have a StringProcessor as child element.\nAllowed stringprocessors are : \n");
 	    for (int i = 0; i < TagAndAttributeNames.stringProcessorTags.length; i ++)
 		exceptionString.append(TagAndAttributeNames.stringProcessorTags[i] + "\n");
