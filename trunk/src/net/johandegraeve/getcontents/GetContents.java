@@ -43,7 +43,6 @@ public class GetContents {
      * No debugging print statements are called.
      * @param instructions can be url (http:... or file:...), html (<...) or XML (< ...)
      * @throws Exception 
-     * @throws SAXParseException 
      */
     public GetContents(String instructions) throws Exception  {
 	this(instructions, false);
@@ -88,7 +87,8 @@ public class GetContents {
      * This method assumes that the element getContentItem has a url as child element, this is where the content will be fetched. If there's no url
      * in the getContentItem element, an exception will be thrown
      * @param id identifies the getContentItem element to be used
-     * @return the result
+     * @return the result, if there is no getContentItem element with the specified id in the instructions , then the returnvalue is a 
+     * string array with zero elements.
      * @throws Exception
      */
     public String[] getResult(String id) throws Exception {
@@ -101,7 +101,8 @@ public class GetContents {
      * @param id identifies the getContentItem element to be used
      * @param input this is the source that will be used, it may be the actual content or a url (file or http); if the getContentItem element
      * has a url as child, it will be ignored
-     * @return the result
+     * @return the result, if there is no getContentItem element with the specified id in the instructions , then the returnvalue is a 
+     * string array with zero elements.
      * @throws Exception
      */
     public String[] getResult(String id, String input) throws Exception {
