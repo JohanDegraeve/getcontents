@@ -32,7 +32,8 @@ public interface StringProcessor {
      * Method to process string
      * @param source input
      * @return result of the string manipulation 
+     * @throws Exception 
      */
-    String[] processString(String[] source);
+    String[] processString(String[] source) throws Exception;
 
 }
