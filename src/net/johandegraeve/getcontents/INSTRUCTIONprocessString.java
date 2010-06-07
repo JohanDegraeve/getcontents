@@ -46,7 +46,7 @@ public class INSTRUCTIONprocessString extends Instruction {
      * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
      */
     @Override
-    String[] execute(String[] source)  {
+    String[] execute(String[] source) throws Exception {
 	if (source == null) return null;
 	
 	//apply all processors to the list
