@@ -363,7 +363,8 @@ If the input is a URL (anything not starting with '<'), it will fetch the conten
 If the input is not a URL, it returns the input.<br>
 So it is important, if the input is to be seen as a source text (ie not a URL), then the first non blank character should be a '<'.<br>
 
-The instruction will read line by line in the source, each line results in a string in an array that will be the result of this instruction. So the result of this instruction will be an array of String.
+If the source is a url, an InputStreamReader is created with the url and the encoding as parameter (encoding is an optional child). An array will be returned with one element that has the retrieved content.<br>
+If the source is not a url, then the source is returned.<br>
 
 *Attributes*
  none
@@ -372,7 +373,7 @@ The instruction will read line by line in the source, each line results in a str
  not defined
 
 *Allowed Children*
- none
+ optional : encoding, default value the default characterset for the platform
 
 ==== htmlFilter ====
 
