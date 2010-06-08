@@ -2,22 +2,29 @@ package net.johandegraeve.getcontents;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import net.johandegraeve.easyxmldata.XMLElement;
-
 /**
- * an instruction of type getUnFilteredContent get the content and return as is
+ * an instruction of type getUnFilteredContent get the content and return as is<br>
+ * one optional child being encoding, default value set to default charset.
  *
  * @author Johan Degraeve
  *
  */
 public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLElement {
+    
+    /**
+     * the encoding
+     */
+    private GENERICencoding encoding;
 
     /**
      * does nothing
@@ -28,12 +35,28 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
     }
 
     /**
-     * throws an exception
+     * accepts encoding as child and assigns them<br>
      * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
      */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.INSTRUCTIONgetUnfilteredContent);
+	Utilities.verifyChildType(child, 
+		new String []{
+	    		TagAndAttributeNames.genericPrefix
+		},  
+		new String []{
+		    TagAndAttributeNames.GENERICencodingTag
+		}, 
+		TagAndAttributeNames.INSTRUCTIONgetUnfilteredContent);
+	
+	if (Utilities.getClassname(child.getClass()).equals(
+		TagAndAttributeNames.genericPrefix +
+		TagAndAttributeNames.GENERICencodingTag)) {
+	    if (encoding != null)
+		throw new SAXException("Element of type " + TagAndAttributeNames.INSTRUCTIONgetUnfilteredContent +
+			" should have only one child of type " + TagAndAttributeNames.GENERICencodingTag);
+	    encoding = (GENERICencoding) child;
+	} 
     }
 
     /**
@@ -53,11 +76,16 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
     }
 
     /**
-     * does nothing
+     * if {@link #encoding} is null then assigns to default character set
      * @see net.johandegraeve.easyxmldata.XMLElement#complete()
      */
     @Override
     public void complete() throws SAXException {
+	if (encoding == null) {
+	    encoding = new GENERICencoding();
+	    encoding.addText(Charset.defaultCharset().displayName());
+	    encoding.complete();//just to be sure not forgetting anything
+	}
     }
 
     /**
@@ -116,9 +144,8 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
     @Override
     String[] execute(String[] source) throws Exception {
 	BufferedReader in = null;
-	ArrayList<String> resultList = new ArrayList<String>();
-;
-	String inputLine;
+	StringBuffer resultList = new StringBuffer();
+	int chr;
 
 	//first check if source is a url or not
 	boolean ltfound = false;
@@ -150,21 +177,19 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
 	    URL yahoo = new URL(source[i].substring(j));
 	    in = new BufferedReader(
 				new InputStreamReader(
-				yahoo.openStream()));
-	    while ((inputLine = in.readLine()) != null)
-		resultList.add(inputLine);
+				yahoo.openStream(),encoding.getEncoding()));
+	    chr = in.read();
+	    while (chr != -1) {
+		resultList.append((char)chr);
+		chr = in.read();
+	    }
 	    in.close();
 	} else {
-	    //source is not a URL, read each line in the source array and create a new arraylist of strings which each line
-	    for (int i1 = 0;i1 < source.length;i1++) {
-		in = new BufferedReader(new StringReader(source[i1]));
-		while ((inputLine = in.readLine()) != null)
-		    resultList.add(inputLine);
-		in.close();
-	    }
+	    //source is not a URL, 
+		return source;
 	}
 	
-	return (String[]) resultList.toArray(source);
+	return new String[]{resultList.toString()} ;
     }
 
 }
