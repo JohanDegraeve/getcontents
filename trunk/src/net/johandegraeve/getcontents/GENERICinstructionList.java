@@ -48,21 +48,44 @@ public class GENERICinstructionList implements XMLElement {
      * Executes the list of instructions.<br>
      * 
      * @param input a url or the source, anything starting with &lt; is considered to be not a url
+     * @param logger 
      * @return the result A string array of size 0 if input = null, the result of executing all instructions one by one
      * on the input, if input != null
      * @throws Exception
      */
-    String[] execute(String input) throws Exception {
+    String[] execute(String input, Logger logger) throws Exception {
 	String[] returnvalue;
 
-	if (input == null || input.length() == 0)
+	if (input == null || input.length() == 0) {
+	    if (logger != null) {
+	        logger.Log(System.currentTimeMillis() + " : method execute in instructionList : the input is empty, instructions will not be executed, returnvalue is empty");
+	    }
 	    return new String[0];
+	}
 	
 	returnvalue  = new String[]{input};
+	if (logger != null) {
+	     logger.Log(System.currentTimeMillis() + " : method execute in instructionList : starting to execute the list of instructions");
+	}
 		
 	//execute the instructions one by one
 	for (int i = 0;i < instructionSet.size(); i++) {
-	    returnvalue = instructionSet.get(i).execute(returnvalue);
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : method execute in instructionList : start of instruction " + i +
+			" " + instructionSet.get(i).getTagName());
+	    }
+			
+	    returnvalue = instructionSet.get(i).execute(returnvalue, logger);
+
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+			" : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+		if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+		    for (int j = 0;j < returnvalue.length;j++) {
+			logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+		    }
+		}
+	    }
 	    if (returnvalue == null || returnvalue.length == 0)
 		break;
 	}

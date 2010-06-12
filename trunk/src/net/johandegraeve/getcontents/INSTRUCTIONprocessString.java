@@ -43,15 +43,28 @@ public class INSTRUCTIONprocessString extends Instruction {
 
     /**
      * to execute the list of string processors
-     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger)
      */
     @Override
-    String[] execute(String[] source) throws Exception {
-	if (source == null) return null;
+    String[] execute(String[] source, Logger logger) throws Exception {
+	
+	if (source == null) {
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : method execute in processString, the source is empty so returning nothing");
+	    }
+	    return null;
+	}
 	
 	//apply all processors to the list
 	for (int i = 0;i < processorList.size();i++) {
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : method execute in processString, applying string Processor " + ((XMLElement)processorList.get(i)).getTagName());
+	    }
 	    source = processorList.get(i).processString(source);
+	}
+
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : result has  " + source.length + " elements");
 	}
 	return source;
     }

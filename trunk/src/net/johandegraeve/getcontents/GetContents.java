@@ -24,6 +24,8 @@ import net.johandegraeve.easyxmldata.Utilities;
 
 import org.xml.sax.SAXParseException;
 
+import com.Ostermiller.util.StringHelper;
+
 /**
  * to get contents, the only class that should be used by application using this library
  *
@@ -33,6 +35,11 @@ import org.xml.sax.SAXParseException;
 public class GetContents {
     
     /**
+     * the logger, if null then there's no logging
+     */
+    Logger logger;
+    
+    /**
      * this is the result from parsing the XML in the instructions file
      */
     private GENERICgetContentItemList result;
@@ -40,29 +47,34 @@ public class GetContents {
     /**
      * Creating instance with XML document that contains the necessary instructions.<br>
      * If instructions is a url then the constructor will try to connect to the url so this may take some time.<br>
-     * No debugging print statements are called.
+     * No logging will be done.
      * @param instructions can be url (http:... or file:...), html (<...) or XML (< ...)
      * @throws Exception 
      * @throws SAXParseException 
      */
     public GetContents(String instructions) throws Exception  {
-	this(instructions, false);
+	this(instructions, null);
     }
 
     /**
      * Creating instance with XML document that contains the necessary instructions.<br>
      * If instructions is a url then the constructor will try to connect to the url so this may take some time.
      * @param instructions can be url (http:... or file:...), html (<...) or XML (< ...)
-     * @param debug if true then debugging print statements are called
+     * @param logger if null then there's no logging, if not null then logging will be done through the logger
      * @throws Exception 
      */
-    public GetContents(String instructions, boolean debug) throws Exception  {
+    public GetContents(String instructions, Logger logger) throws Exception  {
+	this.logger = logger;
 	EasyXMLDataParser myParser = new EasyXMLDataParser(
     	    new String[] {"net.johandegraeve.getcontents","net.johandegraeve.getcontents","net.johandegraeve.getcontents", "net.johandegraeve.getcontents"},
     	    new String[] {"INSTRUCTION","GENERIC","GETorFILTER", "STRING_PROCESSOR"}, 
     	    false);
+	
 	try {
 	    result = (GENERICgetContentItemList) myParser.parse(instructions);
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : Instructions parsed");
+	    }
 	} catch (SAXParseException e) {
 	    String exceptionresult = "";
 	    	if (e.toString().contains("cannot be cast to")) 
@@ -76,10 +88,12 @@ public class GetContents {
 	    	"ColumnNumber = " +   e.getColumnNumber() + "\n" +
 	    	"PublicId = " +   e.getPublicId() + "\n" +
 	    	"SystemId = " +   e.getSystemId() + "\n";
+	    	if (logger != null) {
+	    	    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
+	    		logger.Log(System.currentTimeMillis() + exceptionresult);
+	    	    }
+	    	}
 	    	throw new Exception(exceptionresult);
-	}
-	if (debug) {
-	    System.out.println(Utilities.createXML(result));
 	}
     }
     
@@ -107,8 +121,13 @@ public class GetContents {
     public String[] getResult(String id, String input) throws Exception {
 	for (int i = 0;i < result.size();i ++) {
 	    if (result.elementAt(i).getId().equals(id)) {
-		return result.elementAt(i).executeInstructionSet(input);
+		return result.elementAt(i).executeInstructionSet(input,logger);
 	    }
+	}
+	if (logger != null) {
+    	    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
+    		logger.Log(System.currentTimeMillis() + " : did not find a getContentItem with id " + id + " - check the instructions xml file");
+    	    }
 	}
 	return new String[0];
     }

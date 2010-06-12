@@ -26,6 +26,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.Ostermiller.util.StringHelper;
+
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
@@ -121,20 +123,27 @@ public class GENERICgetContentItem implements XMLElement {
      * a url, it will first be downloaded.
      * 
      * @param input
+     * @param logger used for logging
      * @return the result
      * @throws Exception
      */
-    String[] executeInstructionSet(String input) throws Exception {
+    String[] executeInstructionSet(String input, Logger logger) throws Exception {
 	if (input == null)
 	    try {
 		input = theUrl.getUrl();
 	    } catch (RuntimeException e1) {
+	    	if (logger != null) {
+	    	    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
+	    		logger.Log(System.currentTimeMillis() + " : It seems a url child element is missing in Element \"" + TagAndAttributeNames.GENERICgetcontentitemlistTag + 
+				"\" with id \"" + input + "\".");
+	    	    }
+	    	}
 		throw new Exception("It seems a url child element is missing in Element \"" + TagAndAttributeNames.GENERICgetcontentitemlistTag + 
 			"\" with id \"" + input + "\".");
 	    }
 	
 	try {
-	    return instructionList.execute(input);
+	    return instructionList.execute(input, logger);
 	} catch (Exception e) {
 	        String newExceptionString = e.toString();
 	        for (int i = 0; i < FOUR_OH_FOUR.length; i++) {
@@ -143,6 +152,11 @@ public class GENERICgetContentItem implements XMLElement {
 	    		throw new ParserException (newExceptionString, e);	    		
 	            }
 	        }
+	    	if (logger != null) {
+	    	    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
+	    		logger.Log(System.currentTimeMillis() + " : " + e.toString());
+	    	    }
+	    	}
 	        throw e;
 	}
     }
