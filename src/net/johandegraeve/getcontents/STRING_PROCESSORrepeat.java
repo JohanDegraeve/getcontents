@@ -103,6 +103,7 @@ public class STRING_PROCESSORrepeat extends INSTRUCTIONprocessString implements 
     }
 
     /**
+     * unfortunately, the child string processors will be executed without logging
      * @return the children  applied {@link #repeat} times
      * @throws Exception 
      * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
@@ -110,7 +111,7 @@ public class STRING_PROCESSORrepeat extends INSTRUCTIONprocessString implements 
     @Override
     public String[] processString(String[] source) throws Exception {
 	for (int i = 0; i < repeat; i ++)
-	    source = execute(source);
+	    source = execute(source,null);
 	return source;
     }
 

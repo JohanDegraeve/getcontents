@@ -139,10 +139,10 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
      * one, character by character until the first non blank character is found.<br>
      * If source does not represent a URL then returns the source.
      * @return unfiltered result
-     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger )
      */
     @Override
-    String[] execute(String[] source) throws Exception {
+    String[] execute(String[] source, Logger logger) throws Exception {
 	BufferedReader in = null;
 	StringBuffer resultList = new StringBuffer();
 	int chr;
@@ -185,10 +185,17 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
 	    }
 	    in.close();
 	} else {
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : method execute in getUnFilteredContent, source is not a URL, returnvalue will be equal to the input");
+	    }
+	    
 	    //source is not a URL, 
 		return source;
 	}
-	
+
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in getUnFilteredContent, source is  a URL, returnvalue is the result of opening that url");
+	}
 	return new String[]{resultList.toString()} ;
     }
 

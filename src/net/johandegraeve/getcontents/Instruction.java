@@ -33,9 +33,10 @@ abstract class Instruction implements XMLElement {
     /**
      * Executes an instruction<br>
      * @param source the source to process
+     * @param logger will be used for logging, if null then there's no logging
      * @return  the result of executing the instruction on the source
      * @throws Exception 
      */
-     abstract String[] execute(String[] source) throws Exception;
+     abstract String[] execute(String[] source, Logger logger) throws Exception;
 
 }

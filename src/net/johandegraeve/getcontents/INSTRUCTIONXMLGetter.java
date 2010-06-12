@@ -46,11 +46,14 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
     }
 
     @Override
-    String[] execute(String[] source) throws Exception {
+    String[] execute(String[] source, Logger logger) throws Exception {
 	String[] returnvalue;
 	XMLXMLGetterResultList startList = null;
 	GenericXMLGetterResultList resultList = null;
 	
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying XML parser" );
+	}
 	startList = new XMLXMLGetterResultList(net.johandegraeve.getcontents.Utilities.makeList(source,charsetName));
 	
 	//start by applying the first getter to the nodeLIst
@@ -58,20 +61,35 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
 	
 	//apply all getters to the nodelist
 	for (int i = 1;i < getterList.size();i++) {
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying  " + ((XMLElement)getterList.get(i)).getTagName());
+	    }
 	    resultList = getterList.get(i).getList(resultList);
 	}
 	    
 	//prepare string array to return
-	if (resultList != null) 
+	if (resultList != null) {
 	    returnvalue = new String[resultList.size()];
-	else 
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : result has  " + returnvalue.length + " elements");
+	    }
+	}
+	else {
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : result has  0 elements");
+	    }
 	    return new String[0];
+	}
 	for (int i = 0;i < resultList.size(); i++)
 	    returnvalue[i] = resultList.elementAt(i).convertToString();
 	
 	return returnvalue;
     }
 
+    /**
+     * gets attribute {@link #charsetName}
+     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
+     */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
 	    String[] attrValues = Utilities.getOptionalAttributeValues(
@@ -85,9 +103,13 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
 		    charsetName = attrValues[0];
     }
 
+    /**
+     * 
+     * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
+     */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	if (child instanceof  GETorFILTERchildren) {
+	if (child instanceof  GETorFILTERchildren || child instanceof GETorFILTERremoveNodes) {
 	    if (getterList.size() > 0 && (getterList.get(getterList.size() - 1) instanceof GETorFILTERtext))
 		throw new SAXException("An instruction of type gettext can not be followed by an instruction" +
 			" of type getchildren");
@@ -106,6 +128,9 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
 	}
     }
 
+    /** does nothing
+     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
+     */
     @Override
     public void addText(String text) throws SAXException {
     }

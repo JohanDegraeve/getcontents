@@ -47,14 +47,18 @@ public class INSTRUCTIONaddXMLDeclaration  extends Instruction implements XMLEle
      * adds an XML declaration with version and encoding
      * @return null if source = null, a new String array with one additional String as first string containing the
      * XML declaration
-     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger)
      */
     @Override
-    String[] execute(String[] source) {
+    String[] execute(String[] source, Logger logger) {
 	String[]  returnvalue = new String[(source != null ? source.length:0) + 1];
 	returnvalue[0] = "<?xml version=\"" + version.getVersion() + "\" encoding=\"" + encoding.getEncoding() + "\" ?>\n";
 	for (int i = 1;i < returnvalue.length;i++)
 	    returnvalue[i] = source[i-1];
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in addXMLDeclaration");
+	}
+	
 	return returnvalue;
     }
 

@@ -42,6 +42,11 @@ import org.xml.sax.helpers.AttributesImpl;
 public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 
     /**
+     * for logging
+     */
+    private  Logger thelogger;
+    
+    /**
      * list of HTMLGetter to be applied one after the other
      */
     private ArrayList<HTMLGetter> getterList;
@@ -60,19 +65,26 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
     
     /**
      * executes the HTMLGetter in the getterList one after the other
-     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger)
      */
     @Override
-    String[] execute(String[] source) {
+    String[] execute(String[] source, Logger logger) {
 	String[] returnvalue;
 	NodeList parsedNodeList = null;
 	Parser htmlParser;
 	StringBuilder temp;
+	thelogger = logger;
 
 	//first put the whole source in a NodeList
 	temp  = new StringBuilder();
 	for (int i = 0;i < source.length; i++)
 	    temp.append(source[i]);
+
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying HTML Parser to the source");
+	}
+	
+
 	try {
 	    htmlParser = new Parser(temp.toString());
 	    htmlParser.setEncoding(charset);
@@ -106,6 +118,10 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
     private NodeList applyOneGetterToNodeList(NodeList nodeList, HTMLGetter getter) {
 	NodeList newNodeList = new NodeList();
 	
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying filter " + ((XMLElement)getter).getTagName());
+	}
+	
 	for (int i = 0; i < nodeList.size(); i++) {
 	    NodeList resultList = getter.getList(nodeList.elementAt(i));
 	    if (resultList != null) {
@@ -116,6 +132,10 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	               )
 		newNodeList.add(applyOneGetterToNodeList(nodeList.elementAt(i).getChildren(), getter));
 	}
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
+	}
+	
 	return newNodeList;
     }
     

@@ -50,14 +50,24 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
     private String charsetName;
     
     /**
+     * for logging
+     */
+    private Logger thelogger;
+    
+    /**
      * run the instructions on the source, one by one<br>
      * 
-     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[])
+     * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger)
      */
     @Override
-    String[] execute(String[] source) throws Exception {
+    String[] execute(String[] source, Logger logger) throws Exception {
 	String[] returnvalue;
 	ArrayList<XMLElement> parsedList = null;
+	thelogger = logger;
+
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying XML Parser to the source");
+	}
 	parsedList = net.johandegraeve.getcontents.Utilities.makeList(source,charsetName);
 	
 	//apply all filters to the nodelist
@@ -85,6 +95,10 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	int size;
 	boolean accepted;
 	
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying filter " + ((XMLElement)filter).getTagName());
+	}
+	
 	for (int i = 0; i < nodeList.size(); i++) {
 	    size = newNodeList.size();
 	    accepted = filter.getXMLFilter().accept(nodeList.get(i));
@@ -96,6 +110,10 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 			    false :nodeList.get(i).getChildren().size() > 0))
 	       )
 		addLists((applyOneFilterToNodeList(nodeList.get(i).getChildren(), filter)),newNodeList);
+	}
+
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
 	}
 	return newNodeList;
     }

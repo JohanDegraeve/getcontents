@@ -42,6 +42,11 @@ import org.xml.sax.helpers.AttributesImpl;
 public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
     
     /**
+     * will be used for logging
+     */
+    private Logger thelogger;
+    
+    /**
      * list of filters
      */
     private ArrayList<HTMLFilter> filterList;
@@ -61,17 +66,22 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
      * Executes the list of filters to the source<br>
      * The strings in the source array will be concatenated to one string which is then parsed to a NodeList.<br>
      * Returns Nodes that match the tagfilter.
-     * @see net.johandegraeve.getcontents.Instruction#execute(String[])
+     * @see net.johandegraeve.getcontents.Instruction#execute(String[], Logger)
      */
     @Override
-    String[] execute(String[] source) {
+    String[] execute(String[] source, Logger logger) {
 	String[] returnvalue;
 	NodeList parsedNodeList = null;
 	StringBuilder temp = new StringBuilder();
 	Parser htmlParser;
+	thelogger = logger;
 	
 	for (int i = 0; i < source.length; i++)
 	    temp.append(source[i]);
+	
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying HTML Parser to the source");
+	}
 	
 	try {
 	    htmlParser = new Parser(temp.toString());
@@ -104,6 +114,10 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	NodeList newNodeList = new NodeList();
 	int size;
 	
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying filter " + ((XMLElement)filter).getTagName());
+	}
+	
 	for (int i = 0; i < nodeList.size(); i++) {
 	    size = newNodeList.size();
 	    newNodeList.add((new NodeList(nodeList.elementAt(i))).extractAllNodesThatMatch(filter.getHTMLFilter()));
@@ -114,6 +128,10 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	       )
 		newNodeList.add(applyOneFilterToNodeList(nodeList.elementAt(i).getChildren(), filter));
 	}
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
+	}
+	
 	return newNodeList;
     }
 
