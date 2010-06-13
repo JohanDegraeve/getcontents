@@ -142,23 +142,7 @@ public class GENERICgetContentItem implements XMLElement {
 			"\" with id \"" + input + "\".");
 	    }
 	
-	try {
-	    return instructionList.execute(input, logger);
-	} catch (Exception e) {
-	        String newExceptionString = e.toString();
-	        for (int i = 0; i < FOUR_OH_FOUR.length; i++) {
-	            if (newExceptionString.contains(FOUR_OH_FOUR[i])) {
-	    		newExceptionString = newExceptionString.replaceAll(FOUR_OH_FOUR[i],"404 page not found");
-	    		throw new ParserException (newExceptionString, e);	    		
-	            }
-	        }
-	    	if (logger != null) {
-	    	    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
-	    		logger.Log(System.currentTimeMillis() + " : " + e.toString());
-	    	    }
-	    	}
-	        throw e;
-	}
+	return instructionList.execute(input, logger);
     }
     
     /**
@@ -281,5 +265,14 @@ public class GENERICgetContentItem implements XMLElement {
     @Override
     public boolean preserveSpaces() {
 	return false;
+    }
+    
+    /**
+     * get the url
+     * @return the URL, null if there's no url
+     */
+    public String getURL() {
+	if (theUrl == null) return null;
+	return theUrl.getUrl();
     }
 }

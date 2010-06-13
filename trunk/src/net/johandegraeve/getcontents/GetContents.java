@@ -20,7 +20,6 @@
 package net.johandegraeve.getcontents;
 
 import net.johandegraeve.easyxmldata.EasyXMLDataParser;
-import net.johandegraeve.easyxmldata.Utilities;
 
 import org.xml.sax.SAXParseException;
 
@@ -107,6 +106,20 @@ public class GetContents {
      */
     public String[] getResult(String id) throws Exception {
 	return getResult(id, null);
+    }
+    
+    /**
+     * @param id
+     * @return the url, null if id was not found or if the corresponding getContentItem does not have a url element
+     * @throws Exception
+     */
+    public String getURL(String id) throws Exception {
+	for (int i = 0;i < result.size();i ++) {
+	    if (result.elementAt(i).getId().equals(id)) {
+		return result.elementAt(i).getURL();
+	    }
+	}
+	return null;
     }
 
     /**
