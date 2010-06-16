@@ -40,6 +40,21 @@ public class GENERICreplace implements XMLElement {
     private String replace;
     
     /**
+     * default constructor
+     */
+    public GENERICreplace() {
+	;    
+    }
+    
+    /**
+     * constructor taking replace as argument
+     * @param replace
+     */
+    GENERICreplace (String replace) {
+	this.replace = replace;
+    }
+    
+    /**
      * @return {@link #replace}
      */
     public String getReplace() {
@@ -72,13 +87,13 @@ public class GENERICreplace implements XMLElement {
     }
 
     /**
-     * throws an exception of replace = null
+     * if replace = null, then replace is assigned to empty string
      * @see net.johandegraeve.easyxmldata.XMLElement#complete()
      */
     @Override
     public void complete() throws SAXException {
 	if (replace == null)
-	    throw new SAXException("Element of type " + TagAndAttributeNames.GENERICreplaceTag + " must have text");
+	    replace = "";
     }
 
     /**
