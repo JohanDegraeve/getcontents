@@ -152,7 +152,8 @@ package net.johandegraeve.getcontents;
 	GETorFILTERchildrenTag,
 	GETorFILTERtextTag,
 	STRING_PROCESSORidSelectorTag,
-	GETorFILTERremoveNodesTag
+	GETorFILTERremoveNodesTag,
+	GETorFILTERtagNameTag
     };
 
     static final String[] XMLfilterTags = new String[] {

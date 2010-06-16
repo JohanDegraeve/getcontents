@@ -23,8 +23,11 @@ import java.util.ArrayList;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.nodes.TagNode;
+import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -36,7 +39,7 @@ import org.xml.sax.SAXException;
  * @author Johan Degraeve
  *
  */
-public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter  {
+public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HTMLGetter  {
 
     /**
      * the name of the tag to filter on
@@ -172,5 +175,21 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter  {
     @Override
     public boolean preserveSpaces() {
 	return false;
+    }
+
+    /**
+     * @return if elementAt is a tagnode with tag equal to {@link #mName} then elementAt in a NodeList, otherwise null
+     * @see net.johandegraeve.getcontents.HTMLGetter#getList(org.htmlparser.Node)
+     */
+    @Override
+    public NodeList getList(Node elementAt) {
+	if (elementAt == null) return null;
+	if (elementAt instanceof TagNode) 
+	    //Node.getText returns everyhting between < and >, inclusive any attributes
+	    //so before comparing with mName, I'm splitting with space as delimiter, maximum 2 elements, taking
+	    //the first, this is the actual tag
+	    if (elementAt.getText().split(" ",2)[0].equalsIgnoreCase(mName)) 
+		return new NodeList(elementAt);
+	return null;	
     }
 }
