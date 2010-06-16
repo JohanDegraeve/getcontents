@@ -887,6 +887,8 @@ gets from html nodes.
 *Allowed Children*
  One ore more of following HTMLGetter :
  * children
+ * removeNodes
+ * tagName
  * text
 
 *text field*
@@ -1028,6 +1030,11 @@ will remove all nodes matching the specified tag
    </getContentItem>
 </getContentItemList>  
 }}}
+
+===== tagName =====
+
+will keep tags with specified node, works as HTMLFilter tagName
+
 
 ===== text =====
 
