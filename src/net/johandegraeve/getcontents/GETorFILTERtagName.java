@@ -57,9 +57,18 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
      * @return the TagNameFilter
      * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
      */
+    @SuppressWarnings("serial")
     @Override
     public NodeFilter getHTMLFilter() {
-	return new TagNameFilter(mName);
+	return new NodeFilter() {
+	    @Override
+	    public boolean accept(Node node) {
+		if (node == null) return false;
+		if (!(node instanceof TagNode)) return false;
+		return node.getText().trim().split(" ")[0].equalsIgnoreCase(mName);
+	    }
+	};
+//	return new TagNameFilter(mName);
     }
 
     /**
@@ -188,7 +197,7 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
 	    //Node.getText returns everyhting between < and >, inclusive any attributes
 	    //so before comparing with mName, I'm splitting with space as delimiter, maximum 2 elements, taking
 	    //the first, this is the actual tag
-	    if (elementAt.getText().split(" ",2)[0].equalsIgnoreCase(mName)) 
+	    if (elementAt.getText().trim().split(" ")[0].equalsIgnoreCase(mName)) 
 		return new NodeList(elementAt);
 	return null;	
     }
