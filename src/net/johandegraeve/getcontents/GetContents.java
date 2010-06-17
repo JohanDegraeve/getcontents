@@ -69,31 +69,10 @@ public class GetContents {
     	    new String[] {"INSTRUCTION","GENERIC","GETorFILTER", "STRING_PROCESSOR"}, 
     	    false);
 	
-	try {
 	    result = (GENERICgetContentItemList) myParser.parse(instructions);
 	    if (logger != null) {
 		logger.Log(System.currentTimeMillis() + " : Instructions parsed");
-	    }
-	} catch (SAXParseException e) {
-	    String exceptionresult = "";
-	    	if (e.toString().contains("cannot be cast to")) 
-	 		exceptionresult = 
-	 		    "It seems a class cast exception will be thrown. This probably means your XML contains an element with an unkonwn tag.\n" +
-	    	    	"Check the location of the exception, then the element at this position, check the parent element of that elment.\n" +
-	    	    	" This is probably an unkonwn type";
-	    	exceptionresult = exceptionresult + e.toString() +
-	    	"\n" +
-	    	"LineNumber = " +   e.getLineNumber() + "\n" +
-	    	"ColumnNumber = " +   e.getColumnNumber() + "\n" +
-	    	"PublicId = " +   e.getPublicId() + "\n" +
-	    	"SystemId = " +   e.getSystemId() + "\n";
-	    	if (logger != null) {
-	    	    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
-	    		logger.Log(System.currentTimeMillis() + exceptionresult);
-	    	    }
-	    	}
-	    	throw new Exception(exceptionresult);
-	}
+	} 
     }
     
     /**
