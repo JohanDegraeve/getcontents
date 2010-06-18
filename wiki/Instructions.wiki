@@ -1005,7 +1005,7 @@ Two criteria can be defined to remove a node :<br>
 
 both can be defined within one single removeNodes element<br>
 - tag : just a a tag as text in the removeNodes element<br>
-- attribute : add a child <attributename> and optionally a child <attributevalue> in the removeNodes element.<br>
+- attribute : add a child attributename and optionally a child attributevalue in the removeNodes element.<br>
 
 *Attributes*
  recursive, if true will search till the end, otherwise false
