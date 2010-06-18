@@ -225,10 +225,11 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
     /**
      * Here's where the actual parsing happens. 
      * @return array of strings with parsed dates, using Date.toString()
+     * @throws ParseException can be thrown by  {@link java.text.DateFormat#parse(String source)} 
      * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
      */
     @Override
-    public String[] processString(String[] source) {
+    public String[] processString(String[] source) throws ParseException {
 	DateFormat format = simpleDateFormat.getSimpleDateFormat();
 	if (timeZone != null)
 	    format.setTimeZone(timeZone.getTimeZone());
@@ -237,20 +238,14 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	
 	if (source == null) return null;
 	if (source.length > 0)
-	    try {
 		previousDate = format.parse(source[0]);
 		source[0] = previousDate.toString();
-	    } catch (ParseException e1) {
-		e1.printStackTrace();
-	    }
-	for (int i = 1;i<source.length;i++)
-	    try {
+	for (int i = 1;i<source.length;i++) {
 		newDate = addOffset(format.parse(source[i]),previousDate);
 		source[i] = newDate.toString();
 		previousDate = newDate;
-	    } catch (ParseException e) {
-		e.printStackTrace();
-	    }
+	}
+
 	return source;
     }
     

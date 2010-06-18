@@ -65,10 +65,11 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
     
     /**
      * executes the HTMLGetter in the getterList one after the other
+     * @throws ParserException can be thrown by html Parser
      * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger)
      */
     @Override
-    String[] execute(String[] source, Logger logger) {
+    String[] execute(String[] source, Logger logger) throws ParserException {
 	String[] returnvalue;
 	NodeList parsedNodeList = null;
 	Parser htmlParser;
@@ -83,13 +84,9 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	if (thelogger != null) {
 	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying HTML Parser to the source");
 	}
-	try {
-	    htmlParser = new Parser(temp.toString());
-	    htmlParser.setEncoding(charset);
-	    parsedNodeList = htmlParser.parse(null);
-	} catch (ParserException e) {
-	    e.printStackTrace();
-	} 
+	htmlParser = new Parser(temp.toString());
+	htmlParser.setEncoding(charset);
+	parsedNodeList = htmlParser.parse(null);
 	
 	//apply all filters to the nodelist
 	if (thelogger != null) {
