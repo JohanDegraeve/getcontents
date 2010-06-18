@@ -66,10 +66,11 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
      * Executes the list of filters to the source<br>
      * The strings in the source array will be concatenated to one string which is then parsed to a NodeList.<br>
      * Returns Nodes that match the tagfilter.
+     * @throws ParserException can be thrown by html Parser
      * @see net.johandegraeve.getcontents.Instruction#execute(String[], Logger)
      */
     @Override
-    String[] execute(String[] source, Logger logger) {
+    String[] execute(String[] source, Logger logger) throws ParserException {
 	String[] returnvalue;
 	NodeList parsedNodeList = null;
 	StringBuilder temp = new StringBuilder();
@@ -82,14 +83,10 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	if (thelogger != null) {
 	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying HTML Parser to the source");
 	}
-	
-	try {
-	    htmlParser = new Parser(temp.toString());
-	    htmlParser.setEncoding(charset);
-	    parsedNodeList = htmlParser.parse(null);
-	} catch (ParserException e) {
-	    e.printStackTrace();
-	} 
+
+	htmlParser = new Parser(temp.toString());
+	htmlParser.setEncoding(charset);
+	parsedNodeList = htmlParser.parse(null);
 
 	//apply all filters to the nodelist
 	if (thelogger != null) {
