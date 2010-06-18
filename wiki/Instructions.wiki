@@ -999,7 +999,13 @@ now the result is (I must admit that I removed a lot of blank lines, I'm sure th
   
 ===== removeNodes =====
 
-will remove all nodes matching the specified tag
+Two criteria can be defined to remove a node :<br>
+- all nodes matching the specified tag<br>
+- all nodes having an attribute with the specified name and optionally with the specified value (case insensitive)<br>
+
+both can be defined within one single removeNodes element<br>
+- tag : just a a tag as text in the removeNodes element<br>
+- attribute : add a child <attributename> and optionally a child <attributevalue> in the removeNodes element.<br>
 
 *Attributes*
  recursive, if true will search till the end, otherwise false
@@ -1008,7 +1014,8 @@ will remove all nodes matching the specified tag
  not defined
 
 *Allowed Children*
- none
+ * attributename (optional)
+ * attributevalue (optional but may not occur if there's no attributename child)
 
 *text field*
  the tagname
