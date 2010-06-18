@@ -50,13 +50,25 @@ public class INSTRUCTIONaddXMLDeclaration  extends Instruction implements XMLEle
      * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger)
      */
     @Override
-    String[] execute(String[] source, Logger logger) {
+    String[] execute(String[] source, Logger thelogger) {
 	String[]  returnvalue = new String[(source != null ? source.length:0) + 1];
 	returnvalue[0] = "<?xml version=\"" + version.getVersion() + "\" encoding=\"" + encoding.getEncoding() + "\" ?>\n";
 	for (int i = 1;i < returnvalue.length;i++)
 	    returnvalue[i] = source[i-1];
-	if (logger != null) {
-	    logger.Log(System.currentTimeMillis() + " : method execute in addXMLDeclaration");
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in addXMLDeclaration");
+	}
+
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (returnvalue.length == 0)
+		thelogger.Log("There are no results");
+	    else {
+		for (int i = 0;i < returnvalue.length;i++) {
+		    thelogger.Log("Result " + i + " =\n" );
+		    thelogger.Log("returnvalue[i]");
+		    thelogger.Log("\n" );
+		}
+	    }
 	}
 	
 	return returnvalue;

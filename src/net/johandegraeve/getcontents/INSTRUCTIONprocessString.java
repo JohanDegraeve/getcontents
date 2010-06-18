@@ -46,25 +46,39 @@ public class INSTRUCTIONprocessString extends Instruction {
      * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger)
      */
     @Override
-    String[] execute(String[] source, Logger logger) throws Exception {
+    String[] execute(String[] source, Logger thelogger) throws Exception {
 	
 	if (source == null) {
-	    if (logger != null) {
-		logger.Log(System.currentTimeMillis() + " : method execute in processString, the source is empty so returning nothing");
+	    if (thelogger != null) {
+		thelogger.Log(System.currentTimeMillis() + " : method execute in processString, the source is empty so returning nothing");
 	    }
 	    return null;
 	}
 	
 	//apply all processors to the list
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in processString, applying all filters");
+	}
 	for (int i = 0;i < processorList.size();i++) {
-	    if (logger != null) {
-		logger.Log(System.currentTimeMillis() + " : method execute in processString, applying string Processor " + ((XMLElement)processorList.get(i)).getTagName());
+	    if (thelogger != null  && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+		thelogger.Log(System.currentTimeMillis() + " : method execute in processString, applying string Processor " + ((XMLElement)processorList.get(i)).getTagName());
 	    }
 	    source = processorList.get(i).processString(source);
 	}
 
-	if (logger != null) {
-	    logger.Log(System.currentTimeMillis() + " : result has  " + source.length + " elements");
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in processString, finished applying all processors");
+	}
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (source.length == 0)
+		thelogger.Log("There are no results");
+	    else {
+		for (int i = 0;i < source.length;i++) {
+		    thelogger.Log("Result " + i + " =\n" );
+		    thelogger.Log("returnvalue[i]");
+		    thelogger.Log("\n" );
+		}
+	    }
 	}
 	return source;
     }

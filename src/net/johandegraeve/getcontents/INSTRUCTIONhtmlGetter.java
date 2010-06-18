@@ -83,8 +83,6 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	if (thelogger != null) {
 	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying HTML Parser to the source");
 	}
-	
-
 	try {
 	    htmlParser = new Parser(temp.toString());
 	    htmlParser.setEncoding(charset);
@@ -94,6 +92,9 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	} 
 	
 	//apply all filters to the nodelist
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying all filters");
+	}
 	for (int i = 0;i < getterList.size();i++) {
 	    if (parsedNodeList.size() > 0) {
 		parsedNodeList = applyOneGetterToNodeList(parsedNodeList, getterList.get(i));
@@ -105,7 +106,21 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	returnvalue = new String[parsedNodeList.size()];
 	for (int i = 0;i < parsedNodeList.size(); i++)
 	    returnvalue[i] = parsedNodeList.elementAt(i).toHtml();
-	
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, finished applying all filters");
+	}
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (returnvalue.length == 0)
+		thelogger.Log("There are no results");
+	    else {
+		for (int i = 0;i < returnvalue.length;i++) {
+		    thelogger.Log("Result " + i + " =\n" );
+		    thelogger.Log("returnvalue[i]");
+		    thelogger.Log("\n" );
+		}
+	    }
+	}
+
 	return returnvalue;
     }
 
@@ -118,7 +133,7 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
     private NodeList applyOneGetterToNodeList(NodeList nodeList, HTMLGetter getter) {
 	NodeList newNodeList = new NodeList();
 	
-	if (thelogger != null) {
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
 	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying filter " + ((XMLElement)getter).getTagName());
 	}
 	
@@ -132,7 +147,7 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	               )
 		newNodeList.add(applyOneGetterToNodeList(nodeList.elementAt(i).getChildren(), getter));
 	}
-	if (thelogger != null) {
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
 	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
 	}
 	

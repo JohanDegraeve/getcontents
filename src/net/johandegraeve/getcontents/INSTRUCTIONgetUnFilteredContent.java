@@ -142,7 +142,7 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
      * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger )
      */
     @Override
-    String[] execute(String[] source, Logger logger) throws Exception {
+    String[] execute(String[] source, Logger thelogger) throws Exception {
 	BufferedReader in = null;
 	StringBuffer resultList = new StringBuffer();
 	int chr;
@@ -174,6 +174,9 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
 
 	if (!ltfound) {
 	    //we need to read from a URL, the URL is in source[i], the first character not blank is in source[i][j]
+	    if (thelogger != null) {
+		thelogger.Log(System.currentTimeMillis() + " : method execute in getUnFilteredContent, source is a URL, trying to open and download");
+	    }
 	    URL yahoo = new URL(source[i].substring(j));
 	    in = new BufferedReader(
 				new InputStreamReader(
@@ -185,17 +188,22 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
 	    }
 	    in.close();
 	} else {
-	    if (logger != null) {
-		logger.Log(System.currentTimeMillis() + " : method execute in getUnFilteredContent, source is not a URL, returnvalue will be equal to the input");
+	    if (thelogger != null) {
+		thelogger.Log(System.currentTimeMillis() + " : method execute in getUnFilteredContent, source is not a URL, returnvalue will be equal to the input");
 	    }
 	    
 	    //source is not a URL, 
 		return source;
 	}
 
-	if (logger != null) {
-	    logger.Log(System.currentTimeMillis() + " : method execute in getUnFilteredContent, source is  a URL, returnvalue is the result of opening that url");
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in getUnFilteredContent, source is  a URL, returnvalue is the result of opening that url");
 	}
+
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+		    thelogger.Log("And here is the result  =\n" + resultList.toString());
+	}
+
 	return new String[]{resultList.toString()} ;
     }
 
