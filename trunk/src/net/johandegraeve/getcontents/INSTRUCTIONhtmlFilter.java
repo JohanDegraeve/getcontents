@@ -90,8 +90,11 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	} catch (ParserException e) {
 	    e.printStackTrace();
 	} 
-	
+
 	//apply all filters to the nodelist
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying all filters");
+	}
 	for (int i = 0;i < filterList.size();i++) {
 	    parsedNodeList = applyOneFilterToNodeList(parsedNodeList, filterList.get(i));
 	}
@@ -100,6 +103,21 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	returnvalue = new String[parsedNodeList.size()];
 	for (int i = 0;i < parsedNodeList.size(); i++)
 	    returnvalue[i] = parsedNodeList.elementAt(i).toHtml();
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, finished applying all filters");
+	}
+	
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (returnvalue.length == 0)
+		thelogger.Log("There are no results");
+	    else {
+		for (int i = 0;i < returnvalue.length;i++) {
+		    thelogger.Log("Result " + i + " =\n" );
+		    thelogger.Log("returnvalue[i]");
+		    thelogger.Log("\n" );
+		}
+	    }
+	}
 	
 	return returnvalue;
     }
@@ -114,7 +132,7 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	NodeList newNodeList = new NodeList();
 	int size;
 	
-	if (thelogger != null) {
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
 	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying filter " + ((XMLElement)filter).getTagName());
 	}
 	
@@ -128,7 +146,7 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 	       )
 		newNodeList.add(applyOneFilterToNodeList(nodeList.elementAt(i).getChildren(), filter));
 	}
-	if (thelogger != null) {
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
 	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
 	}
 	

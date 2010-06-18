@@ -66,11 +66,14 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	thelogger = logger;
 
 	if (logger != null) {
-	    logger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying XML Parser to the source");
+	    logger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying XML Parser to the source");
 	}
 	parsedList = net.johandegraeve.getcontents.Utilities.makeList(source,charsetName);
 	
 	//apply all filters to the nodelist
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying all filters");
+	}
 	for (int i = 0;i < filterList.size();i++) {
 	    parsedList = applyOneFilterToNodeList(parsedList, filterList.get(i));
 	}
@@ -80,6 +83,18 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	for (int i = 0;i < parsedList.size(); i++)
 	    returnvalue[i] = net.johandegraeve.easyxmldata.Utilities.createXML(parsedList.get(i));
 	
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (returnvalue.length == 0)
+		thelogger.Log("There are no results");
+	    else {
+		for (int i = 0;i < returnvalue.length;i++) {
+		    thelogger.Log("Result " + i + " =\n" );
+		    thelogger.Log("returnvalue[i]");
+		    thelogger.Log("\n" );
+		}
+	    }
+	}
+
 	return returnvalue;
     }
     
@@ -95,7 +110,7 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	int size;
 	boolean accepted;
 	
-	if (thelogger != null) {
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
 	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying filter " + ((XMLElement)filter).getTagName());
 	}
 	
@@ -112,7 +127,7 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 		addLists((applyOneFilterToNodeList(nodeList.get(i).getChildren(), filter)),newNodeList);
 	}
 
-	if (thelogger != null) {
+	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
 	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
 	}
 	return newNodeList;

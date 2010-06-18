@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
+import org.htmlparser.Attribute;
 import org.htmlparser.Node;
+import org.htmlparser.Tag;
 import org.htmlparser.nodes.TagNode;
 import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
@@ -34,13 +36,28 @@ import org.xml.sax.helpers.AttributesImpl;
 import com.Ostermiller.util.StringHelper;
 
 /**
- * remove all nodes matching the given tagname<br>
+ * remove  nodes matching the given tagname<br>
+ * There are two possibilities :<br>
+ * - remove nodes matching a specific tagname<br>
+ * and/or<br>
+ * - remove nodes with specified attributename and optionally attributevalue<br>
+ * So it's possible to have an attributename as child, in which case there can als be an attribute value<br>
+ * And there can also be characters (text) in the element, which will be considered as a tagname to check<br>
  * 
  * @author Johan Degraeve
  *
  */
 public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter  {
 
+    /**
+     * the attribute name
+     */
+    private GENERICattributename attrName;
+    /**
+     * the attribute value
+     */
+    private GENERICattributevalue attrValue;
+    
     /**
      * if recursive, then all nodes children will be searched for the nodes to be removed
      */
@@ -92,11 +109,37 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
     }
 
     /**
+     * accepts children attributename and attributevalue, attributevalue alone is not possible
      * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
      */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERremoveNodesTag);
+	Utilities.verifyChildType(child, 
+		new String []{
+	    		TagAndAttributeNames.genericPrefix,
+	    		TagAndAttributeNames.genericPrefix
+		},  
+		new String []{
+		    TagAndAttributeNames.GENERICattributenameTag,
+		    TagAndAttributeNames.GENERICattributevalueTag
+		}, 
+		TagAndAttributeNames.GETorFILTERremoveNodesTag);
+	
+	if (Utilities.getClassname(child.getClass()).equals(
+		TagAndAttributeNames.genericPrefix +
+		TagAndAttributeNames.GENERICattributevalueTag)) {
+	    if (attrValue != null)
+		throw new SAXException("Element of type " + TagAndAttributeNames.GETorFILTERremoveNodesTag +
+			" should have only one child of type " + TagAndAttributeNames.GENERICattributevalueTag);
+	    attrValue = (GENERICattributevalue) child;
+	} else if (Utilities.getClassname(child.getClass()).equals(
+		TagAndAttributeNames.genericPrefix +
+		TagAndAttributeNames.GENERICattributenameTag)) {
+	    if (attrName != null)
+		throw new SAXException("Element of type " + TagAndAttributeNames.GETorFILTERremoveNodesTag +
+			" should have only one child of type " + TagAndAttributeNames.GENERICattributenameTag);
+	    attrName = (GENERICattributename) child;
+	}
     }
 
     /**
@@ -122,8 +165,14 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
      */
     @Override
     public void complete() throws SAXException {
-	if (tagName == null)
-		throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERremoveNodesTag);
+	if ((tagName == null) && (attrName == null))
+		throw new SAXException("Element of type  " + TagAndAttributeNames.GETorFILTERremoveNodesTag
+			+ " should have text and/or an " + TagAndAttributeNames.GENERICattributenameTag
+			+ " child (in which case the element may also have a " + TagAndAttributeNames.GENERICattributevalueTag);
+	if ((attrName == null) && (attrValue != null))
+		throw new SAXException("If an element of type  " + TagAndAttributeNames.GETorFILTERremoveNodesTag
+			+ " has an " + TagAndAttributeNames.GENERICattributevalueTag
+			+ " as child then it should also have an " + TagAndAttributeNames.GENERICattributenameTag);
     }
 
     /**
@@ -147,6 +196,13 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
      */
     @Override
     public ArrayList<XMLElement> getChildren() {
+	if (attrName != null) {
+	    ArrayList<XMLElement> returnvalue = new  ArrayList<XMLElement>();
+	    returnvalue.add(attrName);
+	    if (attrValue != null)
+		returnvalue.add(attrValue);
+	    return returnvalue;
+	}
 	return null;
     }
 
@@ -178,8 +234,10 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
     }
 
     /**
-     * @return although we return here a {@link NodeList}, the NodeList will be either null or contain just one element being the original elementAt if
-     * it does not have a tag matching {@link #tagName}, and if  {@link #recursive}, then any nodes within elementAt that match {@link #tagName} will be removed
+     * @return although we return here a {@link NodeList}, the NodeList will be either null or contain just one element being the original elementAt. <br>
+     * If it does not have a tag matching {@link #tagName} or an attribute name matching {@link #attrName} (and optionally attribute value matching
+     * {@link #attrValue}), and if  {@link #recursive}, then any nodes within elementAt that match {@link #tagName} or {@link #attrName}
+     * (and optionally attribute value matcing {@link #attrValue}) will be removed
      * @see net.johandegraeve.getcontents.HTMLGetter#getList(org.htmlparser.Node)
      */
     @Override
@@ -190,12 +248,30 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
 	if (elementAt == null)
 	    return null;
 	if (elementAt instanceof TagNode) {
-	    if (((TagNode)elementAt).getIds().length > 0)
-		if (StringHelper.equalsAnyIgnoreCase(tagName, ((TagNode)elementAt).getIds())) {
-		    //it's a node to re removed so stop digging deeper, remove it
-		    return null;
+	    if (tagName != null) {
+		if (((TagNode)elementAt).getIds().length > 0)
+		    if (StringHelper.equalsAnyIgnoreCase(tagName, ((TagNode)elementAt).getIds())) {
+			//it's a node to re removed so stop digging deeper, remove it
+			return null;
+		    }
+	    }
+	    //it's not a node matching the tagname, let's check the attribute names and values
+	    if (attrName != null) {
+		Attribute attribute = ((TagNode)elementAt).getAttributeEx (attrName.getAttributeName());
+		boolean ret = null != attribute;
+		if (ret && attrName.getAttributeName().equalsIgnoreCase(attribute.getName())) {
+		    if (attrValue != null) {
+			    if (attrValue.getAttributeValue().equalsIgnoreCase(attribute.getValue ()))
+				;//ret statys true
+			    else
+				ret =false;
+		    }
+		} else
+		    ret = false;
+		if (ret) return null;
 	    }
 	}
+
 	//it's not a node to be removed, if recursive, dig deeper to see if it has nodes matching tagname, that need to be removed 
 	if (recursive) {
 	    	if (childrenOfelementAt != null) {
@@ -217,13 +293,15 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
 
     /**
      * @return  we return here a {@link GenericXMLGetterResultList}, the result will be either null or contain sublist of the original list if, namely 
-     * those elements that do not have a tag matching {@link #tagName}, and if  {@link #recursive}, each element will be recursively searched for children elements matching
-     *  {@link #tagName}, any such children will be removed - this goes on to the deepest possible level.
+     * those elements that do not have a tag matching {@link #tagName} and/or attribute matching {@link #attrName} and optionally {@link #attrValue}, 
+     * and if  {@link #recursive}, each element will be recursively searched for children elements matching
+     *  {@link #tagName} and/or attribute matching {@link #attrName} and optionally {@link #attrValue}, any such children will be removed - this goes on to the deepest possible level.
      * @see net.johandegraeve.getcontents.HTMLGetter#getList(org.htmlparser.Node)
      */
     @Override
     public GenericXMLGetterResultList getList(GenericXMLGetterResultList list) {
 	XMLXMLGetterResultList childrenOfelementFromListAfterRemoving ;
+	boolean add;
 	
 	if (list instanceof StringXMLGetterResultList)
 	    return list;
@@ -234,8 +312,21 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
 	    return null;
 	if (list.size() == 0)
 	    return null;
+	
 	for (int j = 0;j < list.size();j++) {
-	    if (StringHelper.equalsAnyIgnoreCase((((XMLXMLGetterResult)(list.elementAt(j))).getDefaultXMLElement().getTagName()),new String[]{tagName})) {
+	    add = true;
+	    if (tagName != null)
+		if (((((XMLXMLGetterResult)(list.elementAt(j))).getDefaultXMLElement().getTagName()).equalsIgnoreCase(tagName)))
+		    add = false;
+	    if (attrName != null)
+		if (((XMLXMLGetterResult)(list.elementAt(j))).getDefaultXMLElement().getAttributes().getValue(attrName.getAttributeName()) != null)
+		    if (attrValue != null) {
+			if (((XMLXMLGetterResult)(list.elementAt(j))).getDefaultXMLElement().getAttributes().getValue(attrName.getAttributeName()).equalsIgnoreCase(attrValue.getAttributeValue()))
+			    add = false;
+		    } else
+			add = false;
+	    
+	    if (!add) {
 		//no need to process that node any further, it is not added to the returnlist
 	    } else {
 		childrenOfelementFromListAfterRemoving.add(list.elementAt(j));
