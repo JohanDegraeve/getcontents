@@ -2541,15 +2541,3 @@ if the input is strings, it returns the input
 works as the other idSelectors (see for processString - idSelector)<br>
 If the input are just strings, then the output will also be strings.<br>
 If the input are strings with an XML representation of XML elements, then the output will also be XML.
-
-*Attributes*
- none
-
-*Occurrence*
- not defined
-
-*Allowed Children*
- none
-
-*text field*
- none
