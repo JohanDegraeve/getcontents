@@ -26,7 +26,6 @@ import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * use String.split<br>

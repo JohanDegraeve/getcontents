@@ -52,7 +52,7 @@ public class GetContents {
      * @throws SAXParseException 
      */
     public GetContents(String instructions) throws Exception  {
-	this(instructions, null);
+	this(instructions, null,null,null);
     }
 
     /**
@@ -63,10 +63,24 @@ public class GetContents {
      * @throws Exception 
      */
     public GetContents(String instructions, Logger logger) throws Exception  {
+	this(instructions, logger,null,null);
+    }
+    
+    /**
+     * Creating instance with XML document that contains the necessary instructions.<br>
+     * If instructions is a url then the constructor will try to connect to the url so this may take some time.
+     * @param instructions can be url (http:... or file:...), html (<...) or XML (< ...)
+     * @param logger if null then there's no logging, if not null then logging will be done through the logger
+     * @param packagename will be used in case customObject is used, this is the packagename where a class is defined that overrides  {@link net.johandegraeve.getcontents#CustomObject} 
+     * @param prefix will be used in case customObject is used, this is the prefix used in defining the class name that overrides  {@link net.johandegraeve.getcontents#CustomObject} 
+     * @throws Exception 
+     */
+    public GetContents(String instructions, Logger logger, String packagename, String prefix) throws Exception  {
 	this.logger = logger;
 	EasyXMLDataParser myParser = new EasyXMLDataParser(
-    	    new String[] {"net.johandegraeve.getcontents","net.johandegraeve.getcontents","net.johandegraeve.getcontents", "net.johandegraeve.getcontents"},
-    	    new String[] {"INSTRUCTION","GENERIC","GETorFILTER", "STRING_PROCESSOR"}, 
+    	    new String[] {packagename == null ? "just a dummy name because I'm too lazy to add an if statement":packagename, 
+    		    "net.johandegraeve.getcontents","net.johandegraeve.getcontents","net.johandegraeve.getcontents", "net.johandegraeve.getcontents"},
+    	    new String[] {prefix  == null ? "just a dummy name because I'm too lazy to add an if statement":prefix, "INSTRUCTION","GENERIC","GETorFILTER", "STRING_PROCESSOR"}, 
     	    false);
 	
 	    result = (GENERICgetContentItemList) myParser.parse(instructions);
@@ -122,5 +136,38 @@ public class GetContents {
     	    }
 	}
 	return new String[0];
+    }
+    
+    /**
+     * to get the id of the getContentItem at position elementAt, index 0  is the first element
+     * @param elementAt the index of the elemenet of which the id will be returned
+     * @return the id
+     */
+    public String getGetContentItemId (int elementAt) {
+	if (elementAt > result.size() - 1) {
+	    throw new IndexOutOfBoundsException("Index for getting a getcontentItem is out of range");
+	}
+	return result.elementAt(elementAt).getId();
+    }
+    
+    /**
+     * get a CustomObject for the getContentItem with specified id
+     * @param getContentItemId id of the  getContentItem off which the customObject should be returned.
+     * @return the customObject of the getContentItem that has the specified id,  null if id not found
+     */
+    CustomObject getCustomObject (String getContentItemId) {
+	for (int i = 0;i < result.size();i ++) {
+	    if (result.elementAt(i).getId().equals(getContentItemId)) {
+		return result.elementAt(i).getCustomObject();
+	    }
+	}
+	return null;
+    }
+    /**
+     * get the list of id&quot;s for all the getContentItem elements
+     * @return  the list of id
+     */
+    public String[] getListOfIds() {
+	return result.getListOfIds();
     }
 }

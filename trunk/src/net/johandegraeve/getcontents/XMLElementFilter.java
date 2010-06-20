@@ -19,7 +19,6 @@
  */
 package net.johandegraeve.getcontents;
 
-import net.johandegraeve.easyxmldata.DefaultXMLElement;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 /**
@@ -30,6 +29,11 @@ import net.johandegraeve.easyxmldata.XMLElement;
  */
 public interface XMLElementFilter {
     
+    /**
+     * filter
+     * @param element
+     * @return true of element complies with the filter
+     */
     boolean accept(XMLElement element);
 
 }

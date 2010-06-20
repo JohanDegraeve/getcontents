@@ -21,7 +21,6 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
-import org.htmlparser.util.ParserException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -55,40 +54,18 @@ public class GENERICgetContentItem implements XMLElement {
      * identifier for the getContentItem
      */
     private String id;
+
     /**
      * url
      */
     private GENERICurl theUrl;
     
     /**
-     * copied those silly exception strings from org.htmlparser.http
+     * allows applications to add customObjects to the getContentItem element<br>
+     * Applications must override {@link net.johandegraeve.getcontents#CustomObject}
      */
-    private static final String[] FOUR_OH_FOUR =
-    {
-        "The web site you seek cannot be located,"
-            + " but countless more exist",
-        "You step in the stream, but the water has moved on."
-            + " This page is not here.",
-        "Yesterday the page existed. Today it does not."
-            + " The internet is like that.",
-        "That page was so big. It might have been very useful."
-            + " But now it is gone.",
-        "Three things are certain: death, taxes and broken links."
-            + " Guess which has occured.",
-        "Chaos reigns within. Reflect, repent and enter the correct URL."
-            + " Order shall return.",
-        "Stay the patient course. Of little worth is your ire."
-            + " The page is not found.",
-        "A non-existant URL reduces your expensive computer to a simple stone.",
-        "Many people have visited that page."
-            + " Today, you are not one of the lucky ones.",
-        "Cutting the wind with a knife. Bookmarking a URL."
-            + " Both are ephemeral.",
-    };
-
-    
-
-    
+    private CustomObject customObject;
+     
     /**
      * constructor
      */
@@ -172,7 +149,13 @@ public class GENERICgetContentItem implements XMLElement {
 		TagAndAttributeNames.genericPrefix +
 		TagAndAttributeNames.GENERICurlTag)) {
 	    theUrl = (GENERICurl) arg0;
-	} else 
+	} else if (arg0 instanceof CustomObject) {
+	    if (customObject != null) {
+		throw new SAXException("Element of type " + TagAndAttributeNames.GENERICgetcontentitemTag +
+			" can only have on element of type" + Utilities.getClassname(arg0.getClass()));
+	    } else
+	     customObject = (CustomObject) arg0;
+	} else
 	    throw new SAXException("Element " + TagAndAttributeNames.GENERICgetcontentitemTag +
 		    " can only have " + 
 		    TagAndAttributeNames.GENERICinstructionListTag + 
@@ -274,5 +257,21 @@ public class GENERICgetContentItem implements XMLElement {
     public String getURL() {
 	if (theUrl == null) return null;
 	return theUrl.getUrl();
+    }
+    
+    /**
+     * get {@link #customObject}
+     * @return {@link #customObject}
+     */
+    CustomObject getCustomObject() {
+	return customObject;
+    }
+    
+    /**
+     * get the size of the instructionList
+     * @return size of {@link #instructionList}
+     */
+    int getInstructionListSize() {
+	return instructionList.size();
     }
 }
