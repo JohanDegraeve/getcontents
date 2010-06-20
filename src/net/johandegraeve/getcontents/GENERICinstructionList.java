@@ -187,6 +187,14 @@ public class GENERICinstructionList implements XMLElement {
     public boolean preserveSpaces() {
 	return false;
     }
+    
+    /**
+     * get the size of the instructionSet
+     * @return the size of {@link #instructionSet}
+     */
+    int size() {
+	return instructionSet.size();
+    }
 
 
 }

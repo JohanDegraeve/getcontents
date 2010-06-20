@@ -26,7 +26,6 @@ import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.htmlparser.Attribute;
 import org.htmlparser.Node;
-import org.htmlparser.Tag;
 import org.htmlparser.nodes.TagNode;
 import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;

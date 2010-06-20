@@ -23,7 +23,9 @@ import java.util.ArrayList;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import net.johandegraeve.easyxmldata.Utilities;
+
+import com.Ostermiller.util.StringHelper;
+
 import net.johandegraeve.easyxmldata.XMLElement;
 
 /**
@@ -45,10 +47,16 @@ public class GENERICgetContentItemList implements XMLElement  {
     private ArrayList<GENERICgetContentItem> getContentItemList;
     
     /**
+     * a list of all the id&quot; that the getContentItems have
+     */
+    private ArrayList<String> listOfIds;
+    
+    /**
      * constructor
      */
     public  GENERICgetContentItemList () {
-	getContentItemList = new ArrayList<GENERICgetContentItem>();	
+	getContentItemList = new ArrayList<GENERICgetContentItem>();
+	listOfIds = new  ArrayList<String> ();
     }
     
     /**
@@ -73,10 +81,13 @@ public class GENERICgetContentItemList implements XMLElement  {
      */
     @Override
     public void addChild(XMLElement arg0) throws SAXException {
-	if (Utilities.getClassname(arg0.getClass()).equalsIgnoreCase(
-		TagAndAttributeNames.genericPrefix +
-		TagAndAttributeNames.GENERICgetcontentitemTag))
-		getContentItemList.add((GENERICgetContentItem)arg0);
+	if (arg0 instanceof GENERICgetContentItem) {
+	    if (listOfIds.size() > 0)
+		if (StringHelper.equalsAny(((GENERICgetContentItem)arg0).getId(),listOfIds.toArray(new String[0])))
+		    throw new SAXException("There are two getContentItem elements in the instruction list with the same id, this is not allowed.");
+	    getContentItemList.add((GENERICgetContentItem)arg0);
+	    listOfIds.add(((GENERICgetContentItem)arg0).getId());
+	}
 	else 	    
 	    throw new SAXException("Element " + TagAndAttributeNames.GENERICgetcontentitemlistTag +
 		    " can only have " + 
@@ -154,8 +165,6 @@ public class GENERICgetContentItemList implements XMLElement  {
      */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	// XXX Auto-generated method stub
-	
     }
 
     /**
@@ -164,7 +173,15 @@ public class GENERICgetContentItemList implements XMLElement  {
      */
     @Override
     public boolean preserveSpaces() {
-	// XXX Auto-generated method stub
 	return false;
     }
+    
+    /**
+     * get the list of id&quot;s
+     * @return  {@link #listOfIds} in an array of string
+     */
+    String[] getListOfIds() {
+	return listOfIds.toArray(new String[0]);
+    }
+    
 }

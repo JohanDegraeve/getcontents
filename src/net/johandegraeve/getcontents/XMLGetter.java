@@ -31,7 +31,7 @@ public interface XMLGetter {
     /**
      * gets list of XML GenericXML Elements
      * @param list
-     * @return
+     * @return 
      */
     GenericXMLGetterResultList getList(GenericXMLGetterResultList list);
  
