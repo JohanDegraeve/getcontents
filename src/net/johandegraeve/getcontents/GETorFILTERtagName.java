@@ -21,6 +21,7 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.htmlparser.Node;
@@ -29,10 +30,13 @@ import org.htmlparser.nodes.TagNode;
 import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * a TagNameFilter  filters on nodes with a specific tagname.<br>
- * for HTML : using HTMLFilter as defined in the HTML parser package.<br>
+ * not case sensitive<br>
+ * for HTML : not using the HTML parser filter, doing own filtering.<br>
+ * 
  * XML : filters on tagname.  
  * 
  * @author Johan Degraeve
@@ -44,6 +48,13 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
      * the name of the tag to filter on
      */
     private String mName;
+    
+    /**
+     * defines if exact match or startswith to be performed, startswith is case sensitive.<br>
+     * possible values &quot;equals&quot; or &quot;startswith&quot;
+     */
+    private String type;
+    
     
     /**
      * @return mName
@@ -64,7 +75,9 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
 	    public boolean accept(Node node) {
 		if (node == null) return false;
 		if (!(node instanceof TagNode)) return false;
-		return node.getText().trim().split(" ")[0].equalsIgnoreCase(mName);
+		if (type.equalsIgnoreCase("equals"))
+		    return node.getText().trim().split(" ")[0].equalsIgnoreCase(mName);
+		return node.getText().trim().split(" ")[0].startsWith(mName);
 	    }
 	};
 //	return new TagNameFilter(mName);
@@ -79,7 +92,9 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
 	return new XMLElementFilter() {
 	    @Override
 	    public boolean accept(XMLElement element) {
-		return (element.getTagName().equals(mName));
+		if (type.equalsIgnoreCase("equals"))
+		    return (element.getTagName().equals(mName));
+		return (element.getTagName().startsWith(mName));
 	    }
 
 	};
@@ -90,6 +105,7 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
      */
     public GETorFILTERtagName() {
 	mName = null;
+	type = "equals";
     }
     
     /**
@@ -99,7 +115,18 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
      */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
-
+	String[] attrValues = Utilities.getOptionalAttributeValues(
+	    	attributes, 
+	    	new String[] {
+	    		"type"
+	    	}, 
+	    	new String[]  {
+	    		"equals"
+	    	});
+	    if (attrValues[0].equalsIgnoreCase("startswith")) 
+	        type = "startswith";
+	    else
+	        type = "equals";
     }
 
     /**
@@ -139,7 +166,9 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
      */
     @Override
     public Attributes getAttributes() {
-	return null;
+	AttributesImpl attr = new AttributesImpl();
+	attr.addAttribute(null, "type", "type", "CDATA", type);
+	return attr;
     }
 
     /**
@@ -196,8 +225,12 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
 	    //Node.getText returns everyhting between < and >, inclusive any attributes
 	    //so before comparing with mName, I'm splitting with space as delimiter, maximum 2 elements, taking
 	    //the first, this is the actual tag
-	    if (elementAt.getText().trim().split(" ")[0].equalsIgnoreCase(mName)) 
-		return new NodeList(elementAt);
+	    if (type.equalsIgnoreCase("equals")){
+		if (elementAt.getText().trim().split(" ")[0].equalsIgnoreCase(mName))
+		    return new NodeList(elementAt);
+	    }  else
+		if (elementAt.getText().trim().split(" ")[0].startsWith(mName))
+		    return new NodeList(elementAt);
 	return null;	
     }
 }
