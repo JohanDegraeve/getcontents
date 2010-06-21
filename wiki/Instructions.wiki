@@ -665,7 +665,7 @@ Pattern.compile(pattern,  case_sensitive == true ? 0: Pattern.CASE_INSENSITIVE +
  none
 
 *text field*
- the pattern string
+ the pattern string, untrimmed
 
 
 ===== linkStringFilter =====
