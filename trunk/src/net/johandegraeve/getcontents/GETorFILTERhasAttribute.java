@@ -21,6 +21,7 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.HasAttributeFilter;
 import org.xml.sax.Attributes;
@@ -66,6 +67,14 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
      */
     @Override
     public NodeFilter getHTMLFilter() {
+	/*return new NodeFilter() {
+	    
+	    @Override
+	    public boolean accept(Node node) {
+		node.
+		return false;
+	    }
+	};*/
 	return new HasAttributeFilter(
 		attrName.getAttributeName().toUpperCase(),
 		(attrValue != null ? attrValue.getAttributeValue() : null));

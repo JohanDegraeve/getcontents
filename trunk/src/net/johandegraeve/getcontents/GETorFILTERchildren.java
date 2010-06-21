@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.htmlparser.Node;
+import org.htmlparser.NodeFilter;
 import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -34,7 +35,7 @@ import org.xml.sax.SAXException;
  * @author Johan Degraeve
  *
  */
-public class GETorFILTERchildren implements HTMLGetter, XMLElement, XMLGetter {
+public class GETorFILTERchildren implements HTMLGetter, XMLElement, XMLGetter, HTMLFilter {
 
     /**
      * @return the children in a NodeList, null if there are no children
@@ -157,5 +158,20 @@ public class GETorFILTERchildren implements HTMLGetter, XMLElement, XMLGetter {
     @Override
     public boolean preserveSpaces() {
 	return false;
+    }
+
+    /**
+     * @return true if the node has a parent, filter not useful if the HTMLFilter is not working recursively
+     * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
+     */
+    @SuppressWarnings("serial")
+    @Override
+    public NodeFilter getHTMLFilter() {
+	return new NodeFilter() {
+	    @Override
+	    public boolean accept(Node node) {
+		return node.getParent() == null ? false:true;
+	    }
+	};
     }
 }

@@ -79,7 +79,7 @@ package net.johandegraeve.getcontents;
     static final String GENERICversionTag = "version";
     static final String GENERICstringTag ="string";
     static final String GETorFILTERcontainsAnyTag="containsAny";
-    static final String GETorFILTERequalsAny = "equalsAny";
+    static final String GETorFILTERequalsAnyTag = "equalsAny";
     static final String GETorFILTERendsWithAnyTag = "endsWithAny";
     static final String STRING_PROCESSORescapeHtmlTag = "escapeHtml";
     static final String STRING_PROCESSORfindAndReplaceTag = "findAndReplace";
@@ -111,23 +111,24 @@ package net.johandegraeve.getcontents;
      * list of String processors
      */
     static final String[] stringProcessorTags = new String[] {
-	STRING_PROCESSORhtml2textTag,
-	STRING_PROCESSORescapeHtmlTag,
-	STRING_PROCESSORunescapeHtmlTag,
-	STRING_PROCESSORtrimTag,
-	GETorFILTERequalsAny,
 	GETorFILTERcontainsAnyTag,
 	GETorFILTERendsWithAnyTag,
+	GETorFILTERequalsAnyTag,
+	GETorFILTERstartsWithAnyTag,
+	STRING_PROCESSORappendTag,
+	STRING_PROCESSORescapeHtmlTag,
 	STRING_PROCESSORfindAndReplaceTag,
+	STRING_PROCESSORhtml2textTag,
+	STRING_PROCESSORidSelectorTag,
 	STRING_PROCESSORmidPadTag,
 	STRING_PROCESSORpostPadTag,
 	STRING_PROCESSORprePadTag,
-	STRING_PROCESSORsplitTag,
-	STRING_PROCESSORidSelectorTag,
-	STRING_PROCESSORreadDateAndTimeTag,
-	GETorFILTERstartsWithAnyTag,
 	STRING_PROCESSORprependTag,
-	STRING_PROCESSORrepeatTag
+	STRING_PROCESSORreadDateAndTimeTag,
+	STRING_PROCESSORrepeatTag,
+	STRING_PROCESSORsplitTag,
+	STRING_PROCESSORtrimTag,
+	STRING_PROCESSORunescapeHtmlTag
     };
     
      /**
@@ -135,6 +136,7 @@ package net.johandegraeve.getcontents;
      */
     static final String[] htmlfilterTags = new String[] {
 	GETorFILTERandTag,
+	GETorFILTERchildrenTag,
 	GETorFILTERcssSelectorNodeTag,
 	GETorFILTERhasAttributeTag,
 	GETorFILTERhasChildTag,
@@ -151,22 +153,21 @@ package net.johandegraeve.getcontents;
     static String[] htmlgetterTags = new String[] {
 	GETorFILTERchildrenTag,
 	GETorFILTERtextTag,
-	STRING_PROCESSORidSelectorTag,
 	GETorFILTERremoveNodesTag,
 	GETorFILTERtagNameTag
     };
 
     static final String[] XMLfilterTags = new String[] {
-	GETorFILTERtagNameTag
+	GETorFILTERtagNameTag,
+	GETorFILTERcontainsAnyTag,
+	GETorFILTERendsWithAnyTag,
+	GETorFILTERequalsAnyTag,
+	GETorFILTERstartsWithAnyTag
     };
 
     static final String[] XMLgetterTags = new String[] {
 	GETorFILTERchildrenTag,
 	GETorFILTERtextTag,
-	GETorFILTERcontainsAnyTag,
-	GETorFILTERequalsAny,
-	GETorFILTERendsWithAnyTag,
-	GETorFILTERstartsWithAnyTag,
 	STRING_PROCESSORidSelectorTag,
 	GETorFILTERremoveNodesTag
     };

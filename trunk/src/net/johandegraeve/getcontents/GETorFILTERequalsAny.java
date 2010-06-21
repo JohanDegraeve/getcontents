@@ -97,7 +97,7 @@ public class GETorFILTERequalsAny implements XMLElement,  XMLFilter, StringProce
 	Utilities.verifyChildType(child,
 		TagAndAttributeNames.genericPrefix,
 		 new String []{TagAndAttributeNames.GENERICstringTag },
-		TagAndAttributeNames.GETorFILTERequalsAny);
+		TagAndAttributeNames.GETorFILTERequalsAnyTag);
 	stringChildList.add((GENERICstring)child);
     }
 
@@ -116,7 +116,7 @@ public class GETorFILTERequalsAny implements XMLElement,  XMLFilter, StringProce
     @Override
     public void complete() throws SAXException {
 	if(stringChildList.size() == 0) 
-	    throw new SAXException("Element of type " + TagAndAttributeNames.GETorFILTERequalsAny + " should have at least one child of type " +
+	    throw new SAXException("Element of type " + TagAndAttributeNames.GETorFILTERequalsAnyTag + " should have at least one child of type " +
 		    TagAndAttributeNames.GENERICstringTag);
     }
 
@@ -155,7 +155,7 @@ public class GETorFILTERequalsAny implements XMLElement,  XMLFilter, StringProce
      */
     @Override
     public String getTagName() {
-	return TagAndAttributeNames.GETorFILTERequalsAny;
+	return TagAndAttributeNames.GETorFILTERequalsAnyTag;
     }
 
     /**
