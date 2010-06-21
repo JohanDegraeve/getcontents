@@ -398,6 +398,7 @@ This output can then be used again as input to either another instruction like h
 *Allowed Children*
  At least one child of the following list :
  * and
+ * children
  * cssSelectorNode
  * hasAttribute
  * hasChild
@@ -461,6 +462,24 @@ In this example we filter on nodes that have a tagname "DIV" and an attribute bo
 ...
 </getContentItemList>
 }}}
+
+===== children =====
+
+will get the children if any
+
+*Attributes*
+none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ none
+
+*Example*<br>
 
 ===== cssSelectorNode =====
 
