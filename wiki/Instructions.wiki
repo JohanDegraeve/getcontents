@@ -427,6 +427,7 @@ Nodes that match every filer match the and filter.
 *Allowed Children*
  At least two other html filters :
  * and
+ * children
  * cssSelectorNode
  * hasAttribute
  * hasChild
@@ -438,6 +439,7 @@ Nodes that match every filer match the and filter.
  * or
  * regexFilter
  * stringFilter
+ * tagName
 
 *Example*<br>
 In this example we filter on nodes that have a tagname "DIV" and an attribute border="0"
@@ -508,6 +510,7 @@ a HasAttributeFilter as defined in the HTML parser package :
 
 
 *Attributes*
+ *type determines if the value (if present) should be considered 'equals' or 'startswith'. Hence the possible values are 'equals' and 'startswith'
 
 *Occurrence*
  none
