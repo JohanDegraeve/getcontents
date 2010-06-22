@@ -510,7 +510,8 @@ a HasAttributeFilter as defined in the HTML parser package :
 
 
 *Attributes*
- *type determines if the value (if present) should be considered 'equals' or 'startswith'. Hence the possible values are 'equals' and 'startswith'
+ *type determines if the value (if present) should be considered 'equals' or 'startswith'. Hence the possible values are 'equals' and 'startswith'.<br>
+Default value is 'startswith'.
 
 *Occurrence*
  none
