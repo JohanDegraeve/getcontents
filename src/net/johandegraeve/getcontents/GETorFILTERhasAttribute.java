@@ -24,8 +24,10 @@ import java.util.ArrayList;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.HasAttributeFilter;
+import org.htmlparser.nodes.TagNode;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
@@ -44,6 +46,12 @@ import net.johandegraeve.easyxmldata.XMLElement;
  */
 public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
 
+    /**
+     * defines if exact match or startswith to be performed, startswith is case sensitive.<br>
+     * possible values &quot;equals&quot; or &quot;startswith&quot;
+     */
+    private String type;
+    
     /**
      * the attribute name
      */
@@ -65,27 +73,53 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
      * @return the HasAttributeFilter
      * @see net.johandegraeve.getcontents.HTMLFilter#getHTMLFilter()
      */
+    @SuppressWarnings("serial")
     @Override
     public NodeFilter getHTMLFilter() {
-	/*return new NodeFilter() {
+	return new NodeFilter() {
 	    
 	    @Override
 	    public boolean accept(Node node) {
-		node.
+		if (node == null) return false;
+		if (!(node instanceof TagNode)) return false;
+		if( ((TagNode)node).getAttribute(attrName.getAttributeName()) == null)
+		    return false;
+		if (attrValue == null)
+		    return true;
+		if (type.equalsIgnoreCase("equals")) {
+			if( ((TagNode)node).getAttribute(attrName.getAttributeName()).equalsIgnoreCase(attrValue.getAttributeValue()))
+			    return true;
+		} else {
+			if( ((TagNode)node).getAttribute(attrName.getAttributeName()).startsWith(attrValue.getAttributeValue()))
+			    return true;
+		}
 		return false;
 	    }
-	};*/
-	return new HasAttributeFilter(
+	};
+	/*return new HasAttributeFilter(
 		attrName.getAttributeName().toUpperCase(),
-		(attrValue != null ? attrValue.getAttributeValue() : null));
+		(attrValue != null ? attrValue.getAttributeValue() : null));*/
     }
 
     /**
-     * does nothing
+     * evaluates attribute &quot;type&quot;<br>
+     * default value = &quot;equals&quot;, other allowed value is &quot;startswith&quot;
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */
     @Override
     public void addAttributes(Attributes arg0) throws SAXException {
+	String[] attrValues = Utilities.getOptionalAttributeValues(
+	    	arg0, 
+	    	new String[] {
+	    		"type"
+	    	}, 
+	    	new String[]  {
+	    		"equals"
+	    	});
+	    if (attrValues[0].equalsIgnoreCase("startswith")) 
+	        type = "startswith";
+	    else
+	        type = "equals";
     }
 
     /**
@@ -147,7 +181,9 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
      */
     @Override
     public Attributes getAttributes() {
-	return null;
+	AttributesImpl attr = new AttributesImpl();
+	attr.addAttribute(null, "type", "type", "CDATA", type);
+	return attr;
     }
 
     /**

@@ -109,8 +109,8 @@ public class GETorFILTERtagName implements XMLElement, HTMLFilter, XMLFilter, HT
     }
     
     /**
-     * does nothing
-     * 
+     * evaluates attribute &quot;type&quot;<br>
+     * default value = &quot;equals&quot;, other allowed value is &quot;startswith&quot;
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */
     @Override
