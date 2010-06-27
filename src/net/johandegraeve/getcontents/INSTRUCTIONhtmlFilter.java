@@ -42,11 +42,6 @@ import org.xml.sax.helpers.AttributesImpl;
 public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
     
     /**
-     * will be used for logging
-     */
-    private Logger thelogger;
-    
-    /**
      * list of filters
      */
     private ArrayList<HTMLFilter> filterList;
@@ -63,9 +58,90 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
     private String charset;
     
     /**
+     * similar to {@link #execute(String[], Logger)} but taking a NodeList as input
+     * @param source
+     * @param logger
+     * @return Nodes that match the htmlFilter, one node per String.
+     * @throws ParserException
+     */
+    String[] executeInputNodeListOutputStringArr(NodeList  source, Logger logger) throws ParserException {
+	String[] returnvalue;	
+	
+	source = executeInputNodeListOutputNodeList(source, logger);
+	//prepare string array to return
+	returnvalue = new String[source == null ? 0: source.size()];
+	for (int i = 0;i < source.size(); i++)
+	    returnvalue[i] = source.elementAt(i).toHtml();
+	
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (returnvalue.length == 0)
+		logger.Log("There are no results");
+	    else {
+		for (int i = 0;i < returnvalue.length;i++) {
+		    logger.Log("Result " + i + " =\n" );
+		    logger.Log("returnvalue[i]");
+		    logger.Log("\n" );
+		}
+	    }
+	}
+	
+	return returnvalue;
+    }
+    
+    /**
+     * similar to {@link #execute(String[], Logger)} but taking a NodeList as input and giving NodeList as output
+     * @param source
+     * @param logger
+     * @return Nodes that match the htmlFilter, one node per String.
+     * @throws ParserException
+     */
+    NodeList executeInputNodeListOutputNodeList(NodeList  source, Logger logger) throws ParserException {
+	if (source == null)
+	    return new NodeList();
+	//apply all filters to the nodelist
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying all filters");
+	}
+	for (int i = 0;i < filterList.size();i++) {
+	    source = applyOneFilterToNodeList(source, filterList.get(i), logger);
+	}
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, finished applying all filters");
+	}
+	    
+	return source;
+    }
+    
+    /**
+     * similar to {@link #execute(String[], Logger)} but taking a String Array as input, and giving a NodeList as output
+     * @param source
+     * @param logger
+     * @return Nodes that match the htmlFilter, one node per String.
+     * @throws ParserException
+     */
+    NodeList executeInputStringArrOutputNodeList( String[]  source, Logger logger) throws ParserException {
+	StringBuilder temp = new StringBuilder();
+	Parser htmlParser;
+	NodeList parsedNodeList = null;
+	
+	for (int i = 0; i < source.length; i++)
+	    temp.append(source[i]);
+
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying HTML Parser to the source");
+	}
+
+	htmlParser = new Parser(temp.toString());
+	htmlParser.setEncoding(charset);
+	parsedNodeList = htmlParser.parse(null);
+	
+	return executeInputNodeListOutputNodeList(parsedNodeList, logger);
+    }
+    
+    /**
      * Executes the list of filters to the source<br>
      * The strings in the source array will be concatenated to one string which is then parsed to a NodeList.<br>
-     * Returns Nodes that match the tagfilter.
+     * Returns Nodes that match the htmlFilter, one node per String.
      * @throws ParserException can be thrown by html Parser
      * @see net.johandegraeve.getcontents.Instruction#execute(String[], Logger)
      */
@@ -73,45 +149,21 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
     String[] execute(String[] source, Logger logger) throws ParserException {
 	String[] returnvalue;
 	NodeList parsedNodeList = null;
-	StringBuilder temp = new StringBuilder();
-	Parser htmlParser;
-	thelogger = logger;
-	
-	for (int i = 0; i < source.length; i++)
-	    temp.append(source[i]);
-	
-	if (thelogger != null) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying HTML Parser to the source");
-	}
-
-	htmlParser = new Parser(temp.toString());
-	htmlParser.setEncoding(charset);
-	parsedNodeList = htmlParser.parse(null);
-
-	//apply all filters to the nodelist
-	if (thelogger != null) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying all filters");
-	}
-	for (int i = 0;i < filterList.size();i++) {
-	    parsedNodeList = applyOneFilterToNodeList(parsedNodeList, filterList.get(i));
-	}
 	    
+	parsedNodeList = executeInputStringArrOutputNodeList(source, logger);
+	
 	//prepare string array to return
 	returnvalue = new String[parsedNodeList.size()];
 	for (int i = 0;i < parsedNodeList.size(); i++)
 	    returnvalue[i] = parsedNodeList.elementAt(i).toHtml();
-	if (thelogger != null) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, finished applying all filters");
-	}
-	
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
 	    if (returnvalue.length == 0)
-		thelogger.Log("There are no results");
+		logger.Log("There are no results");
 	    else {
 		for (int i = 0;i < returnvalue.length;i++) {
-		    thelogger.Log("Result " + i + " =\n" );
-		    thelogger.Log("returnvalue[i]");
-		    thelogger.Log("\n" );
+		    logger.Log("Result " + i + " =\n" );
+		    logger.Log("returnvalue[i]");
+		    logger.Log("\n" );
 		}
 	    }
 	}
@@ -125,12 +177,12 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
      * @param filter
      * @return a nodelist
      */
-    private NodeList applyOneFilterToNodeList(NodeList nodeList, HTMLFilter filter) {
+    private NodeList applyOneFilterToNodeList(NodeList nodeList, HTMLFilter filter, Logger logger) {
 	NodeList newNodeList = new NodeList();
 	int size;
 	
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying filter " + ((XMLElement)filter).getTagName());
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlFilter, applying filter " + ((XMLElement)filter).getTagName());
 	}
 	
 	for (int i = 0; i < nodeList.size(); i++) {
@@ -141,10 +193,10 @@ public class INSTRUCTIONhtmlFilter extends Instruction implements XMLElement {
 		    ((nodeList.elementAt(i).getChildren() == null ? 
 			    false :nodeList.elementAt(i).getChildren().size() > 0))
 	       )
-		newNodeList.add(applyOneFilterToNodeList(nodeList.elementAt(i).getChildren(), filter));
+		newNodeList.add(applyOneFilterToNodeList(nodeList.elementAt(i).getChildren(), filter, logger));
 	}
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
-	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    logger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
 	}
 	
 	return newNodeList;

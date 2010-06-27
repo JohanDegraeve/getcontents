@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -55,6 +56,7 @@ public class GENERICinstructionList implements XMLElement {
      */
     String[] execute(String input, Logger logger) throws Exception {
 	String[] returnvalue;
+	NodeList parsednodeList;
 
 	if (input == null || input.length() == 0) {
 	    if (logger != null) {
@@ -74,8 +76,72 @@ public class GENERICinstructionList implements XMLElement {
 		logger.Log(System.currentTimeMillis() + " : method execute in instructionList : start of instruction " + i +
 			" " + instructionSet.get(i).getTagName());
 	    }
-			
-	    returnvalue = instructionSet.get(i).execute(returnvalue, logger);
+
+	    //all this has been done to avoid that html parsing needs to be done if there are two or more subsequent html filter or getter
+	    //if the next instruction is also a htmlFilter or htmlGetter then we'll avoid that two times parsing will occur
+	    if (i+1 < instructionSet.size() && (instructionSet.get(i) instanceof INSTRUCTIONhtmlFilter || instructionSet.get(i) instanceof INSTRUCTIONhtmlGetter)) {
+		//there's still an instruction after this one, let's see if it's an htmlGetter or htmlFilter
+		if (instructionSet.get(i+1) instanceof INSTRUCTIONhtmlFilter || instructionSet.get(i+1) instanceof INSTRUCTIONhtmlGetter) {
+		    //yes we should apply another instance of execute that returns parsednode
+		    //so let's apply it but first check if it's an html filter or html getter
+		    if (instructionSet.get(i) instanceof INSTRUCTIONhtmlFilter) {
+			 parsednodeList = ((INSTRUCTIONhtmlFilter)instructionSet.get(i)).executeInputStringArrOutputNodeList(returnvalue, logger);
+		    } else 
+			parsednodeList = ((INSTRUCTIONhtmlGetter)instructionSet.get(i)).executeInputStringArrOutputNodeList(returnvalue, logger);
+		    if (logger != null) {
+			logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+				" : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+			if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+			    for (int j = 0;j < returnvalue.length;j++) {
+				logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+			    }
+			}
+		    }
+		    i = i + 1;
+		    //now we have a nodelist as returnvalue
+		    // we can go on no, just as long as the next instruction is an html filter or getter
+		    while (i+1 < instructionSet.size() && (instructionSet.get(i+1) instanceof INSTRUCTIONhtmlFilter || instructionSet.get(i+1) instanceof INSTRUCTIONhtmlGetter)) {
+			if (logger != null) {
+			    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : start of instruction " + i +
+				" " + instructionSet.get(i).getTagName());
+			}
+			if (instructionSet.get(i) instanceof INSTRUCTIONhtmlFilter) {
+			    parsednodeList = ((INSTRUCTIONhtmlFilter)instructionSet.get(i)).executeInputNodeListOutputNodeList(parsednodeList, logger);
+			} else 
+			    parsednodeList = ((INSTRUCTIONhtmlGetter)instructionSet.get(i)).executeInputNodeListOutputNodeList(parsednodeList, logger);
+			if (logger != null) {
+			    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+				    " : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+			    if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+				for (int j = 0;j < returnvalue.length;j++) {
+				    logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+				}
+			    }
+			}
+			i = i + 1;
+		    }
+		    //so there's no more next instruction that is an htmlgetter or htmlfilter, we need to execute the current one, using the parsednodelist as input, giving a string array
+		    if (logger != null) {
+			logger.Log(System.currentTimeMillis() + " : method execute in instructionList : start of instruction " + i +
+				" " + instructionSet.get(i).getTagName());
+		    }
+		    if (instructionSet.get(i) instanceof INSTRUCTIONhtmlFilter) {
+			returnvalue = ((INSTRUCTIONhtmlFilter)instructionSet.get(i)).executeInputNodeListOutputStringArr(parsednodeList, logger);
+		    } else 
+			returnvalue = ((INSTRUCTIONhtmlGetter)instructionSet.get(i)).executeInputNodeListOutputStringArr(parsednodeList, logger);
+		    if (logger != null) {
+			logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+				" : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+			if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+			    for (int j = 0;j < returnvalue.length;j++) {
+				logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+			    }
+			}
+		    }
+		} else
+		    returnvalue = instructionSet.get(i).execute(returnvalue, logger);
+	    } else
+		returnvalue = instructionSet.get(i).execute(returnvalue, logger);
 
 	    if (logger != null) {
 		logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
