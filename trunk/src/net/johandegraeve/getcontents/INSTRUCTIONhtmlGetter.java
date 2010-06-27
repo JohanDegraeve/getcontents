@@ -42,11 +42,6 @@ import org.xml.sax.helpers.AttributesImpl;
 public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 
     /**
-     * for logging
-     */
-    private  Logger thelogger;
-    
-    /**
      * list of HTMLGetter to be applied one after the other
      */
     private ArrayList<HTMLGetter> getterList;
@@ -64,6 +59,87 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
     private String charset;
     
     /**
+     * similar to {@link #execute(String[], Logger)} but taking a NodeList as input
+     * @param source
+     * @param logger
+     * @return Nodes that match the htmlGetter, one node per String.
+     * @throws ParserException
+     */
+    String[] executeInputNodeListOutputStringArr(NodeList  source, Logger logger) throws ParserException {
+	String[] returnvalue;	
+	
+	source = executeInputNodeListOutputNodeList(source, logger);
+	//prepare string array to return
+	returnvalue = new String[source == null ? 0: source.size()];
+	for (int i = 0;i < source.size(); i++)
+	    returnvalue[i] = source.elementAt(i).toHtml();
+	
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (returnvalue.length == 0)
+		logger.Log("There are no results");
+	    else {
+		for (int i = 0;i < returnvalue.length;i++) {
+		    logger.Log("Result " + i + " =\n" );
+		    logger.Log("returnvalue[i]");
+		    logger.Log("\n" );
+		}
+	    }
+	}
+	
+	return returnvalue;
+    }
+    
+    /**
+     * similar to {@link #execute(String[], Logger)} but taking a NodeList as input and giving NodeList as output
+     * @param source
+     * @param logger
+     * @return Nodes that match the htmlGetter, one node per String.
+     * @throws ParserException
+     */
+    NodeList executeInputNodeListOutputNodeList(NodeList  source, Logger logger) throws ParserException {
+	if (source == null)
+	    return new NodeList();
+	//apply all filters to the nodelist
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying all getters");
+	}
+	for (int i = 0;i < getterList.size();i++) {
+	    source = applyOneGetterToNodeList(source, getterList.get(i), logger);
+	}
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, finished applying all getters");
+	}
+	    
+	return source;
+    }
+    
+    /**
+     * similar to {@link #execute(String[], Logger)} but taking a String Array as input, and giving a NodeList as output
+     * @param source
+     * @param logger
+     * @return Nodes that match the tagfilter, one node per String.
+     * @throws ParserException
+     */
+    NodeList executeInputStringArrOutputNodeList( String[]  source, Logger logger) throws ParserException {
+	StringBuilder temp = new StringBuilder();
+	Parser htmlParser;
+	NodeList parsedNodeList = null;
+	
+	for (int i = 0; i < source.length; i++)
+	    temp.append(source[i]);
+
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying HTML Parser to the source");
+	}
+
+	htmlParser = new Parser(temp.toString());
+	htmlParser.setEncoding(charset);
+	parsedNodeList = htmlParser.parse(null);
+	
+	return executeInputNodeListOutputNodeList(parsedNodeList, logger);
+	
+    }
+    /**
      * executes the HTMLGetter in the getterList one after the other
      * @throws ParserException can be thrown by html Parser
      * @see net.johandegraeve.getcontents.Instruction#execute(java.lang.String[], Logger)
@@ -74,46 +150,45 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 	NodeList parsedNodeList = null;
 	Parser htmlParser;
 	StringBuilder temp;
-	thelogger = logger;
 
 	//first put the whole source in a NodeList
 	temp  = new StringBuilder();
 	for (int i = 0;i < source.length; i++)
 	    temp.append(source[i]);
 
-	if (thelogger != null) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying HTML Parser to the source");
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying HTML Parser to the source");
 	}
 	htmlParser = new Parser(temp.toString());
 	htmlParser.setEncoding(charset);
 	parsedNodeList = htmlParser.parse(null);
 	
 	//apply all filters to the nodelist
-	if (thelogger != null) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying all filters");
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying all getters");
 	}
 	for (int i = 0;i < getterList.size();i++) {
 	    if (parsedNodeList.size() > 0) {
-		parsedNodeList = applyOneGetterToNodeList(parsedNodeList, getterList.get(i));
+		parsedNodeList = applyOneGetterToNodeList(parsedNodeList, getterList.get(i), logger);
 	    } else
 		break;
+	}
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, finished applying all getters");
 	}
 	    
 	//prepare string array to return
 	returnvalue = new String[parsedNodeList.size()];
 	for (int i = 0;i < parsedNodeList.size(); i++)
 	    returnvalue[i] = parsedNodeList.elementAt(i).toHtml();
-	if (thelogger != null) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, finished applying all filters");
-	}
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
 	    if (returnvalue.length == 0)
-		thelogger.Log("There are no results");
+		logger.Log("There are no results");
 	    else {
 		for (int i = 0;i < returnvalue.length;i++) {
-		    thelogger.Log("Result " + i + " =\n" );
-		    thelogger.Log("returnvalue[i]");
-		    thelogger.Log("\n" );
+		    logger.Log("Result " + i + " =\n" );
+		    logger.Log("returnvalue[i]");
+		    logger.Log("\n" );
 		}
 	    }
 	}
@@ -127,11 +202,11 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
      * @param getter
      * @return a NodeList
      */
-    private NodeList applyOneGetterToNodeList(NodeList nodeList, HTMLGetter getter) {
+    private NodeList applyOneGetterToNodeList(NodeList nodeList, HTMLGetter getter, Logger logger) {
 	NodeList newNodeList = new NodeList();
 	
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying filter " + ((XMLElement)getter).getTagName());
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in htmlGetter, applying getter " + ((XMLElement)getter).getTagName());
 	}
 	
 	for (int i = 0; i < nodeList.size(); i++) {
@@ -142,10 +217,10 @@ public class INSTRUCTIONhtmlGetter extends Instruction implements XMLElement {
 		    	((nodeList.elementAt(i).getChildren() == null ? 
 			    false :nodeList.elementAt(i).getChildren().size() > 0))
 	               )
-		newNodeList.add(applyOneGetterToNodeList(nodeList.elementAt(i).getChildren(), getter));
+		newNodeList.add(applyOneGetterToNodeList(nodeList.elementAt(i).getChildren(), getter, logger));
 	}
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
-	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    logger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
 	}
 	
 	return newNodeList;
