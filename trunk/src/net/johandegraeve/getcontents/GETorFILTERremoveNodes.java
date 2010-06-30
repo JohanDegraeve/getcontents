@@ -253,6 +253,9 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
 			//it's a node to re removed so stop digging deeper, remove it
 			return null;
 		    }
+		//TagNode.getId's doesn't return any mathing tags, but maybe getTagName does
+		 if (((TagNode)elementAt).getTagName().equalsIgnoreCase(tagName))
+			 return null;
 	    }
 	    //it's not a node matching the tagname, let's check the attribute names and values
 	    if (attrName != null) {

@@ -60,16 +60,16 @@ public class GENERICinstructionList implements XMLElement {
 
 	if (input == null || input.length() == 0) {
 	    if (logger != null) {
-	        logger.Log(System.currentTimeMillis() + " : method execute in instructionList : the input is empty, instructions will not be executed, returnvalue is empty");
+		logger.Log(System.currentTimeMillis() + " : method execute in instructionList : the input is empty, instructions will not be executed, returnvalue is empty");
 	    }
 	    return new String[0];
 	}
-	
+
 	returnvalue  = new String[]{input};
 	if (logger != null) {
-	     logger.Log(System.currentTimeMillis() + " : method execute in instructionList : starting to execute the list of instructions");
+	    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : starting to execute the list of instructions");
 	}
-		
+
 	//execute the instructions one by one
 	for (int i = 0;i < instructionSet.size(); i++) {
 	    if (logger != null) {
@@ -85,7 +85,7 @@ public class GENERICinstructionList implements XMLElement {
 		    //yes we should apply another instance of execute that returns parsednode
 		    //so let's apply it but first check if it's an html filter or html getter
 		    if (instructionSet.get(i) instanceof INSTRUCTIONhtmlFilter) {
-			 parsednodeList = ((INSTRUCTIONhtmlFilter)instructionSet.get(i)).executeInputStringArrOutputNodeList(returnvalue, logger);
+			parsednodeList = ((INSTRUCTIONhtmlFilter)instructionSet.get(i)).executeInputStringArrOutputNodeList(returnvalue, logger);
 		    } else 
 			parsednodeList = ((INSTRUCTIONhtmlGetter)instructionSet.get(i)).executeInputStringArrOutputNodeList(returnvalue, logger);
 		    if (logger != null) {
@@ -103,7 +103,7 @@ public class GENERICinstructionList implements XMLElement {
 		    while (i+1 < instructionSet.size() && (instructionSet.get(i+1) instanceof INSTRUCTIONhtmlFilter || instructionSet.get(i+1) instanceof INSTRUCTIONhtmlGetter)) {
 			if (logger != null) {
 			    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : start of instruction " + i +
-				" " + instructionSet.get(i).getTagName());
+				    " " + instructionSet.get(i).getTagName());
 			}
 			if (instructionSet.get(i) instanceof INSTRUCTIONhtmlFilter) {
 			    parsednodeList = ((INSTRUCTIONhtmlFilter)instructionSet.get(i)).executeInputNodeListOutputNodeList(parsednodeList, logger);
@@ -138,27 +138,37 @@ public class GENERICinstructionList implements XMLElement {
 			    }
 			}
 		    }
-		} else
+		} else {
 		    returnvalue = instructionSet.get(i).execute(returnvalue, logger);
-	    } else
-		returnvalue = instructionSet.get(i).execute(returnvalue, logger);
-
-	    if (logger != null) {
-		logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
-			" : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
-		if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
-		    for (int j = 0;j < returnvalue.length;j++) {
-			logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+		    if (logger != null) {
+			logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+				" : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+			if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+			    for (int j = 0;j < returnvalue.length;j++) {
+				logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+			    }
+			}
 		    }
 		}
+	    } else {
+		//the next instruction is not an html filter or getter
+		returnvalue = instructionSet.get(i).execute(returnvalue, logger);
+		if (logger != null) {
+		    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+			    " : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+		    if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+			for (int j = 0;j < returnvalue.length;j++) {
+			    logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+			}
+		    }
+		}
+		if (returnvalue == null || returnvalue.length == 0)
+		    break;
 	    }
-	    if (returnvalue == null || returnvalue.length == 0)
-		break;
 	}
-	
 	return returnvalue;
     }
-
+    
     /**
      * does nothing
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
