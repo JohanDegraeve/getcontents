@@ -190,4 +190,6 @@ package net.johandegraeve.getcontents;
      static final String chronologicalAttribute = "chronological";
      static final String charsetAttribute = "charset";
      static final String repeatAttribute = "repeat";
+     static final String tagAttrribute = "tag";
+     static final String unknowntagAttrribute = "unknowntag";
 }
