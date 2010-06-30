@@ -391,6 +391,8 @@ This output can then be used again as input to either another instruction like h
  * charset, optional
    values : for instance "ISO-8859-1" or "UTF-8"<br>
    Even if it is not always necessary to specify the charset to be used, because mostly it is available in the HTML page in a META TAG, it is safer to specify it.
+ * unknowntag : a list of tags not known by default by the HTML Parser, tags are separated by space. For example a site uses "small" as tag. This tag is not known to the HTML Parser so will not create decent child list. By adding the attribute tag="small", the parser will consider the element small as a decent TagNode.
+List can be longer eg "small script noscript"
 
 *Occurrence*
  not defined
@@ -507,6 +509,8 @@ none
 
 a HasAttributeFilter as defined in the HTML parser package :  
 <a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
+
+In case you want to filter on tags not known to the HTML Parser, then you must add a "tag" attribute to the first htmlFilter or htmlGetter preceding this htmlFilter.
 
 
 *Attributes*
@@ -863,6 +867,8 @@ Untrimmed.
 a TagNameFilter as defined in the HTML parser package :  
 <a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
 
+In case you want to filter on tags not known to the HTML Parser, then you must add a "tag" attribute to the first htmlFilter or htmlGetter preceding this htmlFilter.
+
 
 *Attributes*
  none
@@ -901,6 +907,8 @@ gets from html nodes.
  * charset, optional
    values : for instance "ISO-8859-1" or "UTF-8"<br>
    Even if it is not always necessary to specify the charset to be used, because mostly it is available in the HTML page in a META TAG, it is safer to specify it.
+ * unknowntag : a list of tags not known by default by the HTML Parser, tags are separated by space. For example a site uses "small" as tag. This tag is not known to the HTML Parser so will not create decent child list. By adding the attribute tag="small", the parser will consider the element small as a decent TagNode.
+List can be longer eg "small script noscript"
 
 
 
