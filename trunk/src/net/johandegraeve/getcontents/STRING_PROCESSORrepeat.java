@@ -84,7 +84,7 @@ public class STRING_PROCESSORrepeat extends INSTRUCTIONprocessString implements 
      */
     @Override
     public Attributes getAttributes() {
-	AttributesImpl attr = new AttributesImpl(super.getAttributes());
+	AttributesImpl attr = new AttributesImpl();
 	attr.addAttribute(null, 
 		TagAndAttributeNames.repeatAttribute,
 		TagAndAttributeNames.repeatAttribute,

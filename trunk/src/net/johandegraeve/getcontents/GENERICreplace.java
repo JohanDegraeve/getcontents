@@ -138,7 +138,8 @@ public class GENERICreplace implements XMLElement {
      */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	replace = text;
+	replace = net.johandegraeve.getcontents.Utilities.unescapeInvisibleCharacters(text);
+
     }
 
     /**

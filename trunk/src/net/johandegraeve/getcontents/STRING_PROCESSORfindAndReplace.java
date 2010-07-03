@@ -21,14 +21,12 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.Ostermiller.util.StringHelper;
-
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
 
 /**
 * Find and Replace<br>
@@ -62,10 +60,13 @@ public class STRING_PROCESSORfindAndReplace implements XMLElement, StringProcess
     public String[] processString(String[] source) {
 	if (source == null) return null;
 	for (int i = 0;i < source.length;i ++)
-	    if (caseSensitive)
-		source[i] = StringHelper.replace(source[i], find.getFind(), replace.getReplace());
-	    else 
+	    if (caseSensitive) {
+		source[i] = source[i].replaceAll(find.getFind(), replace.getReplace());
+		//source[i] = StringHelper.replace(source[i], find.getFind(), replace.getReplace());
+	    }
+	    else {
 		source[i] = net.johandegraeve.getcontents.Utilities.replaceIgnoreCase(source[i], find.getFind(), replace.getReplace());
+	    }
 	return source;
     }
 

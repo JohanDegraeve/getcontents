@@ -28,6 +28,8 @@ import net.johandegraeve.easyxmldata.XMLElement;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import com.Ostermiller.util.StringHelper;
+
 /**
  * A few useful methods
  * 
@@ -36,6 +38,20 @@ import org.xml.sax.SAXParseException;
  */
 public class Utilities  {
     
+
+    /**
+     * hard to explain in doc, see the code
+     */
+    private static final String [][] replacementStrings = new String[][] {
+	{"\\t","\t"},
+	{"\\b","\b"},
+	{"\\n","\n"},
+	{"\\r","\r"},
+	{"\\f","\f"},
+	{"\\\'","\'"},
+	{"\\\"","\""},
+	{"\\\\","\\"}
+    };
 
     /**
      * adds a root element, to be used in case the source represents an incomplete xml, ie the result of a previous 
@@ -225,6 +241,19 @@ public class Utilities  {
 		" You can enter a unicode value of a character, for example character=\"\\u0041\" means you want to use the character A.");
 	    }
 	    return c;
+	}
+	
+	/**
+	 * unescape invisible characters, eg replace &quot;\t&quot; by a real tab character<br>
+	 * Characters escape sequences treated are :  &quot;\t&quot;, &quot;\b&quot;, &quot;\n&quot;, &quot;\r&quot;, &quot;\f&quot;, &quot;\'&quot;, &quot;\\&quot;,&quot;\&quot;&quot;
+	 * @param source the input
+	 * @return source with escaped characters replaced
+	 */
+	static String unescapeInvisibleCharacters(String source) {
+	    	for (int k = 0; k < replacementStrings.length;k++) {
+	    	    source = StringHelper.replace(source, replacementStrings[k][0], replacementStrings[k][1]);
+	    	}
+	    return source;
 	}
  
 }

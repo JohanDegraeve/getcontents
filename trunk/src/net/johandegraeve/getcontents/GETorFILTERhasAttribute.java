@@ -21,16 +21,15 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.Utilities;
+import net.johandegraeve.easyxmldata.XMLElement;
+
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
-import org.htmlparser.filters.HasAttributeFilter;
 import org.htmlparser.nodes.TagNode;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
-
-import net.johandegraeve.easyxmldata.Utilities;
-import net.johandegraeve.easyxmldata.XMLElement;
 
 /**
  * Class for creating hasattributefilter as defined in org.htmlparser.filters.HasAttributeFilter.<br>

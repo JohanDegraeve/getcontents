@@ -170,4 +170,12 @@ public class GetContents {
     public String[] getListOfIds() {
 	return result.getListOfIds();
     }
+    
+    /**
+     * creates XML representation of the instruction list
+     * @return ML representation of the instruction list
+     */
+    public String toXML() {
+	return net.johandegraeve.easyxmldata.Utilities.createXML(result);
+    }
 }

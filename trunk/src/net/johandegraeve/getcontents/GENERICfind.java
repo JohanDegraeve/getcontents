@@ -123,7 +123,7 @@ public class GENERICfind implements XMLElement {
      */
     @Override
     public void addUnTrimmedText(String text) throws SAXException {
-	find = text;
+	find = net.johandegraeve.getcontents.Utilities.unescapeInvisibleCharacters(text);
     }
 
     /**
