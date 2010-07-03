@@ -19,8 +19,6 @@
  */
 package net.johandegraeve.getcontents;
 
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
 import java.util.ArrayList;
 
 import net.johandegraeve.easyxmldata.Utilities;
@@ -31,7 +29,6 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * This is similar to htmlfilterinstruction but for getting content, applies to one specific node<br>

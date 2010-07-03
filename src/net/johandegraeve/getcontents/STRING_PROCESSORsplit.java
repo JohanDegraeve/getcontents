@@ -49,17 +49,6 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
     /**
      * constructor setting {@link #delimiter} to blank space, {@link #idSelector} to null
      */
-    /*private static final String [][] replacementStrings = new String[][] {
-	{"\\t","\t"},
-	{"\\b","\b"},
-	{"\\n","\n"},
-	{"\\r","\r"},
-	{"\\f","\f"},
-	{"\\'","\'"},
-	{"\\\"","\""},
-	{"\\\\","\\"}
-    };*/
-    
     public STRING_PROCESSORsplit() {
 	delimiter = new  GENERICstring(" ");
 	idSelector = null;
@@ -81,11 +70,6 @@ public class STRING_PROCESSORsplit implements StringProcessor , XMLElement {
 	    }
 	    
 	    for (int j = 0; j < returnvalue.length;j++) {
-	    //I DONT REMEMBER WHY I DID THIS///////
-		//for (int k = 0; k < replacementStrings.length;k++)
-		  //StringHelper.replace(returnvalue[j], replacementStrings[k][0], replacementStrings[k][1]);
-	    ////////////////////////////////////////
-		
 		stringArrayList.add(returnvalue[j]);
 		
 	    }	
