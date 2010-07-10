@@ -102,6 +102,7 @@ package net.johandegraeve.getcontents;
     static final String GENERICDateFormatSymbolsTag = "DateFormatSymbols";
     static final String GENERICSimpleDateFormatTag = "SimpleDateFormat";
     static final String STRING_PROCESSORreadDateAndTimeTag = "readDateAndTime";
+    static final String STRING_PROCESSORremoveInvisibleCharsTag = "removeInvisibleChars";
     static final String GENERICTimeZoneTag = "TimeZone";
     static final String GETorFILTERstartsWithAnyTag = "startsWithAny";
     static final String GETorFILTERremoveNodesTag = "removeNodes";
@@ -128,7 +129,8 @@ package net.johandegraeve.getcontents;
 	STRING_PROCESSORrepeatTag,
 	STRING_PROCESSORsplitTag,
 	STRING_PROCESSORtrimTag,
-	STRING_PROCESSORunescapeHtmlTag
+	STRING_PROCESSORunescapeHtmlTag,
+	STRING_PROCESSORremoveInvisibleCharsTag
     };
     
      /**
