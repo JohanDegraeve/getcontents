@@ -54,6 +54,7 @@ Another example could be to fetch a TV guide. Typically a TV guide will consist 
    * instructionList (1)
  * optional Children
    * url (0 or 1)
+   * any element for which a class exists with the same name and derived from the class CustomObject. In this case, the GetContents object must be created with the constructor that takes a package name as argument, being the name of the package where this new class is defined.
 
 *Example*
 {{{
@@ -507,9 +508,7 @@ none
 
 ===== hasAttribute =====
 
-a HasAttributeFilter as defined in the HTML parser package :  
-<a href="http://htmlparser.sourceforge.net/">HTML Parser</a>
-
+checks for presence of a specified attribute, optionally with specified value.<br>
 In case you want to filter on tags not known to the HTML Parser, then you must add a "tag" attribute to the first htmlFilter or htmlGetter preceding this htmlFilter.
 
 
@@ -1406,7 +1405,8 @@ This is a less than sign : &lt;
 ===== findAndReplace =====
 
 to find and replace a string<br>
-Using com.Ostermiller.util, class StringHelper, method replace.
+Using com.Ostermiller.util, class StringHelper, method replace.<br>
+In the find and replace elements (children of findAndReplace) it is possible to define specific invisible characters with "\t", "\b","\n","\r","\f". 
 
 *Attributes*
  case sensitive, value "true" or "false"
