@@ -48,6 +48,7 @@ package net.johandegraeve.getcontents;
     static final String GENERICgetcontentitemlistTag = "getContentItemList";
     static final String GENERICgetcontentitemTag = "getContentItem";
     static final String GETorFILTERandTag = "and"; 
+    static final String GETorFILTERattributeValue = "attributeValue "; 
     static final String GETorFILTERchildrenTag ="children";
     static final String GETorFILTERcssSelectorNodeTag = "cssSelectorNode";
     static final String GETorFILTERhasAttributeTag = "hasAttribute";
@@ -156,7 +157,8 @@ package net.johandegraeve.getcontents;
 	GETorFILTERchildrenTag,
 	GETorFILTERtextTag,
 	GETorFILTERremoveNodesTag,
-	GETorFILTERtagNameTag
+	GETorFILTERtagNameTag,
+	GETorFILTERattributeValue
     };
 
     static final String[] XMLfilterTags = new String[] {

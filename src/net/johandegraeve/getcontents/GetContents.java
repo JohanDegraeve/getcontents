@@ -121,7 +121,7 @@ public class GetContents {
      * @param id identifies the getContentItem element to be used
      * @param input this is the source that will be used, it may be the actual content or a url (file or http); if the getContentItem element
      * has a url as child, it will be ignored
-     * @return the result
+     * @return the result, if id was not found in the instruction list, then a string array with zero elements is returned
      * @throws Exception
      */
     public String[] getResult(String id, String input) throws Exception {
@@ -131,9 +131,7 @@ public class GetContents {
 	    }
 	}
 	if (logger != null) {
-    	    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
     		logger.Log(System.currentTimeMillis() + " : did not find a getContentItem with id " + id + " - check the instructions xml file");
-    	    }
 	}
 	return new String[0];
     }
