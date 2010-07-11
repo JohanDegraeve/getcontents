@@ -19,78 +19,26 @@
  */
 package net.johandegraeve.getcontents;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 
 import net.johandegraeve.easyxmldata.XMLElement;
 
+import org.htmlparser.Node;
+import org.htmlparser.nodes.TagNode;
+import org.htmlparser.nodes.TextNode;
+import org.htmlparser.util.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * the remove redundant invisible Characters like carriage returns, line feeds, tabs, ...<br>
- * At most two control characters that result in carriage return + line feed will be retained.<br>
- * Also double spaces are replaced by one space<br>
+ * get text
+ * 
+ * @author Johan Degraeve
  *
  */
-public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringProcessor {
+public class GETorFILTERattributeValue implements XMLElement, HTMLGetter {
     
-
-
-    /**
-     * keeps no more than two subsequent newlines and one space<br>
-     * @return the result off course
-     * @see net.johandegraeve.getcontents.StringProcessor#processString(java.lang.String[])
-     */
-    public String[] processString(String[] source) throws IOException {
-	if (source == null) return null;
-	ArrayList<String> returnvalue = new ArrayList<String> () ;
-	StringBuilder helper;
-	BufferedReader reader;
-	String readline;
-	int newlineCounter = 0;
-	boolean itsTheFirstLine = true;
-	String[] splitline;
-	int returnvaluelength, stringlength;
-	
-	for (int i = 0;i < source.length; i++) {
-	    helper = new StringBuilder();
-	    reader = new BufferedReader(new StringReader(source[i]));
-	    while ((readline = reader.readLine()) != null) {//read line by line
-		readline = readline.trim();
-		if (readline.length() > 0) {//it's a line having something else than just carriage return.
-		    splitline = readline.split(" ");
-		    for (int j = 0;j < splitline.length - 1;j++) {
-			if (splitline[j].trim().length() > 0)
-			    helper.append(splitline[j].trim() + " ");
-		    }
-		    helper.append(splitline[splitline.length - 1].trim() + "\n");
-		    newlineCounter = 0;
-		    itsTheFirstLine = false;
-		} else {
-		    if (!itsTheFirstLine) {
-			newlineCounter++;
-			if (newlineCounter < 2) {
-			    helper.append("\n");
-			}
-		    }
-		}
-	    }
-	    if (helper.length() > 0) {
-		returnvalue.add(helper.toString());
-	    }
-	}
-	//remove the last newline from the last line.
-	if ((returnvaluelength = returnvalue.size()) > 0)
-	    if ((stringlength = returnvalue.get(returnvaluelength - 1).length()) > 0)
-		if (returnvalue.get(returnvaluelength - 1).substring(stringlength - 1, stringlength - 1).equalsIgnoreCase("\n"))
-		    returnvalue.set(returnvaluelength - 1, returnvalue.get(returnvaluelength - 1).substring(0, stringlength - 1));
-		
-	return returnvalue.toArray(new String[0]);
-	
-    }
+    private String attributename;
 
     /**
      * does nothing
@@ -101,28 +49,53 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
     }
 
     /**
-     * throws an Exception
+     * throws an exception
      * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
      */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	throw new SAXException("No children allowed for element of type " + TagAndAttributeNames.STRING_PROCESSORremoveInvisibleCharsTag);
+	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERtextTag);
     }
 
     /**
-     * does nothing
+     * assigns text to {@link #attributename}
      * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
      */
     @Override
     public void addText(String text) throws SAXException {
+	attributename = text;
     }
 
     /**
-     * does nothing
+     * checks if {@link #attributename} has a valid value
      * @see net.johandegraeve.easyxmldata.XMLElement#complete()
      */
     @Override
     public void complete() throws SAXException {
+	if (attributename == null)
+	    throw new SAXException("Element of type " + TagAndAttributeNames.GETorFILTERattributeValue +
+		    "must have text being the attributename for which the value is to be retrieved");
+	if (attributename.length() == 0)
+	    throw new SAXException("Element of type " + TagAndAttributeNames.GETorFILTERattributeValue +
+	    "must have text being the attributename for which the value is to be retrieved");
+    }
+
+    /**
+     * get the attributevalue for the specified attributename<br>
+     * @return a nodelist with one TextNode that has the attributevalue as text, empty string if not found
+     * 
+     * 
+     * @see net.johandegraeve.getcontents.HTMLGetter#getList(org.htmlparser.Node)
+     */
+    @Override
+    public NodeList getList(Node element) {
+	if (element == null) return new NodeList( new TextNode(""));
+	if (!(element instanceof TagNode)) return new NodeList( new TextNode(""));
+
+	if( ((TagNode)element).getAttribute(attributename) == null)
+	    return new NodeList( new TextNode(""));;
+	    
+	return new NodeList(new TextNode(((TagNode)element).getAttribute(attributename)));    
     }
 
     /**
@@ -134,7 +107,6 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
 	return null;
     }
 
-
     /**
      * @return null
      * @see net.johandegraeve.easyxmldata.XMLElement#getChildren()
@@ -144,24 +116,22 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
 	return null;
     }
 
-
     /**
      * @return the tag name
      * @see net.johandegraeve.easyxmldata.XMLElement#getTagName()
      */
     @Override
     public String getTagName() {
-	return TagAndAttributeNames.STRING_PROCESSORremoveInvisibleCharsTag;
+	return TagAndAttributeNames.GETorFILTERattributeValue;
     }
 
-
     /**
-     * @return null
+     * @return {@link #attributename}
      * @see net.johandegraeve.easyxmldata.XMLElement#getText()
      */
     @Override
     public String getText() {
-	return null;
+	return attributename;
     }
 
     /**
@@ -180,4 +150,5 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
     public boolean preserveSpaces() {
 	return false;
     }
+
 }
