@@ -1070,7 +1070,8 @@ both can be defined within one single removeNodes element<br>
 
 ===== tagName =====
 
-will keep tags with specified node, works as HTMLFilter tagName
+will keep tags with specified node, works as HTMLFilter tagName<br>
+But not always working exactly as HTMLFiler, sometimes it is better to us an HTMLFilter.
 
 
 ===== text =====
