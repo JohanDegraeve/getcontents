@@ -916,6 +916,7 @@ List can be longer eg "small script noscript"
 
 *Allowed Children*
  One ore more of following HTMLGetter :
+ * attributeValue
  * children
  * removeNodes
  * tagName
@@ -923,6 +924,26 @@ List can be longer eg "small script noscript"
 
 *text field*
  none
+
+===== attributeValue =====
+
+allows to get the value of a specific attribute<br>
+Will work on each first level node<br> 
+If a node does not have an attribute with the specified name, then an empty string is returned
+
+*Attributes*
+ none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ none
+
+*text field*
+ the attributename
+
+*example*
 
 ===== children =====
 
