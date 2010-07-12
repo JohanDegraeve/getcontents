@@ -239,10 +239,10 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	if (source == null) return null;
 	if (source.length > 0)
 		previousDate = format.parse(source[0]);
-		source[0] = previousDate.toString();
+		source[0] = Long.toString(previousDate.getTime());
 	for (int i = 1;i<source.length;i++) {
 		newDate = addOffset(format.parse(source[i]),previousDate);
-		source[i] = newDate.toString();
+		source[i] = Long.toString(newDate.getTime());
 		previousDate = newDate;
 	}
 
