@@ -1200,6 +1200,7 @@ A string processor can never be the first instruction in an instructionList. In 
  * prepend
  * prePad
  * readDateAndTime
+ * removeInvisibleChars
  * repeat
  * split
  * startsWithAny
@@ -2120,6 +2121,26 @@ As a result, suppose the original text occurrences of 15 subsequent carriage ret
    </getContentItem>
 </getContentItemList>
 }}}
+
+===== removeInvisibleChars =====
+
+Removes redundant line feeds, spaces, ...<br>
+At most two consecusive line feeds are retained.
+
+*Attributes*
+ * none
+
+*Occurrence*
+ not defined
+
+*Allowed Children*
+ * none
+
+*text field*
+ none
+  
+*example*
+
 
 ===== split =====
 
