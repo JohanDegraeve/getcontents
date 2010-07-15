@@ -23,8 +23,6 @@ import net.johandegraeve.easyxmldata.EasyXMLDataParser;
 
 import org.xml.sax.SAXParseException;
 
-import com.Ostermiller.util.StringHelper;
-
 /**
  * to get contents, the only class that should be used by application using this library
  *

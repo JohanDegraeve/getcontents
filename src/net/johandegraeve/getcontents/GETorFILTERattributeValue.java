@@ -38,6 +38,9 @@ import org.xml.sax.SAXException;
  */
 public class GETorFILTERattributeValue implements XMLElement, HTMLGetter {
     
+    /**
+     * the attributename of which value should be retrieved
+     */
     private String attributename;
 
     /**

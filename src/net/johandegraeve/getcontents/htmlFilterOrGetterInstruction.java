@@ -193,7 +193,7 @@ implements XMLElement {
 	source = executeInputNodeListOutputNodeList(source, logger);
 	//prepare string array to return
 	returnvalue = new String[source == null ? 0: source.size()];
-	for (int i = 0;i < source.size(); i++)
+	for (int i = 0;i < returnvalue.length; i++)
 	    returnvalue[i] = source.elementAt(i).toHtml();
 	
 	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
