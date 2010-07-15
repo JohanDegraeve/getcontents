@@ -24,9 +24,8 @@ import java.util.ArrayList;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
-import org.xml.sax.Attributes;
+import org.htmlparser.util.ParserException;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * XML Filter instruction<br>
@@ -34,25 +33,12 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author Johan Degraeve
  *
  */
-public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
+public class INSTRUCTIONXMLFilter extends XMLFilterOrGetterInstruction {
     
     /**
      * the XML filters
      */
     private ArrayList<XMLFilter> filterList;
-    /**
-     * recursive attribute
-     */
-    private boolean recursive;
-    /**
-     * charsetName, only useful in case the source is a String, which is read via String.getBytes(charsetName)
-     */
-    private String charsetName;
-    
-    /**
-     * for logging
-     */
-    private Logger thelogger;
     
     /**
      * run the instructions on the source, one by one<br>
@@ -63,34 +49,22 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
     String[] execute(String[] source, Logger logger) throws Exception {
 	String[] returnvalue;
 	ArrayList<XMLElement> parsedList = null;
-	thelogger = logger;
 
-	if (logger != null) {
-	    logger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying XML Parser to the source");
-	}
-	parsedList = net.johandegraeve.getcontents.Utilities.makeList(source,charsetName);
-	
-	//apply all filters to the nodelist
-	if (thelogger != null) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying all filters");
-	}
-	for (int i = 0;i < filterList.size();i++) {
-	    parsedList = applyOneFilterToNodeList(parsedList, filterList.get(i));
-	}
+	parsedList = executeInputStringArrOutputXMLElementList(source,logger);
 	    
 	//prepare string array to return
 	returnvalue = new String[parsedList.size()];
 	for (int i = 0;i < parsedList.size(); i++)
 	    returnvalue[i] = net.johandegraeve.easyxmldata.Utilities.createXML(parsedList.get(i));
 	
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
 	    if (returnvalue.length == 0)
-		thelogger.Log("There are no results");
+		logger.Log("There are no results");
 	    else {
 		for (int i = 0;i < returnvalue.length;i++) {
-		    thelogger.Log("Result " + i + " =\n" );
-		    thelogger.Log("returnvalue[i]");
-		    thelogger.Log("\n" );
+		    logger.Log("Result " + i + " =\n" );
+		    logger.Log("returnvalue[i]");
+		    logger.Log("\n" );
 		}
 	    }
 	}
@@ -103,15 +77,16 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
      * at least one node is found that matches the filter
      * @param nodeList list of XMLElements
      * @param filter the filter to be applied to the nodeList
+     * @param logger the logger
      * @return a new list, after filtering
      */
-    private ArrayList<XMLElement> applyOneFilterToNodeList(ArrayList<XMLElement> nodeList, XMLFilter filter) {
+    private ArrayList<XMLElement> applyOneFilterToNodeList(ArrayList<XMLElement> nodeList, XMLFilter filter, Logger logger) {
 	ArrayList<XMLElement> newNodeList = new ArrayList<XMLElement>();
 	int size;
 	boolean accepted;
 	
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying filter " + ((XMLElement)filter).getTagName());
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying filter " + ((XMLElement)filter).getTagName());
 	}
 	
 	for (int i = 0; i < nodeList.size(); i++) {
@@ -124,11 +99,11 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 		    ((nodeList.get(i).getChildren() == null ? 
 			    false :nodeList.get(i).getChildren().size() > 0))
 	       )
-		addLists((applyOneFilterToNodeList(nodeList.get(i).getChildren(), filter)),newNodeList);
+		addLists((applyOneFilterToNodeList(nodeList.get(i).getChildren(), filter, logger)),newNodeList);
 	}
 
-	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
-	    thelogger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    logger.Log(System.currentTimeMillis() + " : new nodeList has  " + newNodeList.size() + " elements");
 	}
 	return newNodeList;
     }
@@ -139,6 +114,8 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
      * @param toAddto the ArrayList to which the source must be added
      */
     private void addLists(ArrayList<XMLElement> source, ArrayList<XMLElement> toAddto) {
+	if (source == null)
+	    return;
 	for (int i = 0;i < source.size();i++)
 	    toAddto.add(source.get(i));
     }
@@ -150,42 +127,6 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	filterList = null;
 	recursive = false;
 	filterList = new ArrayList<XMLFilter>();
-	charsetName = "ISO-8859-1";
-    }
-
-    /**
-     * reads attributes {@link #recursive} and {@link #charsetName}, default values false and ISO-8859-1
-     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
-     */
-    @Override
-    public void addAttributes(Attributes attributes) throws SAXException {
-	try {
-	    String[] attrValues = Utilities.getOptionalAttributeValues(
-	    	attributes, 
-	    	new String[] {
-	    		TagAndAttributeNames.recursiveAttribute,
-	    		TagAndAttributeNames.charsetnameAttribute
-	    	}, 
-	    	new String[]  {
-	    		"false",
-	    		"ISO-8859-1"
-	    	});
-	    if (attrValues[0].equalsIgnoreCase("true")) 
-	        recursive = true;
-	    else
-	        recursive = false;
-	    charsetName = attrValues[1];
-	} catch (Exception e) {
-	    StringBuilder exceptionString = new StringBuilder();
-	    exceptionString.append(e.toString() + "\n");
-	    StackTraceElement[] traceElement = e.getStackTrace();
-	    for (int i = 0;i < traceElement.length; i++) {
-		exceptionString.append("FileName = " + traceElement[i].getFileName()+ "\n");
-		exceptionString.append("LineNumber = " + traceElement[i].getLineNumber()+ "\n");
-		exceptionString.append("MethodName = " + traceElement[i].getMethodName()+ "\n"+ "\n");
-	    }
-	    throw new SAXException(exceptionString.toString());
-	}
     }
 
     /**
@@ -209,14 +150,6 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
     }
 
     /**
-     * does nothing
-     * @see net.johandegraeve.easyxmldata.XMLElement#addText(java.lang.String)
-     */
-    @Override
-    public void addText(String text) throws SAXException {
-    }
-
-    /**
      * throws an exception if there's no XML Filters in the {@link #filterList}
      * @see net.johandegraeve.easyxmldata.XMLElement#complete()
      */
@@ -226,22 +159,6 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
 	    throw new SAXException("Element " + TagAndAttributeNames.INSTRUCTIONXMLFilterTag +
 		    " must have at least one filter as child element");
 	}
-    }
-
-    /**
-     * @return the attributes {@link #recursive} and {@link #charsetName} in an {@link AttributesImpl}
-     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
-     */
-    @Override
-    public Attributes getAttributes() {
-	AttributesImpl attr = new AttributesImpl();
-	attr.addAttribute(null, 
-		TagAndAttributeNames.recursiveAttribute, 
-		TagAndAttributeNames.recursiveAttribute, 
-		"CDATA", 
-		(recursive ? "true":"false"));
-	attr.addAttribute(null, TagAndAttributeNames.charsetnameAttribute, TagAndAttributeNames.charsetnameAttribute, "CDATA", charsetName);
-	return attr;
     }
 
     /**
@@ -266,28 +183,73 @@ public class INSTRUCTIONXMLFilter extends Instruction implements XMLElement {
     }
 
     /**
-     * @return null
-     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     * similar to {@link #execute(String[], Logger)} but taking an ArrayList of XMLElement as input and giving ArrayList of XMLElement 
+     * as output
+     * @param source
+     * @param logger
+     * @return Nodes that match the htmlFilter, one node per String.
      */
-    @Override
-    public String getText() {
-	return null;
+    protected ArrayList<XMLElement> executeInputXMLElementListOutputXMLElementList( ArrayList<XMLElement> source, Logger logger) {
+	if (source == null)
+	    return new ArrayList<XMLElement>();
+	//apply all filters to source
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, applying all filters");
+	}
+	for (int i = 0;i < filterList.size();i++) {
+	    source = applyOneFilterToNodeList(source, filterList.get(i), logger);
+	}
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in XMLFilter, finished applying all filters");
+	}
+	    
+	return source;
+    }
+    
+    /**
+     * similar to {@link #execute(String[], Logger)} but taking a String Array as input, and giving an ArrayList of XMLElement as output<br>
+     * This will just call {@link XMLFilterOrGetterInstruction#executeInputStringArrOutputXMLElementList(String[], Logger, String)} 
+     * @param source
+     * @param logger
+     * @return Nodes that match the tagfilter, one node per String.
+     * @throws Exception 
+     */
+    protected ArrayList<XMLElement> executeInputStringArrOutputXMLElementList( String[]  source, Logger logger) throws Exception  {
+	return super.executeInputStringArrOutputXMLElementList(source, logger, "XMLFilter");
     }
 
     /**
-     * does nothing
-     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     * similar to {@link #execute(String[], Logger)} but taking an ArrayList of XMLElement as input
+     * @param source
+     * @param logger
+     * @return XMLElements that match the XMLFilter.
+     * @throws ParserException
      */
-    @Override
-    public void addUnTrimmedText(String text) throws SAXException {
+    String[] executeInputXMLElementListOutputStringArr(ArrayList<XMLElement>  source, Logger logger) throws ParserException {
+	String[] returnvalue;	
+	
+	source = executeInputXMLElementListOutputXMLElementList(source, logger);
+
+	//prepare string array to return
+	returnvalue = new String[source == null ? 0: source.size()];
+	for (int i = 0;i < returnvalue.length; i++)
+	    returnvalue[i] = net.johandegraeve.easyxmldata.Utilities.createXML(source.get(i));
+	
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (returnvalue.length == 0)
+		logger.Log("There are no results");
+	    else {
+		for (int i = 0;i < returnvalue.length;i++) {
+		    logger.Log("Result " + i + " =\n" );
+		    logger.Log("returnvalue[i]");
+		    logger.Log("\n" );
+		}
+	    }
+	}
+	
+	return returnvalue;
     }
 
-    /**
-     * @return false
-     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
-     */
-    @Override
-    public boolean preserveSpaces() {
-	return false;
-    }
+  
+    
 }

@@ -57,6 +57,7 @@ public class GENERICinstructionList implements XMLElement {
     String[] execute(String input, Logger logger) throws Exception {
 	String[] returnvalue;
 	NodeList parsednodeList;
+	ArrayList<XMLElement> XMLElementList;
 
 	if (input == null || input.length() == 0) {
 	    if (logger != null) {
@@ -151,19 +152,95 @@ public class GENERICinstructionList implements XMLElement {
 		    }
 		}
 	    } else {
-		//the next instruction is not an html filter or getter
-		returnvalue = instructionSet.get(i).execute(returnvalue, logger);
-		if (logger != null) {
-		    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
-			    " : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
-		    if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
-			for (int j = 0;j < returnvalue.length;j++) {
-			    logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+
+		//all this has been done to avoid that xml parsing needs to be done if there are two or more subsequent xml filter or getter
+		//if the next instruction is also a XMLFilter or XMLGetter then we'll avoid that two times parsing will occur
+		if (i+1 < instructionSet.size() && (instructionSet.get(i) instanceof INSTRUCTIONXMLFilter || instructionSet.get(i) instanceof INSTRUCTIONXMLGetter)) {
+		    //there's still an instruction after this one, let's see if it's an XMLGetter or XMLFilter
+		    if (instructionSet.get(i+1) instanceof INSTRUCTIONXMLFilter || instructionSet.get(i+1) instanceof INSTRUCTIONXMLGetter) {
+			//yes we should apply another instance of execute that returns parsednode
+			//so let's apply it but first check if it's an xml filter or xml getter
+			if (instructionSet.get(i) instanceof INSTRUCTIONXMLFilter) {
+			    XMLElementList = ((INSTRUCTIONXMLFilter)instructionSet.get(i)).executeInputStringArrOutputXMLElementList(returnvalue, logger);
+			} else 
+			    XMLElementList = ((INSTRUCTIONXMLGetter)instructionSet.get(i)).executeInputStringArrOutputXMLElementList(returnvalue, logger);
+			if (logger != null) {
+			    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+				    " : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+			    if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+				for (int j = 0;j < returnvalue.length;j++) {
+				    logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+				}
+			    }
+			}
+			i = i + 1;
+			//now we have a XMLElement ArrayList as returnvalue
+			// we can go on no, just as long as the next instruction is an xml filter or getter
+			while (i+1 < instructionSet.size() && (instructionSet.get(i+1) instanceof INSTRUCTIONXMLFilter || instructionSet.get(i+1) instanceof INSTRUCTIONXMLGetter)) {
+			    if (logger != null) {
+				logger.Log(System.currentTimeMillis() + " : method execute in instructionList : start of instruction " + i +
+					" " + instructionSet.get(i).getTagName());
+			    }
+			    if (instructionSet.get(i) instanceof INSTRUCTIONXMLFilter) {
+				XMLElementList = ((INSTRUCTIONXMLFilter)instructionSet.get(i)).executeInputXMLElementListOutputXMLElementList(XMLElementList, logger);
+			    } else 
+				XMLElementList = ((INSTRUCTIONXMLGetter)instructionSet.get(i)).executeInputXMLElementListOutputXMLElementList(XMLElementList, logger);
+			    if (logger != null) {
+				logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+					" : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+				if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+				    for (int j = 0;j < returnvalue.length;j++) {
+					logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+				    }
+				}
+			    }
+			    i = i + 1;
+			}
+			//so there's no more next instruction that is an xml getter or xml filter, we need to execute the current one, using the XMLElementList as input, giving a string array
+			if (logger != null) {
+			    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : start of instruction " + i +
+				    " " + instructionSet.get(i).getTagName());
+			}
+			if (instructionSet.get(i) instanceof INSTRUCTIONXMLFilter) {
+			    returnvalue = ((INSTRUCTIONXMLFilter)instructionSet.get(i)).executeInputXMLElementListOutputStringArr(XMLElementList, logger);
+			} else 
+			    returnvalue = ((INSTRUCTIONXMLGetter)instructionSet.get(i)).executeInputXMLElementListOutputStringArr(XMLElementList, logger);
+			if (logger != null) {
+			    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+				    " : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+			    if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+				for (int j = 0;j < returnvalue.length;j++) {
+				    logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+				}
+			    }
+			}
+		    } else {
+			returnvalue = instructionSet.get(i).execute(returnvalue, logger);
+			if (logger != null) {
+			    logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+				    " : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+			    if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+				for (int j = 0;j < returnvalue.length;j++) {
+				    logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+				}
+			    }
 			}
 		    }
+		} else {
+		//the next instruction is not an html filter or getter and also not an xml filter or getter
+		    returnvalue = instructionSet.get(i).execute(returnvalue, logger);
+		    if (logger != null) {
+			logger.Log(System.currentTimeMillis() + " : method execute in instructionList : end of instruction " + i +
+				" : " + instructionSet.get(i).getTagName() + "\n" + "The result has " + (returnvalue == null ? 0:returnvalue.length) + " elements\n\n");
+			if (logger.getLogLevel().equalsIgnoreCase("debug") && returnvalue != null) {
+			    for (int j = 0;j < returnvalue.length;j++) {
+				logger.Log ("result " + j + " = " + returnvalue[j] + "\n");
+			    }
+			}
+		    }
+		    if (returnvalue == null || returnvalue.length == 0)
+			break;
 		}
-		if (returnvalue == null || returnvalue.length == 0)
-		    break;
 	    }
 	}
 	return returnvalue;

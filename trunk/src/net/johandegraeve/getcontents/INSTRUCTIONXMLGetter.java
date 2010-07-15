@@ -24,9 +24,8 @@ import java.util.ArrayList;
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
-import org.xml.sax.Attributes;
+import org.htmlparser.util.ParserException;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * XMLGetter Instruction
@@ -34,19 +33,14 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author Johan Degraeve
  *
  */
-public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
+public class INSTRUCTIONXMLGetter extends XMLFilterOrGetterInstruction  {
 
     /**
      * list of XMLGetter
      */
     private ArrayList<XMLGetter> getterList;
 
-    /**
-     * the attribute charsetname
-     */
-    private String charsetName;
 
-    
     /**
      * constructor, initializes {@link #getterList}
      */
@@ -64,26 +58,30 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
 	String[] returnvalue;
 	XMLXMLGetterResultList startList = null;
 	GenericXMLGetterResultList resultList = null;
-	
+
+	if (source == null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, source = null, returning an empty string array" );
+	    return new String[0];
+	}
+
 	if (thelogger != null) {
 	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying XML parser" );
 	}
 	startList = new XMLXMLGetterResultList(net.johandegraeve.getcontents.Utilities.makeList(source,charsetName));
-	
+
+	if (thelogger != null) {
+	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying all getters");
+	}
 	//start by applying the first getter to the nodeLIst
 	resultList = getterList.get(0).getList(startList);
-	
 	//apply all getters to the nodelist
-	if (thelogger != null) {
-	    thelogger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying all filters");
-	}
 	for (int i = 1;i < getterList.size();i++) {
 	    if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
 		thelogger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying  " + ((XMLElement)getterList.get(i)).getTagName());
 	    }
 	    resultList = getterList.get(i).getList(resultList);
 	}
-	    
+
 	//prepare string array to return
 	if (resultList != null) {
 	    returnvalue = new String[resultList.size()];
@@ -99,7 +97,7 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
 	}
 	for (int i = 0;i < resultList.size(); i++)
 	    returnvalue[i] = resultList.elementAt(i).convertToString();
-	
+
 	if (thelogger != null && thelogger.getLogLevel().equalsIgnoreCase("debug")) {
 	    if (returnvalue.length == 0)
 		thelogger.Log("There are no results");
@@ -116,23 +114,6 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
     }
 
     /**
-     * gets attribute {@link #charsetName}
-     * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
-     */
-    @Override
-    public void addAttributes(Attributes attributes) throws SAXException {
-	    String[] attrValues = Utilities.getOptionalAttributeValues(
-		    	attributes, 
-		    	new String[] {
-		    		TagAndAttributeNames.charsetnameAttribute
-		    	}, 
-		    	new String[]  {
-		    		"ISO-8859-1"
-		    	});
-		    charsetName = attrValues[0];
-    }
-
-    /**
      * 
      * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
      */
@@ -141,14 +122,14 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
 	if (child instanceof  GETorFILTERchildren || child instanceof GETorFILTERremoveNodes) {
 	    if (getterList.size() > 0 && (getterList.get(getterList.size() - 1) instanceof GETorFILTERtext))
 		throw new SAXException("An instruction of type gettext can not be followed by an instruction" +
-			" of type getchildren");
+		" of type getchildren");
 	}
 	if (child instanceof XMLGetter)
-		getterList.add((XMLGetter)child);
+	    getterList.add((XMLGetter)child);
 	else {
 	    StringBuilder exceptionString = new StringBuilder();
 	    exceptionString.append("Element " + TagAndAttributeNames.INSTRUCTIONXMLGetterTag +
-		    " can only have a xmlgetter as child element.\nAllowed xmlgetters are : \n");
+	    " can only have a xmlgetter as child element.\nAllowed xmlgetters are : \n");
 	    for (int i = 0; i < TagAndAttributeNames.XMLgetterTags.length; i ++)
 		exceptionString.append(TagAndAttributeNames.XMLgetterTags[i] + "\n");
 	    exceptionString.append("But received element is of type " + Utilities.getClassname(child.getClass()) + ". (if it's a DefaultXMLElement then" +
@@ -172,19 +153,8 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
     public void complete() throws SAXException {
 	if (getterList.size() == 0) {
 	    throw new SAXException("Element " + TagAndAttributeNames.INSTRUCTIONXMLGetterTag +
-		    " must have at least one getter as child element");
+	    " must have at least one getter as child element");
 	}
-    }
-
-    /**
-     * @return attribute {@link #charsetName} in an Attribute
-     * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
-     */
-    @Override
-    public Attributes getAttributes() {
-	AttributesImpl attr = new AttributesImpl();
-	attr.addAttribute(null, TagAndAttributeNames.charsetnameAttribute, TagAndAttributeNames.charsetnameAttribute, "CDATA", charsetName);
-	return attr;
     }
 
     /**
@@ -209,28 +179,107 @@ public class INSTRUCTIONXMLGetter extends Instruction implements XMLElement {
     }
 
     /**
-     * @return null
-     * @see net.johandegraeve.easyxmldata.XMLElement#getText()
+     * 
+     * @see net.johandegraeve.getcontents.XMLFilterOrGetterInstruction#executeInputXMLElementListOutputXMLElementList(java.util.ArrayList, net.johandegraeve.getcontents.Logger)
      */
     @Override
-    public String getText() {
-	return null;
+    protected ArrayList<XMLElement> executeInputXMLElementListOutputXMLElementList(
+	    ArrayList<XMLElement> source, Logger logger) throws ParserException {
+	ArrayList<XMLElement> returnvalue;
+	XMLXMLGetterResultList startList = null;
+	GenericXMLGetterResultList resultList = null;
+
+
+	//start by applying the first getter to the nodeLIst
+	resultList = getterList.get(0).getList(startList);
+
+	//apply all getters to the nodelist
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying all getters");
+	}
+	for (int i = 1;i < getterList.size();i++) {
+	    if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+		logger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying  " + ((XMLElement)getterList.get(i)).getTagName());
+	    }
+	    resultList = getterList.get(i).getList(resultList);
+	}
+
+
+	returnvalue = new ArrayList<XMLElement>();
+	for (int i = 0;i < resultList.size();i ++)
+	    returnvalue.add(((XMLXMLGetterResult)resultList.elementAt(i)).getDefaultXMLElement());
+
+	return returnvalue;
     }
 
     /**
-     * does nothing
-     * @see net.johandegraeve.easyxmldata.XMLElement#addUnTrimmedText(java.lang.String)
+     * similar to {@link #execute(String[], Logger)} but taking a String Array as input, and giving an ArrayList of XMLElement as output<br>
+     * This will just call {@link XMLFilterOrGetterInstruction#executeInputStringArrOutputXMLElementList(String[], Logger, String)} 
+     * @param source
+     * @param logger
+     * @return Nodes that match the tagfilter, one node per String.
+     * @throws Exception 
      */
-    @Override
-    public void addUnTrimmedText(String text) throws SAXException {
+    protected ArrayList<XMLElement> executeInputStringArrOutputXMLElementList( String[]  source, Logger logger) throws Exception  {
+	return super.executeInputStringArrOutputXMLElementList(source, logger, "XMLGetter");
     }
 
     /**
-     * @return false
-     * @see net.johandegraeve.easyxmldata.XMLElement#preserveSpaces()
+     * similar to {@link #execute(String[], Logger)} but taking an ArrayList of XMLElement as input
+     * @param source
+     * @param logger
+     * @return XMLElements that match the XMLFilter.
+     * @throws ParserException
      */
-    @Override
-    public boolean preserveSpaces() {
-	return false;
+    String[] executeInputXMLElementListOutputStringArr(ArrayList<XMLElement>  source, Logger logger) throws ParserException {
+	String[] returnvalue;	
+	GenericXMLGetterResultList resultList = null;
+
+	if (source == null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, source = null, returning an empty string array" );
+	    return new String[0];
+	}
+
+	if (logger != null) {
+	    logger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying all getters");
+	}
+	//start by applying the first getter to the nodeLIst
+	resultList = getterList.get(0).getList(new XMLXMLGetterResultList(source));
+	//then apply the remaining getters
+	for (int i = 1;i < getterList.size();i++) {
+	    if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+		logger.Log(System.currentTimeMillis() + " : method execute in XMLGetter, applying  " + ((XMLElement)getterList.get(i)).getTagName());
+	    }
+	    resultList = getterList.get(i).getList(resultList);
+	}
+
+	//prepare string array to return
+	if (resultList != null) {
+	    returnvalue = new String[resultList.size()];
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : result has  " + returnvalue.length + " elements");
+	    }
+	}
+	else {
+	    if (logger != null) {
+		logger.Log(System.currentTimeMillis() + " : result has  0 elements");
+	    }
+	    return new String[0];
+	}
+	for (int i = 0;i < resultList.size(); i++)
+	    returnvalue[i] = resultList.elementAt(i).convertToString();
+
+	if (logger != null && logger.getLogLevel().equalsIgnoreCase("debug")) {
+	    if (returnvalue.length == 0)
+		logger.Log("There are no results");
+	    else {
+		for (int i = 0;i < returnvalue.length;i++) {
+		    logger.Log("Result " + i + " =\n" );
+		    logger.Log("returnvalue[i]");
+		    logger.Log("\n" );
+		}
+	    }
+	}
+	return returnvalue;
     }
 }
