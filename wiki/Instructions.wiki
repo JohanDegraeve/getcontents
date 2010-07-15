@@ -154,7 +154,9 @@ List of instructions to be executed on the source.
 Instructions take as input an array of strings.<br>
 An htmlFilter, htmlGetter, XMLFilter and XMLGetter can take a string
 or a url (remote or local file) as input. <br>
-Also the instruction getUnFilteredContent takes as input a url.
+Also the instruction getUnFilteredContent takes as input a url.<br>
+
+There can be consecuive XMLFilter and XMLGetter, however if the last instruction in an XMLGetter is the instruction "text", then it's not allowed to have it followed by additional XMLFilter or XMLGetter instructions.
 
 *Attributes*
  * none
@@ -188,10 +190,8 @@ Also the instruction getUnFilteredContent takes as input a url.
 
 ==== addXMLDeclaration ====
 
-Instruction to add an XML declaration on top of the input.
-This is useful between an XMLFilter and an XMLGetter. Both XMLFilter and XMLGetter require valid XML as input, but the output of an XMLFilter is typically an array of Strings, with in each String an XML representation of one single XML Element. 
-The concatenation of these Strings (ie of the output of the XMLFilter) is not valid XML because it misses an XML Declaration and a root element. There's no need to add a root element because this will be detected when applying the XMLGetter and added by the XMLGetter. 
-However, the XML declaration must be added by applying an addXMLdeclaration.
+Instruction to add an XML declaration on top of the input.<br>
+This is not really needed anymore, if not needed will be deleted.
 
 *Attributes*
  none
@@ -206,157 +206,6 @@ However, the XML declaration must be added by applying an addXMLdeclaration.
 
 *Example*
 
-We want to get content from following XML source :
-
-{{{
-<?xml version="1.0" encoding="iso-8859-1" ?>
-<rss version="2.0"
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
-  xmlns:admin="http://webns.net/mvcb/"
-  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-<channel>
- <image>
-  <title>optv.nu wat is er nu op tv</title> 
-  <url>http://rss.optv.nu/logo.gif</url> 
-  <link>http://www.optv.nu/</link> 
-  <width>144</width> 
-  <height>34</height> 
-  <description>OpTv.nu nu / straks op tv</description> 
- </image>
- <title>Nu en Straks Op Tv zaterdag 17/04/2010 11:29</title>
- <item>
-<title><![CDATA[NU op tv]]></title>
-<pubDate>Sat, 17 Apr 2010 11:29:04 +0200</pubDate>
-<category>nu</category>
-<description><![CDATA[the actual content has ben ommitted]]></description>
-</item><item>
-<title><![CDATA[STRAKS op tv]]></title>
-<pubDate>Sat, 17 Apr 2010 11:29:04 +0200</pubDate>
-<category>straks</category>
-<description><![CDATA[the actual content has been ommitted]]></description>
-</item><item><title>www.optv.nu</title><description>Deze gegevens zijn u aangeboden door http://www.optv.nu</description>
-<pubDate>Sat, 17 Apr 2010 20:00:00 +0200</pubDate>
-</item>
-</channel>
-</rss>
-}}}
-
-From this XML we want to get all titles, ie the text within elements with tag "title".
-
-Here's the XML instruction file to start with : 
-
-{{{
-<?xml version="1.0" encoding="UTF-8" ?>
-<getContentItemList>
-   <getContentItem id="1">
-      <url>
-         <![CDATA[http://rss.optv.nu/tvnustraks2.php]]>
-      </url>
-      <description>
-         <![CDATA[blablabla]]>
-      </description>
-      <instructionList>
-     	<XMLFilter recursive="true">
-      		<tagName>
-      			title
-      		</tagName>
-      	</XMLFilter>
-       </instructionList>
-   </getContentItem>
-</getContentItemList>
-}}}
-
-and the result would be :
-
-{{{
-<title><![CDATA[optv.nu wat is er nu op tv]]></title>
-<title><![CDATA[Nu en Straks Op Tv zaterdag 17/04/2010 11:30]]></title>
-<title><![CDATA[NU op tv]]></title>
-<title><![CDATA[STRAKS op tv]]></title>
-<title><![CDATA[www.optv.nu]]></title>
-}}}
-
-Now we only want to text in those elements, for which we need to use an XMLGetter instruction. But an XMLGetter requires valid XML as input. So we need to add an XML declaration, then we can apply the XMLGetter. The root element will be added by the XMLGetter.
-
-So here's the extended instruction file that will get us all the titles :
-{{{
-<getContentItemList>
-   <getContentItem id="1">
-      <url>
-         <![CDATA[http://rss.optv.nu/tvnustraks2.php]]>
-      </url>
-      <description>
-         <![CDATA[blablabla]]>
-      </description>
-      <instructionList>
-         <XMLFilter recursive="true" charsetname="ISO-8859-1">
-            <tagName>
-               <![CDATA[title]]>
-            </tagName>
-         </XMLFilter>
-         <addXMLDeclaration>
-            <version>
-               <![CDATA[1.0]]>
-            </version>
-            <encoding>
-               <![CDATA[iso-8859-1]]>
-            </encoding>
-         </addXMLDeclaration>
-         <XMLGetter charsetname="ISO-8859-1">
-            <text>
-            </text>
-         </XMLGetter>
-      </instructionList>
-   </getContentItem>
-</getContentItemList>
-}}}
-
-and now the result is 
-
-optv.nu wat is er nu op tv<br>
-Nu en Straks Op Tv zaterdag 17/04/2010 11:35<br>
-NU op tv<br>
-STRAKS op tv<br>
-www.optv.nu<br>
-
-===== version =====
-
-version
-
-*Attributes*
- none
-
-*Occurrence*
- 1
-
-*Allowed Children*
- none
-
-===== encoding =====
-
-encoding
-
-*Attributes*
- none
-
-*Occurrence*
- 1
-
-*Allowed Children*
- none
-
-*example*
-{{{
-         <addXMLDeclaration>
-            <version>
-               <![CDATA[1.0]]>
-            </version>
-            <encoding>
-               <![CDATA[iso-8859-1]]>
-            </encoding>
-         </addXMLDeclaration>
-}}}
 
 ==== getUnFilteredContent ====
 
@@ -2437,7 +2286,7 @@ Fiscalité locale : la réformer pour plus d’équité
 
 An XMLFilter instruction can have an unlimited number of XML filters.<br>
 
-The input to an XMLFilter instruction must be valid XML. If you have some input which is missing an XML declaration, you can add this first with the instruction "addXMLDeclaration". If a root element is missing, this will be added by the instruction and removed ad the end.
+The input to the first XMLFilter instruction must be valid XML. 
 
 The output of an XMLFilter will be an array of strings, where each string is the XML representation of a node that matches the filters.
 This output can then be used again as input to either another instruction like another XMLFilter, XMLGetter or processString. 
@@ -2467,12 +2316,7 @@ This output can then be used again as input to either another instruction like a
 
 ===== tagName =====
 
-An XMLFilter instruction can have an unlimited number of XML filters.<br>
-
-The input to an XMLFilter instruction must be valid XML. If you have some input which is missing an XML declaration, you can add this first with the instruction "addXMLDeclaration". If a root element is missing, this will be added by the instruction and removed ad the end.
-
-The output of an XMLFilter will be an array of strings, where each string is the XML representation of a node that matches the filters.
-This output can then be used again as input to either another instruction like another XMLFilter, XMLGetter or processString. 
+filters elements with corresponding tagname 
 
 *Attributes*
  none
@@ -2488,7 +2332,6 @@ This output can then be used again as input to either another instruction like a
 
 *example*
 
-an example is giving in the example for addXMLDeclaration instruction
 
 ===== containsAny filter on elements with text that contain any of the supplied strings =====
 
@@ -2518,8 +2361,6 @@ As example check out processString - containsAny
 ==== XMLGetter ====
 
 An XMLGetter instruction can have an unlimited number of XML getters.<br>
-
-The input to an XMLGetter instruction must be valid XML. If you have some input which is missing an XML declaration, you can add this first with the instruction "addXMLDeclaration". If a root element is missing, this will be added by the instruction and removed ad the end. This situation may happen if the previous instruction was an XMLFilter.
 
 The output of an XMLGetter will be an array of strings. What each string represents depends on the type of XMLGetter. It may be the text retrieved from an XML ELement, or the XML representation of an XML ELement.
 This output can then be used as input to processString, and if the output represents XML elements, it can also be the input to a new XMLFilter or XMLGetter.
