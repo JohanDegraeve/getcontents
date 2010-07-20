@@ -2328,6 +2328,7 @@ This output can then be used again as input to either another instruction like a
  * containsAny
  * endsWithAny
  * equalsAny
+ * hasAttribute
  * startsWithAny
 
 *text field*
@@ -2370,6 +2371,11 @@ As example check out processString - containsAny
 expects as as input XML elements, takes the text in the XML element and verifies if it equals any of the strings. 
 
 As example check out processString - containsAny
+
+===== hasAttribute =====
+
+see HTML filter 'hasAttribute'<br>
+Not fully tested.<br>
 
 ===== startsWithAny : filter on elements with text that start with any of the supplied strings =====
 
