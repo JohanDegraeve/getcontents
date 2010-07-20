@@ -2,6 +2,7 @@ package net.johandegraeve.getcontents;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -22,6 +23,18 @@ import org.xml.sax.SAXException;
 public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLElement {
     
     /**
+     * list of request properties
+     */
+    private ArrayList<GENERICrequestProperty> requestPropertyList;
+    
+    /**
+     * constructor that initializes {@link #requestPropertyList}
+     */
+    public INSTRUCTIONgetUnFilteredContent() {
+	requestPropertyList = new ArrayList<GENERICrequestProperty>();
+    }
+    
+    /**
      * the encoding
      */
     private GENERICencoding encoding;
@@ -36,16 +49,16 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
 
     /**
      * accepts encoding as child and assigns them<br>
+     * accepts also {@link GENERICrequestProperty} as child and adds it to {@link #requestPropertyList}
      * @see net.johandegraeve.easyxmldata.XMLElement#addChild(net.johandegraeve.easyxmldata.XMLElement)
      */
     @Override
     public void addChild(XMLElement child) throws SAXException {
 	Utilities.verifyChildType(child, 
+	    	TagAndAttributeNames.genericPrefix,  
 		new String []{
-	    		TagAndAttributeNames.genericPrefix
-		},  
-		new String []{
-		    TagAndAttributeNames.GENERICencodingTag
+		    TagAndAttributeNames.GENERICencodingTag,
+		    TagAndAttributeNames.GENERICrequestPropertyTag
 		}, 
 		TagAndAttributeNames.INSTRUCTIONgetUnfilteredContent);
 	
@@ -57,6 +70,9 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
 			" should have only one child of type " + TagAndAttributeNames.GENERICencodingTag);
 	    encoding = (GENERICencoding) child;
 	} 
+	
+	if (child instanceof GENERICrequestProperty)
+	    requestPropertyList.add((GENERICrequestProperty)child);
     }
 
     /**
@@ -146,6 +162,8 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
 	BufferedReader in = null;
 	StringBuffer resultList = new StringBuffer();
 	int chr;
+	URL yahoo;
+	HttpURLConnection yc;
 
 	//first check if source is a url or not
 	boolean ltfound = false;
@@ -177,10 +195,15 @@ public class INSTRUCTIONgetUnFilteredContent extends Instruction implements XMLE
 	    if (thelogger != null) {
 		thelogger.Log(System.currentTimeMillis() + " : method execute in getUnFilteredContent, source is a URL, trying to open and download");
 	    }
-	    URL yahoo = new URL(source[i].substring(j));
+	    yahoo = new URL(source[i].substring(j));
+	    yc = (HttpURLConnection)yahoo.openConnection();
+	    //add the properties
+	    for (int i1 = 0;i1 < requestPropertyList.size();i1++)
+		yc.setRequestProperty(requestPropertyList.get(i1).getKey().getKey(), requestPropertyList.get(i1).getValue().getValue());
+	    
 	    in = new BufferedReader(
 				new InputStreamReader(
-				yahoo.openStream(),encoding.getEncoding()));
+				yc.getInputStream(),encoding.getEncoding()));
 	    chr = in.read();
 	    while (chr != -1) {
 		resultList.append((char)chr);

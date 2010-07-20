@@ -21,6 +21,8 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
+import javax.management.AttributeNotFoundException;
+
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
@@ -32,18 +34,21 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**
- * Class for creating hasattributefilter as defined in org.htmlparser.filters.HasAttributeFilter.<br>
+ * Class for creating hasattributefilter<br>
+ * the HTML filter is as defined in org.htmlparser.filters.HasAttributeFilter.<br>
  * org.htmlparser.filters.HasAttributeFilter#mAttribute  is case <b>in<b>sensitive, and 
  * org.htmlparser.filters.HasAttributeFilter#mValue is case-sensitive.<br>
  * org.htmlparser.filters.HasAttributeFilter#mAttribute is a mandatory child of type 
  * TagAndAttributeNames#GENERICattributenameTag,<br>
  * org.htmlparser.filters.HasAttributeFilter#mValue is an optional child of type 
- * TagAndAttributeNames#GENERICattributevalueTag.
+ * TagAndAttributeNames#GENERICattributevalueTag.<br>
+ * <br>
+ * The XMLFilter just checks if the Element has the attribute
  *
  * @author Johan Degraeve
  *
  */
-public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
+public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter, XMLFilter {
 
     /**
      * defines if exact match or startswith to be performed, startswith is case sensitive.<br>
@@ -229,6 +234,32 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter {
     @Override
     public boolean preserveSpaces() {
 	return false;
+    }
+
+    /**
+     * @return an XML filter that filters on attributename and attributevalue
+     * @see net.johandegraeve.getcontents.XMLFilter#getXMLFilter()
+     */
+    @Override
+    public XMLElementFilter getXMLFilter() {
+	return new XMLElementFilter() {
+	    @Override
+	    public boolean accept(XMLElement element) {
+		Attributes attributes = element.getAttributes();
+		String attributevalue;
+		if ((attributevalue = attributes.getValue(attrName.getAttributeName())) == null)
+		    //the attributename is not present in the element, so return false
+		    return false;
+		if (attributevalue == null)
+		    //there's no attribute value specified, and attributename matches
+		    return true;
+		if (attrValue.getAttributeValue().equals(attributevalue))
+		    //attributevalue is also specified and it matches
+		    return true;
+		//attributevalue is specified but it doesn't match
+		return false;
+	    }
+	};
     }
 
 }

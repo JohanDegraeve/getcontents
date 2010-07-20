@@ -58,7 +58,7 @@ public class GENERICgetContentItem implements XMLElement {
     /**
      * url
      */
-    private GENERICurl theUrl;
+    private ArrayList<GENERICurl> theUrl;
     
     /**
      * allows applications to add customObjects to the getContentItem element<br>
@@ -72,7 +72,7 @@ public class GENERICgetContentItem implements XMLElement {
     public GENERICgetContentItem() {
 	theDescription = null;
 	instructionList = null;
-	theUrl = null;
+	theUrl = new ArrayList<GENERICurl>();
     }
     
     /**
@@ -97,29 +97,57 @@ public class GENERICgetContentItem implements XMLElement {
      * If input is null and there's a url, the url will first be downloaded and this is where the first instruction will start<br>
      * If input is not null, then the input will be used by the first instruction, which may still be a url
      * (anything not starting with &lt; is considered to be a url), or the actual source text (if starting with &lt;). If input is
-     * a url, it will first be downloaded.
+     * a url, it will first be downloaded.<br>
+     * If there are multiple url, then the first url openening must succeed, otherwise an exception will be thrown.<br>
      * 
      * @param input
      * @param logger used for logging
      * @return the result
      * @throws Exception
+     * @trhows FileNotFoundException in case the first url could not be opened
      */
     String[] executeInstructionSet(String input, Logger logger) throws Exception {
-	if (input == null)
-	    try {
-		input = theUrl.getUrl();
-	    } catch (RuntimeException e1) {
-	    	if (logger != null) {
-	    	    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
-	    		logger.Log(System.currentTimeMillis() + " : It seems a url child element is missing in Element \"" + TagAndAttributeNames.GENERICgetcontentitemlistTag + 
+	String[][] returnvalueArray;
+	int totalSize = 0;
+	String[] returnvalue;
+	int counter;
+
+	if (input == null) {
+	    if (theUrl.size() == 0) {
+		if (logger != null) {
+		    if (StringHelper.equalsAnyIgnoreCase(logger.getLogLevel(), new String[] {"debug","critical","warning"})) {
+			logger.Log(System.currentTimeMillis() + " : It seems a url child element is missing in Element \"" + TagAndAttributeNames.GENERICgetcontentitemlistTag + 
 				"\" with id \"" + input + "\".");
-	    	    }
-	    	}
+		    }
+		}
 		throw new Exception("It seems a url child element is missing in Element \"" + TagAndAttributeNames.GENERICgetcontentitemlistTag + 
 			"\" with id \"" + input + "\".");
 	    }
-	
-	return instructionList.execute(input, logger);
+	    
+	    returnvalueArray = new String[theUrl.size()][];
+	    for (counter = 0;counter < theUrl.size();counter++) {
+		try {
+		    returnvalueArray[counter] = instructionList.execute(theUrl.get(counter).getUrl(), logger);
+		    totalSize = totalSize + returnvalueArray[counter].length;
+		} catch (java.io.FileNotFoundException e) {
+		    if (counter == 0) //if it's the first url that failed to open, then throw an exception 
+			throw e;
+		    else
+			break;
+		}
+	    }
+	    returnvalue = new String[totalSize];
+	    totalSize = 0;
+	    for (int i = 0;i < counter; i++)
+		for (int j = 0;j < returnvalueArray[i].length;j++) {
+		    returnvalue[totalSize] = returnvalueArray[i][j];
+		    totalSize++;
+		}
+	    return returnvalue;
+	    
+	} else	{
+	    return instructionList.execute(input, logger);
+	}
     }
     
     /**
@@ -148,7 +176,7 @@ public class GENERICgetContentItem implements XMLElement {
 	} else if (Utilities.getClassname(arg0.getClass()).equals(
 		TagAndAttributeNames.genericPrefix +
 		TagAndAttributeNames.GENERICurlTag)) {
-	    theUrl = (GENERICurl) arg0;
+	    theUrl.add((GENERICurl) arg0);
 	} else if (arg0 instanceof CustomObject) {
 	    if (customObject != null) {
 		throw new SAXException("Element of type " + TagAndAttributeNames.GENERICgetcontentitemTag +
@@ -209,7 +237,9 @@ public class GENERICgetContentItem implements XMLElement {
     @Override
     public ArrayList<XMLElement> getChildren() {
 	ArrayList<XMLElement>  returnvalue = new ArrayList<XMLElement> ();
-	if (theUrl != null) returnvalue.add(theUrl);
+	if (theUrl.size() != 0) 
+	    for (int i = 0;i < theUrl.size();i++)
+		returnvalue.add(theUrl.get(i));
 	if (theDescription != null) returnvalue.add(theDescription);
 	if (instructionList != null) returnvalue.add(instructionList);
 	return returnvalue;
@@ -251,12 +281,13 @@ public class GENERICgetContentItem implements XMLElement {
     }
     
     /**
-     * get the url
+     * get the url at index 
+     * @param index 
      * @return the URL, null if there's no url
      */
-    public String getURL() {
+    public String getURL(int index) {
 	if (theUrl == null) return null;
-	return theUrl.getUrl();
+	return theUrl.get(index).getUrl();
     }
     
     /**
