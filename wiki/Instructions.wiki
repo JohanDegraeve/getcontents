@@ -53,7 +53,7 @@ Another example could be to fetch a TV guide. Typically a TV guide will consist 
    * description (1)
    * instructionList (1)
  * optional Children
-   * url (0 or 1)
+   * url : 0, 1 or more. If there's 1 or more url, then the first url must be reachable.
    * any element for which a class exists with the same name and derived from the class CustomObject. In this case, the GetContents object must be created with the constructor that takes a package name as argument, being the name of the package where this new class is defined.
 
 *Example*
