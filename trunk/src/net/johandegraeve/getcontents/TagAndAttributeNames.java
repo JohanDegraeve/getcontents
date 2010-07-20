@@ -75,9 +75,12 @@ package net.johandegraeve.getcontents;
     static final String INSTRUCTIONXMLFilterTag = "XMLFilter";
     static final String INSTRUCTIONXMLGetterTag = "XMLGetter";
     static final String INSTRUCTIONprocessStringTag = "processString";
+    static final String GENERICkeyTag = null;
+    static final String GENERICvalueTag = null;
     static final String GENERICpatternTag = "pattern";
     static final String GENERICurlTag = "url";
     static final String GENERICversionTag = "version";
+    static final String GENERICrequestPropertyTag = "requestProperty";
     static final String GENERICstringTag ="string";
     static final String GETorFILTERcontainsAnyTag="containsAny";
     static final String GETorFILTERequalsAnyTag = "equalsAny";
@@ -166,7 +169,8 @@ package net.johandegraeve.getcontents;
 	GETorFILTERcontainsAnyTag,
 	GETorFILTERendsWithAnyTag,
 	GETorFILTERequalsAnyTag,
-	GETorFILTERstartsWithAnyTag
+	GETorFILTERstartsWithAnyTag,
+	GETorFILTERhasAttributeTag
     };
 
     static final String[] XMLgetterTags = new String[] {

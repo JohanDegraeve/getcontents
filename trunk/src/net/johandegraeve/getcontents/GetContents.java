@@ -101,13 +101,14 @@ public class GetContents {
     
     /**
      * @param id
+     * @param index index of the url to retrieve (there can be multiple urls)
      * @return the url, null if id was not found or if the corresponding getContentItem does not have a url element
      * @throws Exception
      */
-    public String getURL(String id) throws Exception {
+    public String getURL(String id, int index) throws Exception {
 	for (int i = 0;i < result.size();i ++) {
 	    if (result.elementAt(i).getId().equals(id)) {
-		return result.elementAt(i).getURL();
+		return result.elementAt(i).getURL(index);
 	    }
 	}
 	return null;
