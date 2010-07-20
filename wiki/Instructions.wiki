@@ -211,7 +211,7 @@ This is not really needed anymore, if not needed will be deleted.
 
 If the input is a URL (anything not starting with '<'), it will fetch the content.
 If the input is not a URL, it returns the input.<br>
-So it is important, if the input is to be seen as a source text (ie not a URL), then the first non blank character should be a '<'.<br>
+So it is important, if the input is to be seen as a source text (ie not a URL), then the first non blank character should be a '<'.<br>re
 
 If the source is a url, an InputStreamReader is created with the url and the encoding as parameter (encoding is an optional child). An array will be returned with one element that has the retrieved content.<br>
 If the source is not a url, then the source is returned.<br>
@@ -223,7 +223,27 @@ If the source is not a url, then the source is returned.<br>
  not defined
 
 *Allowed Children*
- optional : encoding, default value the default characterset for the platform
+ *encoding, at most 1,  optional, default value the default characterset for the platform
+ *requestProperty, 0, 1 or more, optional, in case http headers need to be added
+
+===== encoding =====
+
+defines the encoding to be used for opening the url('s)
+
+===== requestProperty =====
+
+defines a header key and value<br>
+the getUnfilteredContent instruction will use URLConnection.setRequestProperty(String key, String value)<br>
+
+====== key ======
+
+key of the request parameter
+
+
+====== value ======
+
+value of the request parameter
+
 
 ==== htmlFilter ====
 
