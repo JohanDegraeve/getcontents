@@ -1997,7 +1997,7 @@ Removes redundant line feeds, spaces, ...<br>
 At most two consecusive line feeds are retained.
 
 *Attributes*
- * none
+ * maxNewLines : optional, default value 2, defines the maximum number of consecutive linefeeds. If value = "0" then any newline will be replaced by " ". If value > 0, then if there's a sequence of more than "maxNewLines" newlines, then a replacement if the list of newlines will be done by just two newlines. 
 
 *Occurrence*
  not defined
