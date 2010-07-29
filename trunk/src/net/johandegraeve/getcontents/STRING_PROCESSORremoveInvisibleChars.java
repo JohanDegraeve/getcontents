@@ -42,13 +42,13 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
     /**
      * Maximum allowed number of consecutive linefeeds. 
      */
-    private int maxNrOfLineFeedsToKeep;
+    private int maxNrOfNewLinesToKeep;
     
     /**
      * default constructor
      */
     public STRING_PROCESSORremoveInvisibleChars() {
-	maxNrOfLineFeedsToKeep = 2;
+	maxNrOfNewLinesToKeep = 2;
     }
 
     /**
@@ -78,13 +78,13 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
 			if (splitline[j].trim().length() > 0)
 			    helper.append(splitline[j].trim() + " ");
 		    }
-		    helper.append(splitline[splitline.length - 1].trim() + (maxNrOfLineFeedsToKeep == 0 ? " ":"\n"));
+		    helper.append(splitline[splitline.length - 1].trim() + (maxNrOfNewLinesToKeep == 0 ? " ":"\n"));
 		    newlineCounter = 0;
 		    itsTheFirstLine = false;
 		} else {
 		    if (!itsTheFirstLine) {
 			newlineCounter++;
-			if (newlineCounter < maxNrOfLineFeedsToKeep) {
+			if (newlineCounter < maxNrOfNewLinesToKeep) {
 			    helper.append("\n");
 			}
 		    }
@@ -113,17 +113,17 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
 	    String[] attrValues = Utilities.getOptionalAttributeValues(
 		    attributes, 
 		    new String[] {
-			    TagAndAttributeNames.maxLineFeedsAttribute
+			    TagAndAttributeNames.maxNewLines
 		    }, 
 		    new String[]  {
 			    "2"
 		    });
 	    try {
-		maxNrOfLineFeedsToKeep = Integer.parseInt(attrValues[0]);
-		if (maxNrOfLineFeedsToKeep < 0)
+		maxNrOfNewLinesToKeep = Integer.parseInt(attrValues[0]);
+		if (maxNrOfNewLinesToKeep < 0)
 		    throw new NumberFormatException();
 	    } catch (NumberFormatException e) {
-		throw new SAXException("Attribute " + TagAndAttributeNames.maxLineFeedsAttribute + " must be integer value larger than or equal to 0");
+		throw new SAXException("Attribute " + TagAndAttributeNames.maxNewLines + " must be integer value larger than or equal to 0");
 	    }
     }
 
@@ -153,13 +153,13 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
     }
 
     /**
-     * @return {@link #maxNrOfLineFeedsToKeep} in an attribute
+     * @return {@link #maxNrOfNewLinesToKeep} in an attribute
      * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
      */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
-	attr.addAttribute(null, TagAndAttributeNames.maxLineFeedsAttribute, TagAndAttributeNames.maxLineFeedsAttribute, "CDATA", Integer.toString(maxNrOfLineFeedsToKeep));
+	attr.addAttribute(null, TagAndAttributeNames.maxNewLines, TagAndAttributeNames.maxNewLines, "CDATA", Integer.toString(maxNrOfNewLinesToKeep));
 	return attr;
     }
 
