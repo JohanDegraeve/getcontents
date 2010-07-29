@@ -24,20 +24,32 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
+import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * the remove redundant invisible Characters like carriage returns, line feeds, tabs, ...<br>
- * At most two control characters that result in carriage return + line feed will be retained.<br>
- * Also double spaces are replaced by one space<br>
+ * Maximum number of consecutive line feeds can be defined in an attribute, default value = 2, minimum value = 0. If 0 
+ * then every line feed (or series of consecutive linefeeds) will be replaced by one blanc<br>
  *
  */
 public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringProcessor {
     
-
+    /**
+     * Maximum allowed number of consecutive linefeeds. 
+     */
+    private int maxNrOfLineFeedsToKeep;
+    
+    /**
+     * default constructor
+     */
+    public STRING_PROCESSORremoveInvisibleChars() {
+	maxNrOfLineFeedsToKeep = 2;
+    }
 
     /**
      * keeps no more than two subsequent newlines and one space<br>
@@ -66,13 +78,13 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
 			if (splitline[j].trim().length() > 0)
 			    helper.append(splitline[j].trim() + " ");
 		    }
-		    helper.append(splitline[splitline.length - 1].trim() + "\n");
+		    helper.append(splitline[splitline.length - 1].trim() + (maxNrOfLineFeedsToKeep == 0 ? " ":"\n"));
 		    newlineCounter = 0;
 		    itsTheFirstLine = false;
 		} else {
 		    if (!itsTheFirstLine) {
 			newlineCounter++;
-			if (newlineCounter < 2) {
+			if (newlineCounter < maxNrOfLineFeedsToKeep) {
 			    helper.append("\n");
 			}
 		    }
@@ -98,6 +110,21 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
      */
     @Override
     public void addAttributes(Attributes attributes) throws SAXException {
+	    String[] attrValues = Utilities.getOptionalAttributeValues(
+		    attributes, 
+		    new String[] {
+			    TagAndAttributeNames.maxLineFeedsAttribute
+		    }, 
+		    new String[]  {
+			    "2"
+		    });
+	    try {
+		maxNrOfLineFeedsToKeep = Integer.parseInt(attrValues[0]);
+		if (maxNrOfLineFeedsToKeep < 0)
+		    throw new NumberFormatException();
+	    } catch (NumberFormatException e) {
+		throw new SAXException("Attribute " + TagAndAttributeNames.maxLineFeedsAttribute + " must be integer value larger than or equal to 0");
+	    }
     }
 
     /**
@@ -126,12 +153,14 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
     }
 
     /**
-     * @return null
+     * @return {@link #maxNrOfLineFeedsToKeep} in an attribute
      * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
      */
     @Override
     public Attributes getAttributes() {
-	return null;
+	AttributesImpl attr = new AttributesImpl();
+	attr.addAttribute(null, TagAndAttributeNames.maxLineFeedsAttribute, TagAndAttributeNames.maxLineFeedsAttribute, "CDATA", Integer.toString(maxNrOfLineFeedsToKeep));
+	return attr;
     }
 
 

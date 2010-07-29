@@ -200,4 +200,5 @@ package net.johandegraeve.getcontents;
      static final String repeatAttribute = "repeat";
      static final String tagAttrribute = "tag";
      static final String unknowntagAttrribute = "unknowntag";
+     static final String maxLineFeedsAttribute = "maxLineFeeds";
 }

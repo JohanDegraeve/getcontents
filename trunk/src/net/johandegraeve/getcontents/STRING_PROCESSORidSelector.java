@@ -194,7 +194,8 @@ public class STRING_PROCESSORidSelector implements XMLElement,
     @Override
     public GenericXMLGetterResultList getList(GenericXMLGetterResultList list) {
 	int sourceLength = list.size();
-	 GenericXMLGetterResultList returnvalueArrayList;
+	GenericXMLGetterResultList returnvalueArrayList;
+	
 	if (list instanceof XMLXMLGetterResultList)
 	    returnvalueArrayList = new XMLXMLGetterResultList();
 	else

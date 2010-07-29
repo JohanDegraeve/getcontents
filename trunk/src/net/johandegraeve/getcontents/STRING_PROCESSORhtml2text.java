@@ -27,7 +27,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * a simple string processor that removes everything between &lt; and &gt
+ * a simple string processor that removes everything between &lt; and &gt<br>
+ * the same could be achieved with {@link net.johandegraeve.getcontents.STRING_PROCESSORfindAndReplace}
  *
  * @author Johan Degraeve
  *
