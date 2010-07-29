@@ -158,7 +158,7 @@ public class GENERICLocale implements XMLElement {
 	attr.addAttribute(null, TagAndAttributeNames.languageAttribute, TagAndAttributeNames.languageAttribute, "CDATA", language);
 	attr.addAttribute(null, TagAndAttributeNames.countryAttribute, TagAndAttributeNames.countryAttribute, "CDATA", country);
 	attr.addAttribute(null, TagAndAttributeNames.variantAttribute, TagAndAttributeNames.variantAttribute, "CDATA", variant);
-	return null;
+	return attr;
     }
 
     /**
