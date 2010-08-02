@@ -91,18 +91,15 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter, XMLFilte
 		if (attrValue == null)
 		    return true;
 		if (type.equalsIgnoreCase("equals")) {
-			if( ((TagNode)node).getAttribute(attrName.getAttributeName()).equalsIgnoreCase(attrValue.getAttributeValue()))
+			if( ((TagNode)node).getAttribute(attrName.getAttributeName()).trim().equalsIgnoreCase(attrValue.getAttributeValue()))
 			    return true;
 		} else {
-			if( ((TagNode)node).getAttribute(attrName.getAttributeName()).startsWith(attrValue.getAttributeValue()))
+			if( ((TagNode)node).getAttribute(attrName.getAttributeName()).trim().toUpperCase().startsWith(attrValue.getAttributeValue().toUpperCase()))
 			    return true;
 		}
 		return false;
 	    }
 	};
-	/*return new HasAttributeFilter(
-		attrName.getAttributeName().toUpperCase(),
-		(attrValue != null ? attrValue.getAttributeValue() : null));*/
     }
 
     /**
@@ -253,7 +250,7 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter, XMLFilte
 		if (attributevalue == null)
 		    //there's no attribute value specified, and attributename matches
 		    return true;
-		if (attrValue.getAttributeValue().equals(attributevalue))
+		if (attrValue.getAttributeValue().trim().equals(attributevalue))
 		    //attributevalue is also specified and it matches
 		    return true;
 		//attributevalue is specified but it doesn't match

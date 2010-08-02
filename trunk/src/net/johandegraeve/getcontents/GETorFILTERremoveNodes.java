@@ -261,9 +261,9 @@ public class GETorFILTERremoveNodes implements XMLElement, HTMLGetter, XMLGetter
 	    if (attrName != null) {
 		Attribute attribute = ((TagNode)elementAt).getAttributeEx (attrName.getAttributeName());
 		boolean ret = null != attribute;
-		if (ret && attrName.getAttributeName().equalsIgnoreCase(attribute.getName())) {
+		if (ret && attrName.getAttributeName().equalsIgnoreCase(attribute.getName().trim())) {
 		    if (attrValue != null) {
-			    if (attrValue.getAttributeValue().equalsIgnoreCase(attribute.getValue ()))
+			    if (attrValue.getAttributeValue().equalsIgnoreCase(attribute.getValue ().trim()))
 				;//ret statys true
 			    else
 				ret =false;
