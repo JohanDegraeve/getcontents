@@ -21,8 +21,6 @@ package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
 
-import javax.management.AttributeNotFoundException;
-
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 

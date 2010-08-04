@@ -175,4 +175,18 @@ public class GetContents {
     public String toXML() {
 	return net.johandegraeve.easyxmldata.Utilities.createXML(result);
     }
+    
+    /**
+     * get the description of the getContentItem identified by id
+     * @param id 
+     * @return the description, null if id not found
+     */
+    public String getDescription (String id) {
+	for (int i = 0;i < result.size();i ++) {
+	    if (result.elementAt(i).getId().equals(id)) {
+		return result.elementAt(i).getDescription();
+	    }
+	}
+	return null;
+    }
 }
