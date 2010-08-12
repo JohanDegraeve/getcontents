@@ -1797,12 +1797,13 @@ see midPad
 
 ===== readDateAndTime  =====
 
-To parse a date and time field. Has a mandatory child element named SimpleDateFormat. This SimpleDateFormat can be created in exactly the same way as a the corresponding java object.<br>
+To parse a date and time field. The Date and Time is a string representation of the long value of the date and time , as created by the Java method Date.getTime(), ie the number of milliseconds since January 1, 1970, 00:00:00 GMT.<br>
+Has a mandatory child element named SimpleDateFormat. This SimpleDateFormat can be created in exactly the same way as a the corresponding java object.<br>
 Another child element is the optional element !TimeZone.<br>
 
 *Attributes*
- * chronological, values true or false, default true
- * offset, default value = "", allowed values are "", year", "month", "day", "halfday", "hour"
+ * chronological, values true or false, default true. A value of true does not mean that the resulting list will be sorted. It means the instruction will try to put the list in chronological order, but this is only possible if the attribute offset is defined. This value will be used while trying to put the result in chronological order.
+ * offset, default value = "", allowed values are "", year", "month", "day", "halfday", "hour". Offset value is used when trying to put the result in chronological order. For example assuming the result of parsing the timestamps would be "08:00", "07:07", "02:23", "23:23", "22:25". If we would use a simpledateformat parser, the result of the last two timestamps would be today at 23:23 and 22:25. However, assuming that the original source was a list of chronologically sorted values, it should be yesterday 23:23 and 22:25. So here we would define an offset="day"
 
 *Occurrence*
  not defined
