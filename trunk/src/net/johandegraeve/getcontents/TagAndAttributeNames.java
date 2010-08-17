@@ -181,7 +181,7 @@ package net.johandegraeve.getcontents;
     };
 
     /*
-     * the attribute names
+     * the attribute names and values
      */
      static final String idAttribute = "id";
      static final String variantAttribute = "variant";
@@ -195,10 +195,12 @@ package net.johandegraeve.getcontents;
      static final String lengthAttribute = "length";
      static final String characterAttribute = "character";
      static final String offsetAttribute = "offset";
-     static final String chronologicalAttribute = "chronological";
+     static final String chronologyAttribute = "chronology";
      static final String charsetAttribute = "charset";
      static final String repeatAttribute = "repeat";
      static final String tagAttrribute = "tag";
      static final String unknowntagAttrribute = "unknowntag";
-     static final String maxNewLines = "maxNewLines";
+     static final String maxNewLinesAttribute = "maxNewLines";
+     static final String ascendingAttributeName = "ascending";
+     static final String descendingAttributeName = "descending";
 }
