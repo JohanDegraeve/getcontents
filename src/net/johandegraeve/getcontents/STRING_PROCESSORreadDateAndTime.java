@@ -36,9 +36,46 @@ import org.xml.sax.helpers.AttributesImpl;
 import com.Ostermiller.util.StringHelper;
 
 /**
- * To read a date and time and to parse, returns the date and time using Date.toString();
+ * To read a date and time and to parse, returns the date and time using Date.toString();<br>
  *
- * @author Johan Degraeve
+ * The attribute &quot;offset&quot; can be used to add for instance the current year, year and month, year and month and day, ..
+ * This is useful in case the input contains date and time which are not fully qualified, for instance 15:23,10:23, 9:24 .. in which case
+ * you should set offset=day. The current date and time will always be used to correct the values.<br>
+ * 
+ * The attribute &quot;chronology&quot; can be used to correct values, for instance in the above example 15:23, 10,23, 9:34 .. assume the list
+ * also has values off the day before ..22:30, 15:30 .. With chronology, it is possible to correct the two last values, so that they get the 
+ * correct date, namely the day before the current date.<br>
+     * Example, assume the source represents following list of dates and times: (represented in a readable format, the actual source is an array of long<br>
+     * 2010 08 16 11:10<br> 
+     * 2010 08 16 08:05<br> 
+     * 2010 08 16 22:50<br> 
+     * 2010 08 16 22:10<br> 
+     * 2010 08 16 15:10<br> 
+     * 2010 08 16 20:10<br>
+     * This could be the result of parsing an input with following dates, whereby the source only contained Hours and minutes (HH:mm)<br>  
+     * 2010 08 16 11:10<br> 
+     * 2010 08 16 08:05<br> 
+     * 2010 08 15 22:50<br> 
+     * 2010 08 15 22:10<br> 
+     * 2010 08 15 15:10<br> 
+     * 2010 08 14 20:10<br>
+     * But because we assume the dates are chronological (descending in this case) we should be able to correct the source (ie the list where the date is always 
+     * 16th of August, the date that the input was parsed<br>
+     * This is what happens here. There are some prerequisites :<br>
+     * - there should be no gaps in the source, larger than the {@link #offset}. Example assume the input list is : <br> 
+     * 2010 08 16 11:10<br> 
+     * 2010 08 16 08:05<br> 
+     * 2010 08 16 22:50<br> 
+     * 2010 08 16 22:10<br> 
+     * 2010 08 16 20:10<br>
+     * then the result after applying the method here would be <br>
+     * 2010 08 16 11:10<br> 
+     * 2010 08 16 08:05<br> 
+     * 2010 08 15 22:50<br> 
+     * 2010 08 15 22:10<br> 
+     * 2010 08 15 20:10<br>
+     * We see that the last date is set to 15, and not 14 as in the previous example<br>
+     * - another prerequisite is that for descending chronology, the first timeStamp is correct, for ascending chronology, the last timeStamp is correct<br>
  *
  */
 public class STRING_PROCESSORreadDateAndTime implements XMLElement,
@@ -247,20 +284,25 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	DateFormat format = simpleDateFormat.getSimpleDateFormat();
 	if (timeZone != null)
 	    format.setTimeZone(timeZone.getTimeZone());
-	Date previousDate = null;
-	Date newDate = null;
 	
 	if (source == null) return null;
-	if (source.length > 0)
-		previousDate = format.parse(source[0]);
-		source[0] = Long.toString(previousDate.getTime());
-	for (int i = 1;i<source.length;i++) {
-		newDate = addOffset(format.parse(source[i]),previousDate);
-		source[i] = Long.toString(newDate.getTime());
-		previousDate = newDate;
+	
+	long[] timeStamps = new long[source.length];
+	for (int i = 0;i<source.length;i++) {
+	    timeStamps[i] = format.parse(source[i]).getTime();
+	    timeStamps[i] = addOffset(timeStamps[i]);
+	}
+	
+	if (chronology != null) {
+		timeStamps = correctTimeStamp(timeStamps,chronology.equalsIgnoreCase(TagAndAttributeNames.ascendingAttributeName));
 	}
 
-	return source;
+	//convert all results to string
+	String[] returnvalue = new String[timeStamps.length];
+	for (int i = 0;i < returnvalue.length;i++)
+	    returnvalue[i] = Long.toString(timeStamps[i]);
+	return returnvalue;
+
     }
     
     /**
@@ -271,19 +313,11 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
      * In this example, offset would need to be set to "day", which means the string "23:25", is a time accurate only on a specific day.<br>
      * Other example : "21 March, 22:00:15", if this would have been parsed, the result would be  "Sat Mar 21 23:25:00 CET 1970". So the offset would need to be
      * set to "year", and the result would then be "Sun Mar 21 23:25:00 CET 2010", so the method will add the current year which is 2010.<br><br>
-     * Parameter previousDate is used in conjunction with field "chronological". If chronological is true, then the returnvalue should come after the previousDate.
-     * So if previousDate is later, then the method will increase the date before being returned, with a value dependent on the field "offset".
-     * 
-     * For instance, if previousDate was a value corresponding to "Fri May 21 23:25:00 CET 2010", and if parsedDate would be "Thu Jan 01 23:23:00 CET 1970", then,
-     * after having added the necessary offset, the result of parsedDate would be "Sun Mar 21 23:23:00 CET 2010". But "chronological" value of true, means we expect
-     * parsedDate to be after previousDate, so a value will be added to previousDate, which is dependent on offset. For instance, if offset = "year" (which would be the
-     * case here), then 1 year will be added, resulting in "Mon Mar 21 23:23:00 CET 2011", and now parsedDate is after previousDate, parsedDate will be returned.
      *  
      * @param parsedDate
-     * @param previousDate
-     * @return new Date
+     * @return new Date in a long
      */
-    private Date addOffset(Date parsedDate, Date previousDate) {
+    private long addOffset(long parsedDate) {
 	if (offset.equals("")) return parsedDate;
 	
 	//get today in Calendar
@@ -296,13 +330,7 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	Calendar parsedCalendar = new GregorianCalendar();
 	if (timeZone != null)
 	    parsedCalendar.setTimeZone(timeZone.getTimeZone());
-	parsedCalendar.setTime(parsedDate);
-	
-	//put previousDate in Calendar
-	Calendar previousCalendar = new GregorianCalendar();
-	if (timeZone != null)
-	    previousCalendar.setTimeZone(timeZone.getTimeZone());
-	previousCalendar.setTime(previousDate);
+	parsedCalendar.setTimeInMillis(parsedDate);
 	
 	//for sure current year will need to be added, since offset is not ""
 	parsedCalendar.set(GregorianCalendar.YEAR,today.get(GregorianCalendar.YEAR));
@@ -317,27 +345,128 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 		    parsedCalendar.set(GregorianCalendar.HOUR_OF_DAY,today.get(GregorianCalendar.HOUR_OF_DAY));
 	}
 	
-	if (previousDate != null && chronology != null) {
-	    boolean ascending = (chronology.equalsIgnoreCase(TagAndAttributeNames.ascendingAttributeName));
-	    if ((ascending && (parsedCalendar.getTimeInMillis() < previousDate.getTime()))
-		    ||
-		(!ascending && (parsedCalendar.getTimeInMillis() > previousDate.getTime()))
-	       )
-	    {
-		if (offset.equals("year"))
-		    parsedCalendar.add(Calendar.YEAR, previousCalendar.get(Calendar.YEAR) + (ascending ? 1:-1));
-		if (offset.equals("month"))
-		    parsedCalendar.add(Calendar.MONTH, previousCalendar.get(Calendar.MONTH) + (ascending ? 1:-1));
-		if (offset.equals("day"))
-		    parsedCalendar.add(Calendar.DAY_OF_MONTH, previousCalendar.get(Calendar.DAY_OF_MONTH) + (ascending ? 1:-1));
-		if (offset.equals("halfday"))
-		    parsedCalendar.add(Calendar.HOUR_OF_DAY, previousCalendar.get(Calendar.HOUR) + (ascending ? 12:-12));
-		if (offset.equals("hour"))
-		    parsedCalendar.add(Calendar.HOUR_OF_DAY, previousCalendar.get(Calendar.HOUR) + (ascending ? 1:-1));
+	return parsedCalendar.getTimeInMillis();
+	
+    }
+
+    /**
+     * corrects the date and time. Input is assumed to be in chronological order, ascending or descending, but this method
+     * will correct the dates and times so that the really are chronological<br>
+     * Example, assume the source represents following list of dates and times: (represented in a readable format, the actual source is an array of long<br>
+     * 2010 08 16 11:10<br> 
+     * 2010 08 16 08:05<br> 
+     * 2010 08 16 22:50<br> 
+     * 2010 08 16 22:10<br> 
+     * 2010 08 16 15:10<br> 
+     * 2010 08 16 20:10<br>
+     * This could be the result of parsing an input with following dates, whereby the source only contained Hours and minutes (HH:mm)<br>  
+     * 2010 08 16 11:10<br> 
+     * 2010 08 16 08:05<br> 
+     * 2010 08 15 22:50<br> 
+     * 2010 08 15 22:10<br> 
+     * 2010 08 15 15:10<br> 
+     * 2010 08 14 20:10<br>
+     * But because we assume the dates are chronological (descending in this case) we should be able to correct the source (ie the list where the date is always 
+     * 16th of August, the date that the input was parsed<br>
+     * This is what happens here. There are some prerequisites :<br>
+     * - there should be no gaps in the source, larger than the {@link #offset}. Example assume the input list is : <br> 
+     * 2010 08 16 11:10<br> 
+     * 2010 08 16 08:05<br> 
+     * 2010 08 16 22:50<br> 
+     * 2010 08 16 22:10<br> 
+     * 2010 08 16 20:10<br>
+     * then the result after applying the method here would be <br>
+     * 2010 08 16 11:10<br> 
+     * 2010 08 16 08:05<br> 
+     * 2010 08 15 22:50<br> 
+     * 2010 08 15 22:10<br> 
+     * 2010 08 15 20:10<br>
+     * We see that the last date is set to 15, and not 14 as in the previous example<br>
+     * - another prerequisite is that for descending chronology, the first timeStamp is correct, for ascending chronology, the last timeStamp is correct<br>
+     * 
+     * @param timeStamps the dates that should be corrected 
+     * @param ascending the chronology in which the source is supposed to be.
+     * @return corrected list of timeStamps
+     *  
+     */
+    private long[]  correctTimeStamp(long[] timeStamps, boolean ascending) {
+	if (timeStamps == null)
+	    return null;
+	if (timeStamps.length == 0)
+	    return new long[0];
+	if (timeStamps.length == 1)
+	    return new long[]{timeStamps[0]};
+	
+	//initialze calendar objects that will be used to manipulate timestamps
+	Calendar previousTimeStamp  = new GregorianCalendar();
+	Calendar currentTimeStamp =   new GregorianCalendar();
+	Calendar timeStampToModify = new GregorianCalendar();
+	if (timeZone != null) {
+	    previousTimeStamp.setTimeZone(timeZone.getTimeZone());
+	    currentTimeStamp.setTimeZone(timeZone.getTimeZone());
+	    timeStampToModify.setTimeZone(timeZone.getTimeZone());
+	}
+	
+	//there's at least two entries in the timeStamps array
+	if (!offset.equals("")) {
+	    if (!ascending) {
+		    // this is for descending = newest first, we assume the first date is correct
+		    //start by putting first timeStamp in a Calendar
+		    previousTimeStamp.setTime(new Date(timeStamps[0]));
+		    
+
+		    for (int i = 1;i < timeStamps.length;i++) {
+			currentTimeStamp.setTime(new Date(timeStamps[i]));
+			if (currentTimeStamp.getTimeInMillis() > previousTimeStamp.getTimeInMillis()) {
+			 // all following timestamps need to be corrected
+			    for (int j = i;j< timeStamps.length;j++) {
+				timeStampToModify.setTime(new Date(timeStamps[j]));
+				if (offset.equalsIgnoreCase("year"))
+				    timeStampToModify.add(Calendar.YEAR,  -1);
+				if (offset.equalsIgnoreCase("month"))
+				    timeStampToModify.add(Calendar.MONTH,  -1);
+				if (offset.equalsIgnoreCase("day"))
+				    timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
+				if (offset.equalsIgnoreCase("halfday"))
+				    timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
+				if (offset.equalsIgnoreCase("hour"))
+				    timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
+				timeStamps[j] = timeStampToModify.getTimeInMillis();
+			    }
+			}
+			    previousTimeStamp.setTimeInMillis(currentTimeStamp.getTimeInMillis());
+		    }
+	    } else {
+		// this is for ascending = oldest first, we assume the last date is correct
+		//start by putting last timeStamp in a Calendar
+		previousTimeStamp.setTime(new Date(timeStamps[timeStamps.length - 1]));
+
+		for (int i = timeStamps.length - 2;i > -1;i--) {
+		    currentTimeStamp.setTime(new Date(timeStamps[i]));
+		    if (currentTimeStamp.getTimeInMillis() > previousTimeStamp.getTimeInMillis()) {
+			// all following timestamps need to be corrected
+			for (int j = i;j > -1;j--) {
+			    timeStampToModify.setTime(new Date(timeStamps[j]));
+			    if (offset.equalsIgnoreCase("year"))
+				timeStampToModify.add(Calendar.YEAR,  -1);
+			    if (offset.equalsIgnoreCase("month"))
+				timeStampToModify.add(Calendar.MONTH,  -1);
+			    if (offset.equalsIgnoreCase("day"))
+				timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
+			    if (offset.equalsIgnoreCase("halfday"))
+				timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
+			    if (offset.equalsIgnoreCase("hour"))
+				timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
+			    timeStamps[j] = timeStampToModify.getTimeInMillis();
+			}
+		    }
+		    previousTimeStamp.setTimeInMillis(currentTimeStamp.getTimeInMillis());
+		}
+
 	    }
 	}
 	
-	return new Date(parsedCalendar.getTimeInMillis());
+	return timeStamps;
 	
     }
 
