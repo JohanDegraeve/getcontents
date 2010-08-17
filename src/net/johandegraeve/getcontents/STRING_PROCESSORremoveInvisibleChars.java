@@ -113,7 +113,7 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
 	    String[] attrValues = Utilities.getOptionalAttributeValues(
 		    attributes, 
 		    new String[] {
-			    TagAndAttributeNames.maxNewLines
+			    TagAndAttributeNames.maxNewLinesAttribute
 		    }, 
 		    new String[]  {
 			    "2"
@@ -123,7 +123,7 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
 		if (maxNrOfNewLinesToKeep < 0)
 		    throw new NumberFormatException();
 	    } catch (NumberFormatException e) {
-		throw new SAXException("Attribute " + TagAndAttributeNames.maxNewLines + " must be integer value larger than or equal to 0");
+		throw new SAXException("Attribute " + TagAndAttributeNames.maxNewLinesAttribute + " must be integer value larger than or equal to 0");
 	    }
     }
 
@@ -159,7 +159,7 @@ public class STRING_PROCESSORremoveInvisibleChars implements XMLElement, StringP
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
-	attr.addAttribute(null, TagAndAttributeNames.maxNewLines, TagAndAttributeNames.maxNewLines, "CDATA", Integer.toString(maxNrOfNewLinesToKeep));
+	attr.addAttribute(null, TagAndAttributeNames.maxNewLinesAttribute, TagAndAttributeNames.maxNewLinesAttribute, "CDATA", Integer.toString(maxNrOfNewLinesToKeep));
 	return attr;
     }
 

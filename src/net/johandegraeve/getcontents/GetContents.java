@@ -152,7 +152,7 @@ public class GetContents {
      * @param getContentItemId id of the  getContentItem off which the customObject should be returned.
      * @return the customObject of the getContentItem that has the specified id,  null if id not found
      */
-    CustomObject getCustomObject (String getContentItemId) {
+    public CustomObject getCustomObject (String getContentItemId) {
 	for (int i = 0;i < result.size();i ++) {
 	    if (result.elementAt(i).getId().equals(getContentItemId)) {
 		return result.elementAt(i).getCustomObject();

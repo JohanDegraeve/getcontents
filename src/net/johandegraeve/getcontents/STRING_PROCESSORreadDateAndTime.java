@@ -55,9 +55,9 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
     private GENERICTimeZone timeZone;
 
     /**
-     * indicates if the individual source strings should represent a date and time in chronological order
+     * indicates the chronology to apply, none (null), &quot;ascending&quot; or &quot;descending&quot;
      */
-    private boolean chronological;
+    private String chronology;
     
     /**
      * defines the offset to add to the parsed date, for instance when input is something like 1430, offset would be day
@@ -70,17 +70,17 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
     private static final String[] validOffsets = {"","year","month","day","halfday","hour"};
     
     /**
-     * constructor setting {@link #simpleDateFormat} to null, {@link #offset} to empty string, {@link #chronological} to true
+     * constructor setting {@link #simpleDateFormat} to null, {@link #offset} to empty string, {@link #chronology} to null
      */
     public STRING_PROCESSORreadDateAndTime() {
 	simpleDateFormat = null;
 	offset="";
-	chronological=true;
+	chronology=null;
     }
     
 
     /**
-     * reads attributes {@link #offset} and {@link #chronological} with default values respectively empty string 
+     * reads attributes {@link #offset} and {@link #chronology} with default values respectively empty string 
      * and true
      * @see net.johandegraeve.easyxmldata.XMLElement#addAttributes(org.xml.sax.Attributes)
      */
@@ -90,27 +90,33 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 		attributes, 
 		new String[] {
 			TagAndAttributeNames.offsetAttribute,
-			TagAndAttributeNames.chronologicalAttribute
+			TagAndAttributeNames.chronologyAttribute
 		}, 
 		new String[]  {
 			"",
-			"true",
+			"",
 		});
 	if (StringHelper.equalsAny(attrValues[0],validOffsets))
 		offset = attrValues[0];
 	else {
 	    StringBuilder exceptionString = new StringBuilder();
-	    exceptionString.append("Element of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag + " can have an attribute" +
+	    exceptionString.append("Element of type " + TagAndAttributeNames.STRING_PROCESSORreadDateAndTimeTag + " can have an attribute" +
 		    " with name "  + TagAndAttributeNames.offsetAttribute + " with one of the following values : \n");
 	    for (int i = 0;i < validOffsets.length;i++) {
 		exceptionString.append(validOffsets[i] + "\n");
 	    }
 	    throw new SAXException(exceptionString.toString());
 	}
-	if (attrValues[1].equalsIgnoreCase("true")) 
-	    chronological = true;
-	else
-	    chronological = false;
+	if (attrValues[1].equalsIgnoreCase("")) 
+	    chronology = null;
+	else if (attrValues[1].equalsIgnoreCase(TagAndAttributeNames.ascendingAttributeName))
+	    chronology = TagAndAttributeNames.ascendingAttributeName;
+	else if (attrValues[1].equalsIgnoreCase(TagAndAttributeNames.descendingAttributeName))
+	    chronology = TagAndAttributeNames.descendingAttributeName;
+	else 
+	    throw new SAXException("ELement of type " + TagAndAttributeNames.STRING_PROCESSORreadDateAndTimeTag + " can have an attribute" +
+		    " with name "  + TagAndAttributeNames.chronologyAttribute + " with one of the values " + TagAndAttributeNames.ascendingAttributeName
+		    + " or " + TagAndAttributeNames.descendingAttributeName);
     }
 
     /**
@@ -169,17 +175,25 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	if (simpleDateFormat == null)
 	    throw new SAXException("Element of type " + TagAndAttributeNames.STRING_PROCESSORreadDateAndTimeTag + 
 		    "must have a child of type " + TagAndAttributeNames.GENERICSimpleDateFormatTag);
+	if (chronology != null && offset.equalsIgnoreCase(""))
+	    throw new SAXException("Element of type " + TagAndAttributeNames.STRING_PROCESSORreadDateAndTimeTag + " :" +
+	    		" if chronology attribute is present then there must be a valid attributevalue for attribute " + TagAndAttributeNames.offsetAttribute);
     }
 
     /**
-     * @return the attributes {@link #offset}, {@link #chronological}
+     * @return the attributes {@link #offset}, {@link #chronology}
      * @see net.johandegraeve.easyxmldata.XMLElement#getAttributes()
      */
     @Override
     public Attributes getAttributes() {
 	AttributesImpl attr = new AttributesImpl();
 	attr.addAttribute(null, TagAndAttributeNames.offsetAttribute, TagAndAttributeNames.offsetAttribute, "CDATA", offset);
-	attr.addAttribute(null, TagAndAttributeNames.chronologicalAttribute, TagAndAttributeNames.chronologicalAttribute, "CDATA", chronological==true?"true":"false");
+	if (chronology != null)
+	    attr.addAttribute(null , 
+		    TagAndAttributeNames.chronologyAttribute, 
+		    TagAndAttributeNames.chronologyAttribute, 
+		    "CDATA", 
+		    chronology);
 	return attr;
     }
 
@@ -260,8 +274,8 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
      * Parameter previousDate is used in conjunction with field "chronological". If chronological is true, then the returnvalue should come after the previousDate.
      * So if previousDate is later, then the method will increase the date before being returned, with a value dependent on the field "offset".
      * 
-     * For instance, if previousDate was a value corresponding to "Fri May 21 23:25:00 CET 2010", and if parsedDate would be "Thu Jan 01 23:25:00 CET 1970", then,
-     * after having added the necessary offset, the result of parsedDate would be "Sun Mar 21 23:25:00 CET 2010". But "chronological" value of true, means we expect
+     * For instance, if previousDate was a value corresponding to "Fri May 21 23:25:00 CET 2010", and if parsedDate would be "Thu Jan 01 23:23:00 CET 1970", then,
+     * after having added the necessary offset, the result of parsedDate would be "Sun Mar 21 23:23:00 CET 2010". But "chronological" value of true, means we expect
      * parsedDate to be after previousDate, so a value will be added to previousDate, which is dependent on offset. For instance, if offset = "year" (which would be the
      * case here), then 1 year will be added, resulting in "Mon Mar 21 23:23:00 CET 2011", and now parsedDate is after previousDate, parsedDate will be returned.
      *  
@@ -272,15 +286,23 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
     private Date addOffset(Date parsedDate, Date previousDate) {
 	if (offset.equals("")) return parsedDate;
 	
+	//get today in Calendar
 	Calendar today = new GregorianCalendar();
 	if (timeZone != null)
 	    today.setTimeZone(timeZone.getTimeZone());
 	today.setTime(new Date());
 
+	//put parsedDate in Calendar
 	Calendar parsedCalendar = new GregorianCalendar();
 	if (timeZone != null)
 	    parsedCalendar.setTimeZone(timeZone.getTimeZone());
 	parsedCalendar.setTime(parsedDate);
+	
+	//put previousDate in Calendar
+	Calendar previousCalendar = new GregorianCalendar();
+	if (timeZone != null)
+	    previousCalendar.setTimeZone(timeZone.getTimeZone());
+	previousCalendar.setTime(previousDate);
 	
 	//for sure current year will need to be added, since offset is not ""
 	parsedCalendar.set(GregorianCalendar.YEAR,today.get(GregorianCalendar.YEAR));
@@ -294,18 +316,24 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 		if (!offset.equals("day"))
 		    parsedCalendar.set(GregorianCalendar.HOUR_OF_DAY,today.get(GregorianCalendar.HOUR_OF_DAY));
 	}
-	if (previousDate != null && chronological) {
-	    if (parsedCalendar.getTimeInMillis() < previousDate.getTime()){
+	
+	if (previousDate != null && chronology != null) {
+	    boolean ascending = (chronology.equalsIgnoreCase(TagAndAttributeNames.ascendingAttributeName));
+	    if ((ascending && (parsedCalendar.getTimeInMillis() < previousDate.getTime()))
+		    ||
+		(!ascending && (parsedCalendar.getTimeInMillis() > previousDate.getTime()))
+	       )
+	    {
 		if (offset.equals("year"))
-		    parsedCalendar.add(GregorianCalendar.YEAR,1);
+		    parsedCalendar.add(Calendar.YEAR, previousCalendar.get(Calendar.YEAR) + (ascending ? 1:-1));
 		if (offset.equals("month"))
-		    parsedCalendar.add(GregorianCalendar.MONTH,1);
+		    parsedCalendar.add(Calendar.MONTH, previousCalendar.get(Calendar.MONTH) + (ascending ? 1:-1));
 		if (offset.equals("day"))
-		    parsedCalendar.add(GregorianCalendar.DAY_OF_MONTH,1);
+		    parsedCalendar.add(Calendar.DAY_OF_MONTH, previousCalendar.get(Calendar.DAY_OF_MONTH) + (ascending ? 1:-1));
 		if (offset.equals("halfday"))
-		    parsedCalendar.add(GregorianCalendar.HOUR_OF_DAY,12);
-		if (offset.equals("hout"))
-		    parsedCalendar.add(GregorianCalendar.HOUR_OF_DAY,1);
+		    parsedCalendar.add(Calendar.HOUR_OF_DAY, previousCalendar.get(Calendar.HOUR) + (ascending ? 12:-12));
+		if (offset.equals("hour"))
+		    parsedCalendar.add(Calendar.HOUR_OF_DAY, previousCalendar.get(Calendar.HOUR) + (ascending ? 1:-1));
 	    }
 	}
 	
