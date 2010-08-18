@@ -102,6 +102,12 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
     private String offset;
     
     /**
+     * list of timing results that {@link #correctTimeStamp(long[], boolean)} should exclude<br>
+     * Allowed values are in  http://download.oracle.com/javase/1.4.2/docs/api/constant-values.html#java.util.Calendar.JANUARY
+     */
+    private ArrayList<Integer> exclude;
+    
+    /**
      * valid values for {@link #offset}
      */
     private static final String[] validOffsets = {"","year","month","day","halfday","hour"};
@@ -113,6 +119,7 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	simpleDateFormat = null;
 	offset="";
 	chronology=null;
+	exclude = new ArrayList<Integer>();
     }
     
 
@@ -127,11 +134,13 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 		attributes, 
 		new String[] {
 			TagAndAttributeNames.offsetAttribute,
-			TagAndAttributeNames.chronologyAttribute
+			TagAndAttributeNames.chronologyAttribute,
+			TagAndAttributeNames.excludeAttributeName
 		}, 
 		new String[]  {
 			"",
 			"",
+			""
 		});
 	if (StringHelper.equalsAny(attrValues[0],validOffsets))
 		offset = attrValues[0];
@@ -154,6 +163,21 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	    throw new SAXException("ELement of type " + TagAndAttributeNames.STRING_PROCESSORreadDateAndTimeTag + " can have an attribute" +
 		    " with name "  + TagAndAttributeNames.chronologyAttribute + " with one of the values " + TagAndAttributeNames.ascendingAttributeName
 		    + " or " + TagAndAttributeNames.descendingAttributeName);
+	if (attrValues[2].equalsIgnoreCase("")) 
+	    ;
+	else {
+	    String[] excludeValues = attrValues[2].split(",");
+	    try {
+		for (int i = 0;i < excludeValues.length;i++)
+		    exclude.add(Integer.parseInt(excludeValues[i]));
+	    } catch (NumberFormatException e) {
+		throw new SAXException("ELement of type " + TagAndAttributeNames.STRING_PROCESSORreadDateAndTimeTag + 
+				" can have attribute " + TagAndAttributeNames.excludeAttributeName + " with a list of integers as values. " +
+						"The allowed values can be found in http://download.oracle.com/javase/1.4.2/docs/api/constant-values.html#java.util.Calendar.JANUARY " +
+						"Values need to be separated by comma. Allowed values are the integer values corresponding to " +
+						"SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY");
+	    }
+	}
     }
 
     /**
@@ -231,6 +255,15 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 		    TagAndAttributeNames.chronologyAttribute, 
 		    "CDATA", 
 		    chronology);
+	if (exclude.size() > 0) {
+	    StringBuilder excludeInString = new StringBuilder();
+	    for (int i = 0;i < exclude.size();i++) {
+		excludeInString.append(((Integer)exclude.get(i)).toString());
+		if (i < exclude.size() - 1 && exclude.size() > 1)
+		    excludeInString.append(",");
+	    }
+	}
+	    
 	return attr;
     }
 
@@ -425,10 +458,13 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 				    timeStampToModify.add(Calendar.YEAR,  -1);
 				if (offset.equalsIgnoreCase("month"))
 				    timeStampToModify.add(Calendar.MONTH,  -1);
-				if (offset.equalsIgnoreCase("day"))
+				if (offset.equalsIgnoreCase("day")) {
 				    timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
+				    while (exclude.contains(new Integer(timeStampToModify.get(Calendar.DAY_OF_WEEK))))
+					timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
+				}
 				if (offset.equalsIgnoreCase("halfday"))
-				    timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
+				    timeStampToModify.add(Calendar.HOUR_OF_DAY,  -12);
 				if (offset.equalsIgnoreCase("hour"))
 				    timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
 				timeStamps[j] = timeStampToModify.getTimeInMillis();
@@ -451,10 +487,13 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 				timeStampToModify.add(Calendar.YEAR,  -1);
 			    if (offset.equalsIgnoreCase("month"))
 				timeStampToModify.add(Calendar.MONTH,  -1);
-			    if (offset.equalsIgnoreCase("day"))
+			    if (offset.equalsIgnoreCase("day")) {
 				timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
+				while (exclude.contains(new Integer(timeStampToModify.get(Calendar.DAY_OF_WEEK))))
+				    timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
+			    }
 			    if (offset.equalsIgnoreCase("halfday"))
-				timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
+				timeStampToModify.add(Calendar.HOUR_OF_DAY,  -12);
 			    if (offset.equalsIgnoreCase("hour"))
 				timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
 			    timeStamps[j] = timeStampToModify.getTimeInMillis();

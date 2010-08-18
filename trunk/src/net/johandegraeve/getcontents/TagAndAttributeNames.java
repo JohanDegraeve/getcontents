@@ -203,4 +203,5 @@ package net.johandegraeve.getcontents;
      static final String maxNewLinesAttribute = "maxNewLines";
      static final String ascendingAttributeName = "ascending";
      static final String descendingAttributeName = "descending";
+     static final String excludeAttributeName = "exclude";
 }
