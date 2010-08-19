@@ -20,10 +20,12 @@
 package net.johandegraeve.getcontents;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import net.johandegraeve.easyxmldata.Utilities;
 import net.johandegraeve.easyxmldata.XMLElement;
 
+import org.htmlparser.Attribute;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.nodes.TagNode;
@@ -82,10 +84,29 @@ public class GETorFILTERhasAttribute implements XMLElement, HTMLFilter, XMLFilte
 	    
 	    @Override
 	    public boolean accept(Node node) {
+		Vector attributes;
+	        Attribute attribute;
+	        String string;
+
 		if (node == null) return false;
 		if (!(node instanceof TagNode)) return false;
-		if( ((TagNode)node).getAttribute(attrName.getAttributeName()) == null)
+	        
+		attributes = ((TagNode)node).getAttributesEx ();
+		if (attributes == null)
 		    return false;
+
+		int size = attributes.size ();
+
+		int i;
+		for (i = 0; i < size; i++)
+		{
+		    attribute = (Attribute)attributes.elementAt (i);
+		    if (attrName.getAttributeName().equals(attribute.getName ()))
+			break;
+		}
+		if (i == size)
+		    return false;
+
 		if (attrValue == null)
 		    return true;
 		if (type.equalsIgnoreCase("equals")) {

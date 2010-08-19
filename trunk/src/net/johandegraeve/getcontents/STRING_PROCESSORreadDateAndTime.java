@@ -445,10 +445,11 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	    if (!ascending) {
 		    // this is for descending = newest first, we assume the first date is correct
 		    //start by putting first timeStamp in a Calendar
-		    previousTimeStamp.setTime(new Date(timeStamps[0]));
+		    previousTimeStamp.setTime(new Date());
+		    //previousTimeStamp.setTime(new Date(timeStamps[0]));
 		    
 
-		    for (int i = 1;i < timeStamps.length;i++) {
+		    for (int i = 0;i < timeStamps.length;i++) {
 			currentTimeStamp.setTime(new Date(timeStamps[i]));
 			if (currentTimeStamp.getTimeInMillis() > previousTimeStamp.getTimeInMillis()) {
 			 // all following timestamps need to be corrected
@@ -470,14 +471,15 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 				timeStamps[j] = timeStampToModify.getTimeInMillis();
 			    }
 			}
-			    previousTimeStamp.setTimeInMillis(currentTimeStamp.getTimeInMillis());
+			previousTimeStamp.setTimeInMillis(currentTimeStamp.getTimeInMillis());
 		    }
 	    } else {
 		// this is for ascending = oldest first, we assume the last date is correct
 		//start by putting last timeStamp in a Calendar
-		previousTimeStamp.setTime(new Date(timeStamps[timeStamps.length - 1]));
+		previousTimeStamp.setTime(new Date());
+		//previousTimeStamp.setTime(new Date(timeStamps[timeStamps.length - 1]));
 
-		for (int i = timeStamps.length - 2;i > -1;i--) {
+		for (int i = timeStamps.length - 1;i > -1;i--) {
 		    currentTimeStamp.setTime(new Date(timeStamps[i]));
 		    if (currentTimeStamp.getTimeInMillis() > previousTimeStamp.getTimeInMillis()) {
 			// all following timestamps need to be corrected
