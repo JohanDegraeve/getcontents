@@ -429,86 +429,149 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	    return new long[0];
 	if (timeStamps.length == 1)
 	    return new long[]{timeStamps[0]};
+	//there's at least two entries in the timeStamps array so let's continue
 	
-	//initialze calendar objects that will be used to manipulate timestamps
-	Calendar previousTimeStamp  = new GregorianCalendar();
-	Calendar currentTimeStamp =   new GregorianCalendar();
-	Calendar timeStampToModify = new GregorianCalendar();
-	if (timeZone != null) {
-	    previousTimeStamp.setTimeZone(timeZone.getTimeZone());
-	    currentTimeStamp.setTimeZone(timeZone.getTimeZone());
-	    timeStampToModify.setTimeZone(timeZone.getTimeZone());
-	}
-	
-	//there's at least two entries in the timeStamps array
 	if (!offset.equals("")) {
+	    //there's an offset defined, so we'll correct the timestamps
+	    
+	    //initialze calendar objects that will be used to manipulate timestamps
+	    Calendar previousTimeStamp  = new GregorianCalendar();
+	    Calendar currentTimeStamp =   new GregorianCalendar();
+	    Calendar timeStampToModify = new GregorianCalendar();
+	    if (timeZone != null) {
+		previousTimeStamp.setTimeZone(timeZone.getTimeZone());
+		currentTimeStamp.setTimeZone(timeZone.getTimeZone());
+		timeStampToModify.setTimeZone(timeZone.getTimeZone());
+	    }
+
 	    if (!ascending) {
 		    // this is for descending = newest first, we assume the first date is correct
-		    //start by putting first timeStamp in a Calendar
+
+		//first check if the first date is not correct
+		previousTimeStamp.setTime(new Date());
+		currentTimeStamp.setTime(new Date(timeStamps[0]));
+		if (currentTimeStamp.getTimeInMillis() > previousTimeStamp.getTimeInMillis()) {
+		    shiftTimeStamps(Calendar.DAY_OF_MONTH, -1, timeStamps, 0, ascending);
+		}
+		
+		//if the first timestamp in the list is in an excluded period, then shift everything as long as needed
+		//this is only implemented for day of week
+		currentTimeStamp.setTime(new Date(timeStamps[0]));
+		if (offset.equalsIgnoreCase("day")) {
+		    while (exclude.contains(new Integer(currentTimeStamp.get(Calendar.DAY_OF_WEEK)))) {
+			shiftTimeStamps(Calendar.DAY_OF_MONTH, -1, timeStamps, 0, ascending);
+			currentTimeStamp.setTime(new Date(timeStamps[0]));
+		    }
+		}
+
+		//now start correcting
+		//start by putting current time in a Calendar
 		    previousTimeStamp.setTime(new Date());
-		    //previousTimeStamp.setTime(new Date(timeStamps[0]));
-		    
 
 		    for (int i = 0;i < timeStamps.length;i++) {
 			currentTimeStamp.setTime(new Date(timeStamps[i]));
 			if (currentTimeStamp.getTimeInMillis() > previousTimeStamp.getTimeInMillis()) {
 			 // all following timestamps need to be corrected
-			    for (int j = i;j< timeStamps.length;j++) {
-				timeStampToModify.setTime(new Date(timeStamps[j]));
+				// all following timestamps need to be corrected
 				if (offset.equalsIgnoreCase("year"))
-				    timeStampToModify.add(Calendar.YEAR,  -1);
+				    shiftTimeStamps(Calendar.YEAR, -1, timeStamps,i,ascending);
 				if (offset.equalsIgnoreCase("month"))
-				    timeStampToModify.add(Calendar.MONTH,  -1);
+				    shiftTimeStamps(Calendar.MONTH, -1, timeStamps,i,ascending);
 				if (offset.equalsIgnoreCase("day")) {
-				    timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
-				    while (exclude.contains(new Integer(timeStampToModify.get(Calendar.DAY_OF_WEEK))))
-					timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
+				    shiftTimeStamps(Calendar.DAY_OF_MONTH, -1, timeStamps,i,ascending);
+				    timeStampToModify.setTime(new Date(timeStamps[i]));
+				    while (exclude.contains(new Integer(timeStampToModify.get(Calendar.DAY_OF_WEEK)))) {
+					shiftTimeStamps(Calendar.DAY_OF_MONTH, -1, timeStamps, i, ascending);
+					timeStampToModify.setTime(new Date(timeStamps[i]));
+				    }
 				}
 				if (offset.equalsIgnoreCase("halfday"))
-				    timeStampToModify.add(Calendar.HOUR_OF_DAY,  -12);
+				    shiftTimeStamps(Calendar.HOUR_OF_DAY, -12, timeStamps,i,ascending);
 				if (offset.equalsIgnoreCase("hour"))
-				    timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
-				timeStamps[j] = timeStampToModify.getTimeInMillis();
-			    }
+				    shiftTimeStamps(Calendar.HOUR_OF_DAY, -1, timeStamps,i,ascending);
+//				timeStamps[i] = timeStampToModify.getTimeInMillis();
 			}
 			previousTimeStamp.setTimeInMillis(currentTimeStamp.getTimeInMillis());
 		    }
 	    } else {
 		// this is for ascending = oldest first, we assume the last date is correct
-		//start by putting last timeStamp in a Calendar
+		
+		//first check if the first date is not correct
 		previousTimeStamp.setTime(new Date());
-		//previousTimeStamp.setTime(new Date(timeStamps[timeStamps.length - 1]));
+		currentTimeStamp.setTime(new Date(timeStamps[timeStamps.length - 1]));
+		if (currentTimeStamp.getTimeInMillis() > previousTimeStamp.getTimeInMillis()) {
+		    shiftTimeStamps(Calendar.DAY_OF_MONTH, -1, timeStamps, timeStamps.length - 1, ascending);
+		}
+		
+		//if the first timestamp in the list is in an excluded period, then shift everything as long as needed
+		currentTimeStamp.setTime(new Date(timeStamps[timeStamps.length - 1]));
+		//this is only implemented for day of week
+		if (offset.equalsIgnoreCase("day")) {
+		    while (exclude.contains(new Integer(currentTimeStamp.get(Calendar.DAY_OF_WEEK)))) {
+			shiftTimeStamps(Calendar.DAY_OF_MONTH, -1, timeStamps, timeStamps.length - 1, ascending);
+			currentTimeStamp.setTime(new Date(timeStamps[timeStamps.length - 1]));
+		    }
+		}
+
+		//now start correcting
+		//start by putting current time in a Calendar
+		previousTimeStamp.setTime(new Date());
 
 		for (int i = timeStamps.length - 1;i > -1;i--) {
 		    currentTimeStamp.setTime(new Date(timeStamps[i]));
 		    if (currentTimeStamp.getTimeInMillis() > previousTimeStamp.getTimeInMillis()) {
 			// all following timestamps need to be corrected
-			for (int j = i;j > -1;j--) {
-			    timeStampToModify.setTime(new Date(timeStamps[j]));
-			    if (offset.equalsIgnoreCase("year"))
-				timeStampToModify.add(Calendar.YEAR,  -1);
-			    if (offset.equalsIgnoreCase("month"))
-				timeStampToModify.add(Calendar.MONTH,  -1);
-			    if (offset.equalsIgnoreCase("day")) {
-				timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
-				while (exclude.contains(new Integer(timeStampToModify.get(Calendar.DAY_OF_WEEK))))
-				    timeStampToModify.add(Calendar.DAY_OF_MONTH,  -1);
+			if (offset.equalsIgnoreCase("year"))
+			    shiftTimeStamps(Calendar.YEAR, -1, timeStamps,i,ascending);
+			if (offset.equalsIgnoreCase("month"))
+			    shiftTimeStamps(Calendar.MONTH, -1, timeStamps,i,ascending);
+			if (offset.equalsIgnoreCase("day")) {
+			    shiftTimeStamps(Calendar.DAY_OF_MONTH, -1, timeStamps,i,ascending);
+			    timeStampToModify.setTime(new Date(timeStamps[i]));
+			    while (exclude.contains(new Integer(timeStampToModify.get(Calendar.DAY_OF_WEEK)))) {
+				shiftTimeStamps(Calendar.DAY_OF_MONTH, -1, timeStamps, i, ascending);
+				timeStampToModify.setTime(new Date(timeStamps[i]));
 			    }
-			    if (offset.equalsIgnoreCase("halfday"))
-				timeStampToModify.add(Calendar.HOUR_OF_DAY,  -12);
-			    if (offset.equalsIgnoreCase("hour"))
-				timeStampToModify.add(Calendar.HOUR_OF_DAY,  -1);
-			    timeStamps[j] = timeStampToModify.getTimeInMillis();
 			}
+			if (offset.equalsIgnoreCase("halfday"))
+			    shiftTimeStamps(Calendar.HOUR_OF_DAY, -12, timeStamps,i,ascending);
+			if (offset.equalsIgnoreCase("hour"))
+			    shiftTimeStamps(Calendar.HOUR_OF_DAY, -1, timeStamps,i,ascending);
+//			timeStamps[i] = timeStampToModify.getTimeInMillis();
 		    }
 		    previousTimeStamp.setTimeInMillis(currentTimeStamp.getTimeInMillis());
 		}
 
 	    }
 	}
-	
 	return timeStamps;
-	
     }
 
+    /**
+     * shift a range of timestamps, the input timeStampsToShift array is modified.
+     * @param timeFieldNumber1 indicates if we need to sheft the day, month or year
+     * @param amount how much to shift
+     * @param timeStampsToShift the list of timestamps to shift
+     * @param startwith where to start, if ascending, then it will go from startwith to 0, if not ascending, then it will go from startwith to the last element in the array
+     * @param ascending is it (supposed to be) an ascending or descending list
+     */
+    private void shiftTimeStamps(int timeFieldNumber1, int amount, long[] timeStampsToShift, int startwith, boolean ascending) {
+	Calendar timeStampToShiftInCalendar  = new GregorianCalendar();
+	if (timeZone != null) 
+	    timeStampToShiftInCalendar.setTimeZone(timeZone.getTimeZone());
+
+	if (!ascending) {
+	    for (int i = startwith;i< timeStampsToShift.length;i++) {
+		timeStampToShiftInCalendar.setTime(new Date(timeStampsToShift[i]));
+		timeStampToShiftInCalendar.add(timeFieldNumber1, amount);
+		timeStampsToShift[i] = timeStampToShiftInCalendar.getTimeInMillis();
+	    }
+	} else {
+	    for (int i = startwith;i > -1;i--) {
+		timeStampToShiftInCalendar.setTime(new Date(timeStampsToShift[i]));
+		timeStampToShiftInCalendar.add(timeFieldNumber1, amount);
+		timeStampsToShift[i] = timeStampToShiftInCalendar.getTimeInMillis();
+	    }
+	}
+    }
 }
