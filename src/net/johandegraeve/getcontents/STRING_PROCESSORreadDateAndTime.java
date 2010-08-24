@@ -445,7 +445,7 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 	    }
 
 	    if (!ascending) {
-		    // this is for descending = newest first, we assume the first date is correct
+		    // this is for descending = newest first
 
 		//first check if the first date is not correct
 		previousTimeStamp.setTime(new Date());
@@ -489,12 +489,11 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 				    shiftTimeStamps(Calendar.HOUR_OF_DAY, -12, timeStamps,i,ascending);
 				if (offset.equalsIgnoreCase("hour"))
 				    shiftTimeStamps(Calendar.HOUR_OF_DAY, -1, timeStamps,i,ascending);
-//				timeStamps[i] = timeStampToModify.getTimeInMillis();
 			}
 			previousTimeStamp.setTimeInMillis(currentTimeStamp.getTimeInMillis());
 		    }
 	    } else {
-		// this is for ascending = oldest first, we assume the last date is correct
+		// this is for ascending = oldest first
 		
 		//first check if the first date is not correct
 		previousTimeStamp.setTime(new Date());
@@ -537,7 +536,6 @@ public class STRING_PROCESSORreadDateAndTime implements XMLElement,
 			    shiftTimeStamps(Calendar.HOUR_OF_DAY, -12, timeStamps,i,ascending);
 			if (offset.equalsIgnoreCase("hour"))
 			    shiftTimeStamps(Calendar.HOUR_OF_DAY, -1, timeStamps,i,ascending);
-//			timeStamps[i] = timeStampToModify.getTimeInMillis();
 		    }
 		    previousTimeStamp.setTimeInMillis(currentTimeStamp.getTimeInMillis());
 		}
