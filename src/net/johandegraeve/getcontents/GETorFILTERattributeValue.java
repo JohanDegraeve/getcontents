@@ -57,7 +57,7 @@ public class GETorFILTERattributeValue implements XMLElement, HTMLGetter {
      */
     @Override
     public void addChild(XMLElement child) throws SAXException {
-	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERtextTag);
+	throw new SAXException("No child elements allowed for " + TagAndAttributeNames.GETorFILTERattributeValue);
     }
 
     /**
