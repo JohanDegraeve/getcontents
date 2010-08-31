@@ -223,8 +223,8 @@ If the source is not a url, then the source is returned.<br>
  not defined
 
 *Allowed Children*
- *encoding, at most 1,  optional, default value the default characterset for the platform
- *requestProperty, 0, 1 or more, optional, in case http headers need to be added
+ * encoding, at most 1,  optional, default value the default characterset for the platform
+ * requestProperty, 0, 1 or more, optional, in case http headers need to be added
 
 ===== encoding =====
 
