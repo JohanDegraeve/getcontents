@@ -1,6 +1,5 @@
 #summary Explain XML instruction file.
 
-<font color="red">THIS PAGE IS UNDER CONSTRUCTION</font>
 
 <wiki:toc max_depth="8" />
 
