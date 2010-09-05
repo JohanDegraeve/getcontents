@@ -381,8 +381,8 @@ In case you want to filter on tags not known to the HTML Parser, then you must a
 
 
 *Attributes*
- *type determines if the value (if present) should be considered 'equals' or 'startswith'. Hence the possible values are 'equals' and 'startswith'.<br>
-Default value is 'startswith'.
+ * type determines if the value (if present) should be considered 'equals' or 'startswith'. Hence the possible values are 'equals' and 'startswith'.<br>
+Default value is 'equals'.
 
 *Occurrence*
  none
